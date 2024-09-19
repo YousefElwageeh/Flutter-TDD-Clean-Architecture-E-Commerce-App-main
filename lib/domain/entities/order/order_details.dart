@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 
 import '../user/delivery_info.dart';
 import 'order_item.dart';
@@ -6,7 +7,7 @@ import 'order_item.dart';
 class OrderDetails extends Equatable {
   final String id;
   final List<OrderItem> orderItems;
-  final DeliveryInfo deliveryInfo;
+  final AddressResponseModel deliveryInfo;
   final num discount;
 
   const OrderDetails({

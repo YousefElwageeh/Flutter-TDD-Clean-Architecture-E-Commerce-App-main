@@ -1,9 +1,8 @@
 import 'dart:convert';
 
+import 'package:eshop/core/api/dio_factory.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../core/error/exceptions.dart';
-import '../../../core/constant/strings.dart';
 import '../../../domain/usecases/product/get_product_usecase.dart';
 import '../../models/product/product_response_model.dart';
 
@@ -16,20 +15,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ProductRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<ProductResponseModel> getProducts(params) => _getProductFromUrl(
-      '$baseUrl/products?keyword=${params.keyword}&pageSize=${params.pageSize}&page=${params.limit}&categories=${jsonEncode(params.categories)}');
-
-  Future<ProductResponseModel> _getProductFromUrl(String url) async {
-    final response = await client.get(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      return productResponseModelFromJson(response.body);
-    } else {
-      throw ServerException();
-    }
+  Future<ProductResponseModel> getProducts(params) async {
+    final result = await DioFactory.getdata(
+        url: '/api/ProductByCategory/${params.categories.first.id}');
+    return ProductResponseModel.fromJson(result.data);
   }
 }

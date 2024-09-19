@@ -20,7 +20,7 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   Future<ProductResponseModel> getLastProducts() {
     final jsonString = sharedPreferences.getString(cachedProducts);
     if (jsonString != null) {
-      return Future.value(productResponseModelFromJson(jsonDecode(jsonString)));
+      return Future.value(ProductResponseModel.fromRawJson(jsonString));
     } else {
       throw CacheException();
     }
@@ -30,7 +30,7 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   Future<void> saveProducts(ProductResponseModel productsToCache) {
     return sharedPreferences.setString(
       cachedProducts,
-      json.encode(productResponseModelToJson(productsToCache)),
+      productsToCache.toRawJson(),
     );
   }
 }

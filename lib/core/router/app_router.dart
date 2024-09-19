@@ -1,8 +1,17 @@
+import 'package:eshop/core/services/services_locator.dart';
+import 'package:eshop/data/models/cart/cart_item_model.dart';
+import 'package:eshop/data/models/category/category_model.dart';
+import 'package:eshop/data/models/product/product_response_model.dart' as pm;
+import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
+import 'package:eshop/presentation/blocs/cubit/profile_cubit.dart';
+import 'package:eshop/presentation/blocs/product/product_bloc.dart';
+import 'package:eshop/presentation/views/main/category/category_view.dart';
 import 'package:eshop/presentation/views/main/home/filter/filter_view.dart';
+import 'package:eshop/presentation/views/product/proudcuts_by_category_id.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/cart/cart_item.dart';
-import '../../domain/entities/product/product.dart';
 import '../../domain/entities/user/user.dart';
 import '../../presentation/views/authentication/signin_view.dart';
 import '../../presentation/views/authentication/signup_view.dart';
@@ -31,6 +40,9 @@ class AppRouter {
   static const String deliveryDetails = '/delivery-details';
   static const String orders = '/orders';
   static const String settings = '/settings';
+  static const String proudcutsByCategory = '/proudcutsByCategory';
+  static const String category = '/category';
+
   static const String notifications = '/notifications';
   static const String about = '/about';
   static const String filter = '/filter';
@@ -41,20 +53,33 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainView());
       case signIn:
         return MaterialPageRoute(builder: (_) => const SignInView());
+      case category:
+        return MaterialPageRoute(builder: (_) => const CategoryView());
+      case proudcutsByCategory:
+        int categoryID = routeSettings.arguments as int;
+
+        return MaterialPageRoute(
+            builder: (_) => ProductsByCatrgory(
+                  categoryID: categoryID,
+                ),
+            settings: RouteSettings(arguments: routeSettings.arguments));
       case signUp:
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case productDetails:
-        Product product = routeSettings.arguments as Product;
+        pm.Product product = routeSettings.arguments as pm.Product;
         return MaterialPageRoute(
             builder: (_) => ProductDetailsView(product: product));
       case userProfile:
         User user = routeSettings.arguments as User;
         return MaterialPageRoute(
-            builder: (_) => UserProfileScreen(
-                  user: user,
+            builder: (_) => BlocProvider(
+                  create: (context) => ProfileCubit(),
+                  child: UserProfileScreen(
+                    user: user,
+                  ),
                 ));
       case orderCheckout:
-        List<CartItem> items = routeSettings.arguments as List<CartItem>;
+        List<Cart> items = routeSettings.arguments as List<Cart>;
         return MaterialPageRoute(
             builder: (_) => OrderCheckoutView(
                   items: items,

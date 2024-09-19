@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/error/failures.dart';
@@ -16,14 +18,45 @@ class SignUpUseCase implements UseCase<User, SignUpParams> {
 }
 
 class SignUpParams {
-  final String firstName;
-  final String lastName;
   final String email;
+  final String? passwordConfirmation;
+  final String name;
   final String password;
+  final String phone;
+
   const SignUpParams({
-    required this.firstName,
-    required this.lastName,
     required this.email,
+    this.passwordConfirmation,
+    required this.name,
     required this.password,
+    required this.phone,
   });
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'email': email});
+    result.addAll({'password_confirmation': password});
+    result.addAll({'name': name});
+    result.addAll({'password': password});
+    result.addAll({'phone': phone});
+    result.addAll({'country': 'UAE'});
+
+    return result;
+  }
+
+  factory SignUpParams.fromMap(Map<String, dynamic> map) {
+    return SignUpParams(
+      email: map['email'] ?? '',
+      passwordConfirmation: map['passwordConfirmation'] ?? '',
+      name: map['name'] ?? '',
+      password: map['password'] ?? '',
+      phone: map['phone'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory SignUpParams.fromJson(String source) =>
+      SignUpParams.fromMap(json.decode(source));
 }

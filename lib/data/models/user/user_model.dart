@@ -7,29 +7,31 @@ UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel extends User {
-  const UserModel({
-    required String id,
-    required String firstName,
-    required String lastName,
-    required String email,
-  }) : super(
-    id: id,
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-  );
+  UserModel({
+    super.id,
+    super.name,
+    super.token,
+    super.phone,
+    super.email,
+    super.image,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json["_id"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    email: json["email"],
-  );
+        id: json["id"],
+        name: json["name"],
+        token: json["token"],
+        phone: json["phone"],
+        email: json["email"],
+        image: json["photo"],
+      );
 
+  @override
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "firstName": firstName,
-    "lastName": lastName,
-    "email": email,
-  };
+        "id": id,
+        "name": name,
+        "phone": phone,
+        "token": token,
+        "email": email,
+        "photo": image,
+      };
 }

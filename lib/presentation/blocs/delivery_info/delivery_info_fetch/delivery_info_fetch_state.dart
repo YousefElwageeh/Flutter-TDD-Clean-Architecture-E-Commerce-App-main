@@ -2,8 +2,8 @@ part of 'delivery_info_fetch_cubit.dart';
 
 @immutable
 abstract class DeliveryInfoFetchState {
-  final List<DeliveryInfo> deliveryInformation;
-  final DeliveryInfo? selectedDeliveryInformation;
+  final List<AddressResponseModel> deliveryInformation;
+  final AddressResponseModel? selectedDeliveryInformation;
   const DeliveryInfoFetchState(
       {required this.deliveryInformation, this.selectedDeliveryInformation});
 }

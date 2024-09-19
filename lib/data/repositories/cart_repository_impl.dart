@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:eshop/data/models/cart/add_to_card_request.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../core/network/network_info.dart';
@@ -23,18 +24,17 @@ class CartRepositoryImpl implements CartRepository {
   });
 
   @override
-  Future<Either<Failure, CartItem>> addToCart(CartItem params) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      await localDataSource.saveCartItem(CartItemModel.fromParent(params));
-      final String token = await userLocalDataSource.getToken();
+  Future<Either<Failure, CartModel>> addToCart(AddToCardRequest params) async {
+    try {
+      // await localDataSource.saveCartItem(CartItemModel.fromParent(params));
+      //final String token = await userLocalDataSource.getToken();
       final remoteProduct = await remoteDataSource.addToCart(
-        CartItemModel.fromParent(params),
-        token,
+        params,
+        //  token,
       );
       return Right(remoteProduct);
-    } else {
-      await localDataSource.saveCartItem(CartItemModel.fromParent(params));
-      return Right(params);
+    } catch (e) {
+      return Left(ServerFailure());
     }
   }
 
@@ -45,7 +45,7 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, List<CartItem>>> getCachedCart() async {
+  Future<Either<Failure, CartModel>> getCachedCart() async {
     try {
       final localProducts = await localDataSource.getCart();
       return Right(localProducts);
@@ -55,20 +55,15 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, List<CartItem>>> syncCart() async {
+  Future<Either<Failure, CartModel>> syncCart() async {
     if (await networkInfo.isConnected) {
       if (await userLocalDataSource.isTokenAvailable()) {
-        List<CartItemModel> localCartItems = [];
-        try {
-          localCartItems = await localDataSource.getCart();
-        } on Failure catch (_) {}
         try {
           final String token = await userLocalDataSource.getToken();
           final syncedResult = await remoteDataSource.syncCart(
-            localCartItems,
             token,
           );
-          await localDataSource.saveCart(syncedResult);
+          //   await localDataSource.saveCart(syncedResult);
           return Right(syncedResult);
         } on Failure catch (failure) {
           return Left(failure);

@@ -12,7 +12,7 @@ class GetCart extends CartEvent {
 }
 
 class AddProduct extends CartEvent {
-  final CartItem cartItem;
+  final AddToCardRequest cartItem;
   const AddProduct({required this.cartItem});
 
   @override

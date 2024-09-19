@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
@@ -10,7 +12,7 @@ import '../data_sources/local/product_local_data_source.dart';
 import '../data_sources/remote/product_remote_data_source.dart';
 import '../models/product/product_response_model.dart';
 
-typedef _ConcreteOrProductChooser = Future<ProductResponse> Function();
+typedef _ConcreteOrProductChooser = Future<ProductResponseModel> Function();
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
@@ -24,19 +26,24 @@ class ProductRepositoryImpl implements ProductRepository {
   });
 
   @override
-  Future<Either<Failure, ProductResponse>> getProducts(FilterProductParams params) async {
-    return await _getProduct(() {
-      return remoteDataSource.getProducts(params);
-    });
+  Future<Either<Failure, ProductResponseModel>> getProducts(
+      FilterProductParams params) async {
+    try {
+      final result = await remoteDataSource.getProducts(params);
+      return Right(result);
+    } catch (e) {
+      log(e.toString());
+      return Left(ExceptionFailure());
+    }
   }
 
-  Future<Either<Failure, ProductResponse>> _getProduct(
+  Future<Either<Failure, ProductResponseModel>> _getProduct(
     _ConcreteOrProductChooser getConcreteOrProducts,
   ) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteProducts = await getConcreteOrProducts();
-        localDataSource.saveProducts(remoteProducts as ProductResponseModel);
+        localDataSource.saveProducts(remoteProducts);
         return Right(remoteProducts);
       } on ServerException {
         return Left(ServerFailure());

@@ -1,10 +1,17 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/api/dio_factory.dart';
+import 'package:eshop/core/services/services_locator.dart';
+import 'package:eshop/data/models/profile/update_profile_request.dart';
+import 'package:eshop/data/repositories/profile_repo_impl.dart';
 import 'package:eshop/domain/usecases/user/sign_out_usecase.dart';
 import 'package:eshop/domain/usecases/user/sign_up_usecase.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -38,7 +45,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final result = await _signInUseCase(event.params);
       result.fold(
         (failure) => emit(UserLoggedFail(failure)),
-        (user) => emit(UserLogged(user)),
+        (user) {
+          sl<FlutterSecureStorage>()
+              .write(key: Constants.tokenKey, value: user.token);
+          Constants.token = user.token;
+          DioFactory.getDio();
+          emit(UserLogged(user));
+        },
       );
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));
@@ -49,10 +62,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       emit(UserLoading());
       final result = await _getCachedUserUseCase(NoParams());
-      result.fold(
-        (failure) => emit(UserLoggedFail(failure)),
-        (user) => emit(UserLogged(user)),
-      );
+      result.fold((failure) => emit(UserLoggedFail(failure)), (user) {
+        // sl<FlutterSecureStorage>()
+        //     .write(key: Constants.tokenKey, value: user.token);
+        // Constants.token = user.token;
+        // DioFactory.getDio();
+        emit(UserLogged(user));
+      });
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));
     }
@@ -64,7 +80,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final result = await _signUpUseCase(event.params);
       result.fold(
         (failure) => emit(UserLoggedFail(failure)),
-        (user) => emit(UserLogged(user)),
+        (user) {
+          sl<FlutterSecureStorage>()
+              .write(key: Constants.tokenKey, value: user.token);
+          Constants.token = user.token;
+          DioFactory.getDio();
+          emit(UserLogged(user));
+        },
       );
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));
@@ -75,6 +97,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       emit(UserLoading());
       await _signOutUseCase(NoParams());
+      sl<FlutterSecureStorage>().delete(
+        key: Constants.tokenKey,
+      );
+      DioFactory.getDio();
+
       emit(UserLoggedOut());
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));

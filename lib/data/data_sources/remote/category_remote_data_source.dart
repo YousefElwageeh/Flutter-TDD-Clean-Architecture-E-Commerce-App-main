@@ -1,32 +1,38 @@
+import 'dart:developer';
+
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/error/failures.dart';
+import 'package:eshop/data/models/slider/slider_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/constant/strings.dart';
 import '../../models/category/category_model.dart';
 
 abstract class CategoryRemoteDataSource {
-  Future<List<CategoryModel>> getCategories();
+  Future<CategoryModel> getCategories();
+  Future<SliderModel> getSliders();
 }
 
 class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource {
-  final http.Client client;
-  CategoryRemoteDataSourceImpl({required this.client});
+  CategoryRemoteDataSourceImpl();
 
   @override
-  Future<List<CategoryModel>> getCategories() =>
-      _getCategoryFromUrl('$baseUrl/categoryy');
-
-  Future<List<CategoryModel>> _getCategoryFromUrl(String url) async {
-    final response = await client.get(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  Future<CategoryModel> getCategories() async {
+    final response = await DioFactory.getdata(
+      url: '$baseUrl/categoryy',
     );
-    if (response.statusCode == 200) {
-      return categoryModelListFromRemoteJson(response.body);
-    } else {
-      throw ServerFailure();
-    }
+    CategoryModel data = CategoryModel.fromJson(response.data);
+    log(data.category?.length.toString() ?? '');
+    return data;
+  }
+
+  @override
+  Future<SliderModel> getSliders() async {
+    final response = await DioFactory.getdata(
+      url: EndPoints.sliders,
+    );
+    SliderModel data = SliderModel.fromJson(response.data);
+    return data;
   }
 }

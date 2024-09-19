@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:eshop/data/models/product/product_response_model.dart';
 
 import '../product/price_tag.dart';
-import '../product/product.dart';
 
 class CartItem extends Equatable {
   final String? id;
   final Product product;
-  final PriceTag priceTag;
+  final String priceTag;
 
   const CartItem({this.id, required this.product, required this.priceTag});
 

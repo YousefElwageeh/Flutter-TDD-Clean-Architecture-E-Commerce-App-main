@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/core/router/app_router.dart';
+import 'package:eshop/data/models/category/category_model.dart';
 import 'package:eshop/domain/entities/category/category.dart';
 import 'package:eshop/presentation/blocs/filter/filter_cubit.dart';
 import 'package:eshop/presentation/blocs/product/product_bloc.dart';
@@ -14,21 +16,24 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (category != null) {
-          context.read<NavbarCubit>().controller.animateToPage(0,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.linear);
-          context.read<NavbarCubit>().update(0);
-          context.read<FilterCubit>().update(category: category);
+          // context.read<NavbarCubit>().controller.animateToPage(0,
+          //     duration: const Duration(milliseconds: 400),
+          //     curve: Curves.linear);
+          // context.read<NavbarCubit>().update(0);
+          //  context.read<FilterCubit>().update(category: category);
+          Navigator.of(context).pushNamed(AppRouter.proudcutsByCategory,
+              arguments: category?.id);
+
           context
               .read<ProductBloc>()
               .add(GetProducts(context.read<FilterCubit>().state));
         }
       },
       child: category != null
-          ? Stack(
+          ? Column(
               children: [
                 Card(
                   color: Colors.grey.shade100,
@@ -39,12 +44,12 @@ class CategoryCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: 200,
                     width: double.maxFinite,
                     child: Hero(
                       tag: category!.id ?? '',
                       child: CachedNetworkImage(
-                        imageUrl: category!.image,
+                        imageUrl: category?.photo ?? '',
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
                           color: Colors.grey.shade100,
@@ -55,23 +60,12 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                    right: 10,
-                    bottom: 25,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        category?.name ?? '',
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ))
+                Text(
+                  category?.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                )
               ],
             )
           : Shimmer.fromColors(

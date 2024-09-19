@@ -8,17 +8,17 @@ class DeliveryInfoActionInitial extends DeliveryInfoActionState {}
 class DeliveryInfoActionLoading extends DeliveryInfoActionState {}
 
 class DeliveryInfoAddActionSuccess extends DeliveryInfoActionState {
-  final DeliveryInfo deliveryInfo;
+  final AddressResponseModel deliveryInfo;
   DeliveryInfoAddActionSuccess(this.deliveryInfo);
 }
 
 class DeliveryInfoEditActionSuccess extends DeliveryInfoActionState {
-  final DeliveryInfo deliveryInfo;
+  final AddressResponseModel deliveryInfo;
   DeliveryInfoEditActionSuccess(this.deliveryInfo);
 }
 
 class DeliveryInfoSelectActionSuccess extends DeliveryInfoActionState {
-  final DeliveryInfo deliveryInfo;
+  final AddressResponseModel deliveryInfo;
   DeliveryInfoSelectActionSuccess(this.deliveryInfo);
 }
 

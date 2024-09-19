@@ -1,26 +1,28 @@
+import 'package:eshop/data/models/cart/cart_item_model.dart';
+import 'package:eshop/data/models/product/product_response_model.dart';
+
 import '../../../domain/entities/order/order_item.dart';
 import '../product/price_tag_model.dart';
-import '../product/product_model.dart';
 
 class OrderItemModel extends OrderItem {
   const OrderItemModel({
     required super.id,
-    required ProductModel super.product,
-    required PriceTagModel super.priceTag,
+    required super.product,
+    required super.priceTag,
     required super.price,
     required super.quantity,
   });
 
   factory OrderItemModel.fromJson(Map<String, dynamic> json) => OrderItemModel(
       id: json["_id"],
-      product: ProductModel.fromJson(json["product"]),
-      priceTag: PriceTagModel.fromJson(json["priceTag"]),
+      product: Product.fromJson(json["product"]),
+      priceTag: "priceTag",
       price: json["price"],
       quantity: json["quantity"]);
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "product": (product as ProductModel).toJson(),
+        "product": (product).toJson(),
         "priceTag": (priceTag as PriceTagModel).toJson(),
         "price": price,
         "quantity": quantity,
@@ -29,15 +31,15 @@ class OrderItemModel extends OrderItem {
   Map<String, dynamic> toJsonBody() => {
         "_id": id,
         "product": product.id,
-        "priceTag": priceTag.id,
+        "priceTag": priceTag,
         "price": price,
         "quantity": quantity,
       };
 
   factory OrderItemModel.fromEntity(OrderItem entity) => OrderItemModel(
         id: entity.id,
-        product: ProductModel.fromEntity(entity.product),
-        priceTag: PriceTagModel.fromEntity(entity.priceTag),
+        product: Product(),
+        priceTag: entity.priceTag,
         price: entity.price,
         quantity: entity.quantity,
       );

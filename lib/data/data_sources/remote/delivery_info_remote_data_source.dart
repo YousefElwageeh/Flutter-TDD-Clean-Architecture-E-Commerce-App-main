@@ -1,3 +1,7 @@
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/api/dio_factory.dart';
+import 'package:eshop/data/models/adderss/add_address_request.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/error/exceptions.dart';
@@ -5,15 +9,11 @@ import '../../../core/constant/strings.dart';
 import '../../models/user/delivery_info_model.dart';
 
 abstract class DeliveryInfoRemoteDataSource {
-  Future<List<DeliveryInfoModel>> getDeliveryInfo(String token);
-  Future<DeliveryInfoModel> addDeliveryInfo(
-    DeliveryInfoModel params,
-    String token,
-  );
-  Future<DeliveryInfoModel> editDeliveryInfo(
-    DeliveryInfoModel params,
-    String token,
-  );
+  Future<List<AddressResponseModel>> getDeliveryInfo();
+  Future<AddressResponseModel> addDeliveryInfo(
+      AddressRequestModel addressRequestModel);
+  Future<AddressResponseModel> editDeliveryInfo(
+      AddressRequestModel addressRequestModel, String adderssID);
 }
 
 class DeliveryInfoRemoteDataSourceImpl implements DeliveryInfoRemoteDataSource {
@@ -21,52 +21,26 @@ class DeliveryInfoRemoteDataSourceImpl implements DeliveryInfoRemoteDataSource {
   DeliveryInfoRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<DeliveryInfoModel>> getDeliveryInfo(token) async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/users/delivery-info'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      return deliveryInfoModelListFromRemoteJson(response.body);
-    } else {
-      throw ServerException();
-    }
+  Future<List<AddressResponseModel>> getDeliveryInfo() async {
+    final result = await DioFactory.getdata(url: EndPoints.addresses);
+    return List<AddressResponseModel>.from(
+        result.data["addresses"]!.map((x) => AddressResponseModel.fromJson(x)));
   }
 
   @override
-  Future<DeliveryInfoModel> addDeliveryInfo(params, token) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/users/delivery-info'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: deliveryInfoModelToJson(params),
-    );
-    if (response.statusCode == 200) {
-      return deliveryInfoModelFromRemoteJson(response.body);
-    } else {
-      throw ServerException();
-    }
+  Future<AddressResponseModel> addDeliveryInfo(
+      AddressRequestModel addressRequestModel) async {
+    final result = await DioFactory.postdata(
+        url: EndPoints.addresses, data: addressRequestModel.toJson());
+    return AddressResponseModel.fromJson(result.data["address"]);
   }
 
   @override
-  Future<DeliveryInfoModel> editDeliveryInfo(DeliveryInfoModel params, String token) async {
-    final response = await client.put(
-      Uri.parse('$baseUrl/users/delivery-info'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: deliveryInfoModelToJson(params),
-    );
-    if (response.statusCode == 200) {
-      return deliveryInfoModelFromRemoteJson(response.body);
-    } else {
-      throw ServerException();
-    }
+  Future<AddressResponseModel> editDeliveryInfo(
+      AddressRequestModel addressRequestModel, String adderssID) async {
+    final result = await DioFactory.putdata(
+        url: '${EndPoints.addresses}/$adderssID',
+        data: addressRequestModel.toJson());
+    return AddressResponseModel.fromJson(result.data["address"]);
   }
 }

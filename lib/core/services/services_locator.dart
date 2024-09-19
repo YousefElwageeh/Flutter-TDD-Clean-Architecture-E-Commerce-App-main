@@ -1,3 +1,8 @@
+import 'package:eshop/core/api/app_interceptors.dart';
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/api/dio_factory.dart';
+import 'package:eshop/data/data_sources/remote/profile_data_source.dart';
+import 'package:eshop/data/repositories/profile_repo_impl.dart';
 import 'package:eshop/domain/usecases/delivery_info/clear_local_delivery_info_usecase.dart';
 import 'package:eshop/domain/usecases/delivery_info/edit_delivery_info_usecase.dart';
 import 'package:eshop/domain/usecases/delivery_info/get_selected_delivery_info_usecase.dart';
@@ -65,7 +70,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   //Features - Product
-  // Bloc
+  // Bloc Get.lazyPut<FlutterSecureStorage>(
+
   sl.registerFactory(
     () => ProductBloc(sl()),
   );
@@ -79,6 +85,7 @@ Future<void> init() async {
       networkInfo: sl(),
     ),
   );
+
   // Data sources
   sl.registerLazySingleton<ProductRemoteDataSource>(
     () => ProductRemoteDataSourceImpl(client: sl()),
@@ -106,7 +113,7 @@ Future<void> init() async {
   );
   // Data sources
   sl.registerLazySingleton<CategoryRemoteDataSource>(
-    () => CategoryRemoteDataSourceImpl(client: sl()),
+    () => CategoryRemoteDataSourceImpl(),
   );
   sl.registerLazySingleton<CategoryLocalDataSource>(
     () => CategoryLocalDataSourceImpl(sharedPreferences: sl()),
@@ -115,11 +122,15 @@ Future<void> init() async {
   //Features - Cart
   // Bloc
   sl.registerFactory(
-    () => CartBloc(sl(), sl(), sl(), sl()),
+    () => CartBloc(
+      sl(),
+      sl(),
+      //   sl(),
+    ),
   );
   // Use cases
-  sl.registerLazySingleton(() => GetCachedCartUseCase(sl()));
-  sl.registerLazySingleton(() => AddCartUseCase(sl()));
+  // sl.registerLazySingleton(() => GetCachedCartUseCase(sl()));
+  // sl.registerLazySingleton(() => AddCartUseCase(sl()));
   sl.registerLazySingleton(() => SyncCartUseCase(sl()));
   sl.registerLazySingleton(() => ClearCartUseCase(sl()));
   // Repository
@@ -227,6 +238,9 @@ Future<void> init() async {
   sl.registerLazySingleton<UserRemoteDataSource>(
     () => UserRemoteDataSourceImpl(client: sl()),
   );
+  sl.registerLazySingleton(() => ProfileRemoteDataSourceImpl());
+  sl.registerLazySingleton(() => ProfileRepoImplmenter(
+      profileRemoteDataSource: sl(), localDataSource: sl()));
 
   ///***********************************************
   ///! Core
@@ -240,4 +254,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => secureStorage);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton<AppIntercepters>(() => AppIntercepters());
+  Constants.token =
+      await sl<FlutterSecureStorage>().read(key: Constants.tokenKey);
+  DioFactory.getDio();
 }

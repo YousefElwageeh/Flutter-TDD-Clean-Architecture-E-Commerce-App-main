@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/usecases/usecase.dart';
+import 'package:eshop/data/models/user/user_model.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../core/network/network_info.dart';
@@ -9,7 +10,7 @@ import '../data_sources/local/user_local_data_source.dart';
 import '../data_sources/remote/user_remote_data_source.dart';
 import '../models/user/authentication_response_model.dart';
 
-typedef _DataSourceChooser = Future<AuthenticationResponseModel> Function();
+typedef _DataSourceChooser = Future<UserModel> Function();
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -57,14 +58,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Future<Either<Failure, User>> _authenticate(
-      _DataSourceChooser getDataSource,
-      ) async {
+    _DataSourceChooser getDataSource,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteResponse = await getDataSource();
-        localDataSource.saveToken(remoteResponse.token);
-        localDataSource.saveUser(remoteResponse.user);
-        return Right(remoteResponse.user);
+        localDataSource.saveToken(remoteResponse.token ?? "");
+        localDataSource.saveUser(remoteResponse);
+        return Right(remoteResponse);
       } on Failure catch (failure) {
         return Left(failure);
       }
@@ -72,5 +73,4 @@ class UserRepositoryImpl implements UserRepository {
       return Left(NetworkFailure());
     }
   }
-
 }

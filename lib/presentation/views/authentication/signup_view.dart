@@ -1,3 +1,4 @@
+import 'package:eshop/core/helpers/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -12,7 +13,7 @@ import '../../widgets/input_form_button.dart';
 import '../../widgets/input_text_form_field.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -20,7 +21,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -50,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: Scaffold(
           body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -94,8 +95,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 12,
                   ),
                   InputTextFormField(
-                    controller: lastNameController,
-                    hint: 'Last Name',
+                    controller: emailController,
+                    hint: 'Email',
                     textInputAction: TextInputAction.next,
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {
@@ -108,8 +109,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 12,
                   ),
                   InputTextFormField(
-                    controller: emailController,
-                    hint: 'Email',
+                    controller: phoneNameController,
+                    hint: 'Phone Number',
                     textInputAction: TextInputAction.next,
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {
@@ -127,10 +128,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     textInputAction: TextInputAction.next,
                     isSecureField: true,
                     validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
+                      return Valdiator.validatePassword(
+                        passwordController.text,
+                      );
                     },
                   ),
                   const SizedBox(
@@ -142,10 +142,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     isSecureField: true,
                     textInputAction: TextInputAction.go,
                     validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
+                      return Valdiator.validateConfirmPassword(
+                          passwordController.text,
+                          confirmPasswordController.text);
                     },
                     onFieldSubmitted: (_) {
                       if (_formKey.currentState!.validate()) {
@@ -153,11 +152,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             confirmPasswordController.text) {
                         } else {
                           context.read<UserBloc>().add(SignUpUser(SignUpParams(
-                            firstName: firstNameController.text,
-                            lastName: lastNameController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                          )));
+                                name: firstNameController.text,
+                                phone: phoneNameController.text,
+                                email: emailController.text,
+                                password: passwordController.text,
+                              )));
                         }
                       }
                     },
@@ -173,8 +172,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             confirmPasswordController.text) {
                         } else {
                           context.read<UserBloc>().add(SignUpUser(SignUpParams(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
+                                name: firstNameController.text,
+                                phone: phoneNameController.text,
                                 email: emailController.text,
                                 password: passwordController.text,
                               )));

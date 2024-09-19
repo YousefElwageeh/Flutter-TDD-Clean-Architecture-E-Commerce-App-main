@@ -1,4 +1,5 @@
 import 'package:eshop/core/extension/string_extension.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -9,11 +10,10 @@ import '../views/main/other/delivery_info/delivery_info.dart';
 import 'outline_label_card.dart';
 
 class DeliveryInfoCard extends StatelessWidget {
-  final DeliveryInfo? deliveryInformation;
+  final AddressResponseModel? deliveryInformation;
   final bool isSelected;
   const DeliveryInfoCard(
-      {Key? key, this.deliveryInformation, this.isSelected = false})
-      : super(key: key);
+      {super.key, this.deliveryInformation, this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,9 @@ class DeliveryInfoCard extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 10),
         child: InkWell(
           onTap: () {
-            context.read<DeliveryInfoActionCubit>().selectDeliveryInfo(deliveryInformation!);
+            context
+                .read<DeliveryInfoActionCubit>()
+                .selectDeliveryInfo(deliveryInformation!);
           },
           child: OutlineLabelCard(
             title: '',
@@ -44,13 +46,13 @@ class DeliveryInfoCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${deliveryInformation!.firstName.capitalize()} ${deliveryInformation!.lastName}, ${deliveryInformation!.contactNumber}",
+                          "${deliveryInformation!.country?.capitalize()} ${deliveryInformation!.city}, ${deliveryInformation!.phone}",
                           style: const TextStyle(
                             fontSize: 14,
                           ),
                         ),
                         Text(
-                          "${deliveryInformation!.addressLineOne}, ${deliveryInformation!.addressLineTwo}, ${deliveryInformation!.city}, ${deliveryInformation!.zipCode}",
+                          "${deliveryInformation!.address}, ",
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),

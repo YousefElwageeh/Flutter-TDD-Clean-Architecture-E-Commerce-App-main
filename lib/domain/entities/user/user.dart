@@ -1,25 +1,53 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String? image;
-  final String email;
+  String? token;
+  String? name;
+  int? id;
+  String? phone;
+  String? image;
+  String? email;
 
-  const User({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
+  User({
+    this.token,
+    this.name,
     this.image,
-    required this.email,
+    this.id,
+    this.phone,
+    this.email,
   });
+
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        token: json["token"],
+        name: json["name"],
+        id: json["id"],
+        phone: json["phone"],
+        email: json["email"],
+        image: json["photo"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "token": token,
+        "name": name,
+        "id": id,
+        "email": email,
+        "phone": phone,
+        "photo": image,
+      };
 
   @override
   List<Object> get props => [
-    id,
-    firstName,
-    lastName,
-    email,
-  ];
+        id ?? '',
+        name ?? '',
+        phone ?? '',
+        token ?? '',
+        email ?? '',
+        image ?? '',
+      ];
 }

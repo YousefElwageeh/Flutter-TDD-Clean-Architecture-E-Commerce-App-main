@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:eshop/data/models/category/category_model.dart';
 
-import '../category/category.dart';
 import 'price_tag.dart';
 
 class Product extends Equatable {

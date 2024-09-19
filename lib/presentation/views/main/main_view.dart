@@ -9,7 +9,7 @@ import 'home/home_view.dart';
 import 'other/other_view.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+  const MainView({super.key});
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -30,7 +30,7 @@ class _MainViewState extends State<MainView> {
                   controller: context.read<NavbarCubit>().controller,
                   children: const <Widget>[
                     HomeView(),
-                    CategoryView(),
+                    //  CategoryView(),
                     CartView(),
                     OtherView(),
                   ],
@@ -91,20 +91,20 @@ class _MainViewState extends State<MainView> {
                             ),
                           ),
                           label: 'Home'),
-                      BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/navbar_icons/categories.png"),
-                            color: Colors.white,
-                            size: 26,
-                          ),
-                          activeIcon: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.deepOrange,
-                              maxRadius: 4,
-                            ),
-                          ),
-                          label: 'Category'),
+                      // BottomNavigationBarItem(
+                      //     icon: ImageIcon(
+                      //       AssetImage("assets/navbar_icons/categories.png"),
+                      //       color: Colors.white,
+                      //       size: 26,
+                      //     ),
+                      //     activeIcon: Padding(
+                      //       padding: EdgeInsets.all(5.0),
+                      //       child: CircleAvatar(
+                      //         backgroundColor: Colors.deepOrange,
+                      //         maxRadius: 4,
+                      //       ),
+                      //     ),
+                      //     label: 'Category'),
                       BottomNavigationBarItem(
                           icon: ImageIcon(
                             AssetImage("assets/navbar_icons/shopping-cart.png"),

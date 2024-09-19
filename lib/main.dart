@@ -1,3 +1,6 @@
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/services/services_locator.dart';
+import 'package:eshop/data/data_sources/local/user_local_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oktoast/oktoast.dart';
@@ -41,12 +44,12 @@ class MyApp extends StatelessWidget {
           create: (context) => FilterCubit(),
         ),
         BlocProvider(
-          create: (context) => di.sl<ProductBloc>()
-            ..add(const GetProducts(FilterProductParams())),
+          create: (context) => di.sl<ProductBloc>(),
         ),
         BlocProvider(
-          create: (context) =>
-              di.sl<CategoryBloc>()..add(const GetCategories()),
+          create: (context) => di.sl<CategoryBloc>()
+            ..add(const GetCategories())
+            ..getSliders(),
         ),
         BlocProvider(
           create: (context) => di.sl<CartBloc>()..add(const GetCart()),
@@ -58,7 +61,8 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<DeliveryInfoActionCubit>(),
         ),
         BlocProvider(
-          create: (context) => di.sl<DeliveryInfoFetchCubit>()..fetchDeliveryInfo(),
+          create: (context) =>
+              di.sl<DeliveryInfoFetchCubit>()..fetchDeliveryInfo(),
         ),
         BlocProvider(
           create: (context) => di.sl<OrderFetchCubit>()..getOrders(),

@@ -1,9 +1,9 @@
-import 'pagination_meta_data.dart';
-import 'product.dart';
+// import 'pagination_meta_data.dart';
+// import 'product.dart';
 
-class ProductResponse {
-  final List<Product> products;
-  final PaginationMetaData paginationMetaData;
+// class ProductResponse {
+//   final List<Product> products;
+//   final PaginationMetaData paginationMetaData;
 
-  ProductResponse({required this.products, required this.paginationMetaData});
-}
+//   ProductResponse({required this.products, required this.paginationMetaData});
+// }

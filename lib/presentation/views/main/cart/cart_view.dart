@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:eshop/data/models/cart/cart_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,14 +13,19 @@ import '../../../widgets/cart_item_card.dart';
 import '../../../widgets/input_form_button.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({Key? key}) : super(key: key);
+  const CartView({super.key});
 
   @override
   State<CartView> createState() => _CartViewState();
 }
 
 class _CartViewState extends State<CartView> {
-  List<CartItem> selectedCartItems = [];
+  List<Cart> selectedCartItems = [];
+  @override
+  void initState() {
+    BlocProvider.of<CartBloc>(context).add(const GetCart());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,41 +44,24 @@ class _CartViewState extends State<CartView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: BlocBuilder<CartBloc, CartState>(
                       builder: (context, state) {
-                        if (state is CartError && state.cart.isEmpty) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (state.failure is NetworkFailure)
-                                Image.asset(kNoConnection),
-                              if (state.failure is ServerFailure)
-                                Image.asset(kInternalServerError),
-                              const Text("Cart is Empty!"),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                              )
-                            ],
-                          );
+                        if (state is CartError) {
+                          return ErrorCardWidget(state, context);
                         }
-                        if (state.cart.isEmpty) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(kEmptyCart),
-                              const Text("Cart is Empty!"),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                              )
-                            ],
-                          );
+                        if ((state.cart.cart == null ||
+                                state.cart.cart!.isEmpty) &&
+                            state is CartLoaded) {
+                          return const CardEmptyWidget();
+                        }
+                        if (state is CartLoading) {
+                          return ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) =>
+                                  const CartItemCard());
                         }
                         return ListView.builder(
-                          itemCount:
-                              (state is CartLoading && state.cart.isEmpty)
-                                  ? 10
-                                  : (state.cart.length +
-                                      ((state is CartLoading) ? 10 : 0)),
+                          itemCount: state is CartLoading
+                              ? 10
+                              : (state.cart.cart?.length ?? 0),
                           padding: EdgeInsets.only(
                               top: (MediaQuery.of(context).padding.top + 20),
                               bottom:
@@ -78,24 +69,27 @@ class _CartViewState extends State<CartView> {
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
-                            if (state is CartLoading && state.cart.isEmpty) {
+                            if (state is CartLoading &&
+                                state.cart.cart!.isEmpty) {
                               return const CartItemCard();
                             } else {
-                              if(state.cart.length<index){
+                              if ((state.cart.cart?.length ?? 0) < index) {
                                 return const CartItemCard();
                               }
+                              log(index.toString());
                               return CartItemCard(
-                                cartItem: state.cart[index],
-                                isSelected: selectedCartItems.any(
-                                    (element) => element == state.cart[index]),
+                                cartItem: state.cart.cart![index],
+                                isSelected: selectedCartItems.any((element) =>
+                                    element == state.cart.cart![index]),
                                 onLongClick: () {
                                   setState(() {
                                     if (selectedCartItems.any((element) =>
-                                        element == state.cart[index])) {
+                                        element == state.cart.cart![index])) {
                                       selectedCartItems
-                                          .remove(state.cart[index]);
+                                          .remove(state.cart.cart![index]);
                                     } else {
-                                      selectedCartItems.add(state.cart[index]);
+                                      selectedCartItems
+                                          .add(state.cart.cart![index]);
                                     }
                                   });
                                 },
@@ -110,7 +104,7 @@ class _CartViewState extends State<CartView> {
               ],
             ),
             BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-              if (state.cart.isEmpty) {
+              if (state.cart.cart == null || state.cart.cart!.isEmpty) {
                 return const SizedBox();
               }
               return Positioned(
@@ -131,11 +125,11 @@ class _CartViewState extends State<CartView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Total (${state.cart.length} items)',
+                              'Total (${state.cart.cart?.length} items)',
                               style: const TextStyle(fontSize: 16),
                             ),
                             Text(
-                              '\$${state.cart.fold(0.0, (previousValue, element) => (element.priceTag.price + previousValue))}',
+                              '\$${state.cart.cart?.fold(0.0, (previousValue, element) => (double.parse(element.price!.toDouble().toString()) + previousValue))}',
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
@@ -152,7 +146,7 @@ class _CartViewState extends State<CartView> {
                           onClick: () {
                             Navigator.of(context).pushNamed(
                                 AppRouter.orderCheckout,
-                                arguments: state.cart);
+                                arguments: state.cart.cart);
                           },
                           titleText: 'Checkout',
                         ),
@@ -165,6 +159,40 @@ class _CartViewState extends State<CartView> {
           ],
         ),
       ),
+    );
+  }
+
+  Column ErrorCardWidget(CartError state, BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (state.failure is NetworkFailure) Image.asset(kNoConnection),
+        if (state.failure is ServerFailure) Image.asset(kInternalServerError),
+        const Text("Cart is Empty!"),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.1,
+        )
+      ],
+    );
+  }
+}
+
+class CardEmptyWidget extends StatelessWidget {
+  const CardEmptyWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(kEmptyCart),
+        const Text("Cart is Empty!"),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.1,
+        )
+      ],
     );
   }
 }

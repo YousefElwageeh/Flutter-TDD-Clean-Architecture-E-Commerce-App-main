@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/data/models/category/category_model.dart';
+import 'package:eshop/data/models/slider/slider_model.dart';
+import 'package:eshop/domain/repositories/category_repository.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../core/error/failures.dart';
@@ -15,12 +21,13 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final GetRemoteCategoryUseCase _getCategoryUseCase;
+  CategoryRepository repository = sl();
   final GetCachedCategoryUseCase _getCashedCategoryUseCase;
   final FilterCategoryUseCase _filterCategoryUseCase;
 
   CategoryBloc(this._getCategoryUseCase, this._getCashedCategoryUseCase,
       this._filterCategoryUseCase)
-      : super(const CategoryLoading(categories: [])) {
+      : super(CategoryLoading(categories: CategoryModel())) {
     on<GetCategories>(_onLoadCategories);
     on<FilterCategories>(_onFilterCategories);
   }
@@ -31,12 +38,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       ///Initial Category loading with minimal loading animation
       ///
       ///Cashed category
-      emit(const CategoryLoading(categories: []));
+      emit(CategoryLoading(categories: state.categories));
       final cashedResult = await _getCashedCategoryUseCase(NoParams());
       cashedResult.fold(
         (failure) => (),
         (categories) => emit(CategoryCacheLoaded(
-          categories: state.categories,
+          categories: categories,
         )),
       );
 
@@ -49,9 +56,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           categories: state.categories,
           failure: failure,
         )),
-        (categories) => emit(CategoryLoaded(
-          categories: state.categories,
-        )),
+        (categories) {
+          emit(CategoryCacheLoaded(
+            categories: categories,
+          ));
+        },
       );
     } catch (e) {
       EasyLoading.showError(e.toString());
@@ -75,9 +84,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           categories: state.categories,
           failure: failure,
         )),
-        (categories) => emit(CategoryCacheLoaded(
-          categories: state.categories,
-        )),
+        (categories) {
+          emit(CategoryCacheLoaded(
+            categories: CategoryModel(category: categories),
+          ));
+        },
       );
     } catch (e) {
       emit(CategoryError(
@@ -85,6 +96,23 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         failure: ExceptionFailure(),
       ));
     }
+  }
+
+  SliderModel sliders = SliderModel();
+  void getSliders() async {
+    final cashedResult = repository.getSliders();
+
+    cashedResult.then((value) {
+      value.fold(
+          (failure) => emit(CategoryError(
+                categories: state.categories,
+                failure: failure,
+              )), (slidersData) {
+        sliders = slidersData;
+        log("${Constants.baseUrl}/${sliders.sliders?[0].photo}");
+        emit(SliderSuccess(categories: state.categories));
+      });
+    });
   }
 }
 

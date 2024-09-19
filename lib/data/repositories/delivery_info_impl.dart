@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/usecases/usecase.dart';
+import 'package:eshop/data/models/adderss/add_address_request.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../core/network/network_info.dart';
@@ -24,15 +26,14 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
   });
 
   @override
-  Future<Either<Failure, List<DeliveryInfo>>> getRemoteDeliveryInfo() async {
+  Future<Either<Failure, List<AddressResponseModel>>>
+      getRemoteDeliveryInfo() async {
     if (await networkInfo.isConnected) {
       if (await userLocalDataSource.isTokenAvailable()) {
         try {
           final String token = await userLocalDataSource.getToken();
-          final result = await remoteDataSource.getDeliveryInfo(
-            token,
-          );
-          await localDataSource.saveDeliveryInfo(result);
+          final result = await remoteDataSource.getDeliveryInfo();
+          // await localDataSource.saveDeliveryInfo(result);
           return Right(result);
         } on Failure catch (failure) {
           return Left(failure);
@@ -56,16 +57,14 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
   }
 
   @override
-  Future<Either<Failure, DeliveryInfo>> addDeliveryInfo(params) async {
+  Future<Either<Failure, AddressResponseModel>> addDeliveryInfo(
+      AddressRequestModel addressRequestModel) async {
     if (await userLocalDataSource.isTokenAvailable()) {
       try {
         final String token = await userLocalDataSource.getToken();
-        final DeliveryInfoModel deliveryInfo =
-            await remoteDataSource.addDeliveryInfo(
-          params,
-          token,
-        );
-        await localDataSource.updateDeliveryInfo(deliveryInfo);
+        final AddressResponseModel deliveryInfo =
+            await remoteDataSource.addDeliveryInfo(addressRequestModel);
+        //      await localDataSource.updateDeliveryInfo(deliveryInfo);
         return Right(deliveryInfo);
       } on Failure catch (failure) {
         return Left(failure);
@@ -76,17 +75,14 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
   }
 
   @override
-  Future<Either<Failure, DeliveryInfo>> editDeliveryInfo(
-      DeliveryInfoModel params) async {
+  Future<Either<Failure, AddressResponseModel>> editDeliveryInfo(
+      AddressRequestModel addressRequestModel, String adderssID) async {
     if (await userLocalDataSource.isTokenAvailable()) {
       try {
         final String token = await userLocalDataSource.getToken();
-        final DeliveryInfoModel deliveryInfo =
-            await remoteDataSource.editDeliveryInfo(
-          params,
-          token,
-        );
-        await localDataSource.updateDeliveryInfo(deliveryInfo);
+        final AddressResponseModel deliveryInfo = await remoteDataSource
+            .editDeliveryInfo(addressRequestModel, adderssID);
+        //   await localDataSource.updateDeliveryInfo(deliveryInfo);
         return Right(deliveryInfo);
       } on Failure catch (failure) {
         return Left(failure);

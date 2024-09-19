@@ -1,7 +1,7 @@
 part of 'category_bloc.dart';
 
 abstract class CategoryState extends Equatable {
-  final List<CategoryModel> categories;
+  final CategoryModel categories;
   const CategoryState({required this.categories});
 }
 
@@ -32,6 +32,21 @@ class CategoryLoaded extends CategoryState {
 class CategoryError extends CategoryState {
   final Failure failure;
   const CategoryError({required super.categories, required this.failure});
+  @override
+  List<Object> get props => [];
+}
+
+class SliderSuccess extends CategoryState {
+  const SliderSuccess({
+    required super.categories,
+  });
+  @override
+  List<Object> get props => [];
+}
+
+class SliderError extends CategoryState {
+  final Failure failure;
+  const SliderError({required super.categories, required this.failure});
   @override
   List<Object> get props => [];
 }

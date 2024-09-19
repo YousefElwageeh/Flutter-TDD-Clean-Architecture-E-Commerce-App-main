@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/category/category_model.dart';
 
 abstract class CategoryLocalDataSource {
-  Future<List<CategoryModel>> getCategories();
-  Future<void> saveCategories(List<CategoryModel> categoriesToCache);
+  Future<CategoryModel> getCategories();
+  Future<void> saveCategories(CategoryModel categoriesToCache);
 }
 
 const cachedCategories = 'CACHED_CATEGORIES';
@@ -15,20 +15,20 @@ class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
   CategoryLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<List<CategoryModel>> getCategories() {
+  Future<CategoryModel> getCategories() {
     final jsonString = sharedPreferences.getString(cachedCategories);
     if (jsonString != null) {
-      return Future.value(categoryModelListFromLocalJson(jsonString));
+      return Future.value(CategoryModel.fromRawJson(jsonString));
     } else {
       throw CacheFailure();
     }
   }
 
   @override
-  Future<void> saveCategories(List<CategoryModel> categoriesToCache) {
+  Future<void> saveCategories(CategoryModel categoriesToCache) {
     return sharedPreferences.setString(
       cachedCategories,
-      categoryModelListToJson(categoriesToCache),
+      categoriesToCache.toRawJson(),
     );
   }
 }

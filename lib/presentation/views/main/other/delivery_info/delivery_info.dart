@@ -1,3 +1,5 @@
+import 'package:eshop/data/models/adderss/add_address_request.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -12,7 +14,7 @@ import '../../../../widgets/input_form_button.dart';
 import '../../../../widgets/input_text_form_field.dart';
 
 class DeliveryInfoView extends StatefulWidget {
-  const DeliveryInfoView({Key? key}) : super(key: key);
+  const DeliveryInfoView({super.key});
 
   @override
   State<DeliveryInfoView> createState() => _DeliveryInfoViewState();
@@ -40,15 +42,15 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
         ),
         body: BlocBuilder<DeliveryInfoFetchCubit, DeliveryInfoFetchState>(
           builder: (context, state) {
-            if(state is! DeliveryInfoFetchLoading && state.deliveryInformation.isEmpty) {
+            if (state is! DeliveryInfoFetchLoading &&
+                state.deliveryInformation.isEmpty) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(kEmptyDeliveryInfo),
                   const Text("Delivery information are Empty!"),
                   SizedBox(
-                    height:
-                    MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.1,
                   )
                 ],
               );
@@ -101,7 +103,7 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
 }
 
 class DeliveryInfoForm extends StatefulWidget {
-  final DeliveryInfo? deliveryInfo;
+  final AddressResponseModel? deliveryInfo;
   const DeliveryInfoForm({
     super.key,
     this.deliveryInfo,
@@ -113,26 +115,23 @@ class DeliveryInfoForm extends StatefulWidget {
 
 class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
   String? id;
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
+  final TextEditingController countryName = TextEditingController();
   final TextEditingController addressLineOne = TextEditingController();
-  final TextEditingController addressLineTwo = TextEditingController();
   final TextEditingController city = TextEditingController();
-  final TextEditingController zipCode = TextEditingController();
   final TextEditingController contactNumber = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     if (widget.deliveryInfo != null) {
-      id = widget.deliveryInfo!.id;
-      firstName.text = widget.deliveryInfo!.firstName;
-      lastName.text = widget.deliveryInfo!.lastName;
-      addressLineOne.text = widget.deliveryInfo!.addressLineOne;
-      addressLineTwo.text = widget.deliveryInfo!.addressLineTwo;
-      city.text = widget.deliveryInfo!.city;
-      zipCode.text = widget.deliveryInfo!.zipCode;
-      contactNumber.text = widget.deliveryInfo!.contactNumber;
+      id = widget.deliveryInfo?.id.toString() ?? '';
+      countryName.text = widget.deliveryInfo!.country ?? "";
+      // lastName.text = widget.deliveryInfo!.city ?? '';
+      addressLineOne.text = widget.deliveryInfo!.address ?? '';
+      // addressLineTwo.text = widget.deliveryInfo!.addressLineTwo;
+      city.text = widget.deliveryInfo!.city ?? '';
+      // zipCode.text = widget.deliveryInfo!.zipCode;
+      contactNumber.text = widget.deliveryInfo!.phone ?? '';
     }
     super.initState();
   }
@@ -174,8 +173,8 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                     height: 24,
                   ),
                   InputTextFormField(
-                    controller: firstName,
-                    hint: 'First name',
+                    controller: countryName,
+                    hint: 'Country',
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {
@@ -184,20 +183,20 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InputTextFormField(
-                    controller: lastName,
-                    hint: 'Last name',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // InputTextFormField(
+                  //   controller: lastName,
+                  //   hint: 'Last name',
+                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  //   validation: (String? val) {
+                  //     if (val == null || val.isEmpty) {
+                  //       return 'This field can\'t be empty';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -212,20 +211,20 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InputTextFormField(
-                    controller: addressLineTwo,
-                    hint: 'Address line two',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // InputTextFormField(
+                  //   controller: addressLineTwo,
+                  //   hint: 'Address line two',
+                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  //   validation: (String? val) {
+                  //     if (val == null || val.isEmpty) {
+                  //       return 'This field can\'t be empty';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -240,20 +239,20 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InputTextFormField(
-                    controller: zipCode,
-                    hint: 'Zip code',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // InputTextFormField(
+                  //   controller: zipCode,
+                  //   hint: 'Zip code',
+                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                  //   validation: (String? val) {
+                  //     if (val == null || val.isEmpty) {
+                  //       return 'This field can\'t be empty';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 12,
                   ),
@@ -278,28 +277,28 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                         if (widget.deliveryInfo == null) {
                           context
                               .read<DeliveryInfoActionCubit>()
-                              .addDeliveryInfo(DeliveryInfoModel(
+                              .addDeliveryInfo(AddressRequestModel(
                                 id: '',
-                                firstName: firstName.text,
-                                lastName: lastName.text,
-                                addressLineOne: addressLineOne.text,
-                                addressLineTwo: addressLineTwo.text,
+                                country: countryName.text,
+                                // lastName: lastName.text,
+                                address: addressLineOne.text,
+                                // country: addressLineTwo.text,
                                 city: city.text,
-                                zipCode: zipCode.text,
-                                contactNumber: contactNumber.text,
+                                // zipCode: zipCode.text,
+                                phone: contactNumber.text,
                               ));
                         } else {
                           context
                               .read<DeliveryInfoActionCubit>()
-                              .editDeliveryInfo(DeliveryInfoModel(
+                              .editDeliveryInfo(AddressRequestModel(
                                 id: id!,
-                                firstName: firstName.text,
-                                lastName: lastName.text,
-                                addressLineOne: addressLineOne.text,
-                                addressLineTwo: addressLineTwo.text,
+                                country: countryName.text,
+                                // lastName: lastName.text,
+                                address: addressLineOne.text,
+                                //  country: addressLineTwo.text,
                                 city: city.text,
-                                zipCode: zipCode.text,
-                                contactNumber: contactNumber.text,
+                                // zipCode: zipCode.text,
+                                phone: contactNumber.text,
                               ));
                         }
                       }

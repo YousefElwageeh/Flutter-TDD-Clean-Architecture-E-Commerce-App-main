@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/data/models/cart/cart_item_model.dart';
 import 'package:eshop/domain/entities/cart/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -6,19 +7,19 @@ import 'package:shimmer/shimmer.dart';
 import '../../core/router/app_router.dart';
 
 class CartItemCard extends StatelessWidget {
-  final CartItem? cartItem;
+  final Cart? cartItem;
   final Function? onFavoriteToggle;
   final Function? onClick;
   final Function()? onLongClick;
   final bool isSelected;
   const CartItemCard({
-    Key? key,
+    super.key,
     this.cartItem,
     this.onFavoriteToggle,
     this.onClick,
     this.onLongClick,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +39,8 @@ class CartItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (cartItem != null) {
-          Navigator.of(context).pushNamed(AppRouter.productDetails,
-              arguments: cartItem!.product);
+          Navigator.of(context)
+              .pushNamed(AppRouter.productDetails, arguments: cartItem!.item);
         }
       },
       onLongPress: onLongClick,
@@ -92,7 +93,7 @@ class CartItemCard extends StatelessWidget {
                         : Padding(
                             padding: const EdgeInsets.all(24.0),
                             child: CachedNetworkImage(
-                              imageUrl: cartItem!.product.images.first,
+                              imageUrl: cartItem!.item?.photo ?? "",
                               placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) =>
@@ -121,7 +122,7 @@ class CartItemCard extends StatelessWidget {
                                 )
                               : SizedBox(
                                   child: Text(
-                                    cartItem!.product.name,
+                                    cartItem!.item?.name ?? '',
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -145,13 +146,23 @@ class CartItemCard extends StatelessWidget {
                                     ),
                                   )
                                 : Text(
-                                    r'$' + cartItem!.priceTag.price.toString(),
+                                    r'$' + cartItem!.price.toString(),
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                          )
+                          ),
+                          const Spacer(),
+                          cartItem?.sizePrice == null
+                              ? const SizedBox.shrink()
+                              : Text(
+                                  '${cartItem!.sizePrice}x${cartItem!.qty}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ],
                       ),
                     ),

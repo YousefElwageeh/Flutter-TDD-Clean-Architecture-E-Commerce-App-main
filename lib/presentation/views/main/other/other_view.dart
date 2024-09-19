@@ -11,7 +11,7 @@ import '../../../blocs/user/user_bloc.dart';
 import '../../../widgets/other_item_card.dart';
 
 class OtherView extends StatelessWidget {
-  const OtherView({Key? key}) : super(key: key);
+  const OtherView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,9 @@ class OtherView extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        state.user.image != null
+                        state.user.image != null &&
+                                state.user.image !=
+                                    'https://nffpm-demo.ecom.mm4web.net/assets/images/users'
                             ? CachedNetworkImage(
                                 imageUrl: state.user.image!,
                                 imageBuilder: (context, image) => CircleAvatar(
@@ -53,10 +55,10 @@ class OtherView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${state.user.firstName} ${state.user.lastName}",
+                              "${state.user.name} ",
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            Text(state.user.email)
+                            Text(state.user.email ?? '')
                           ],
                         ),
                       ],

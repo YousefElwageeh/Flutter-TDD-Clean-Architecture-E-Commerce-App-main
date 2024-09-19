@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/core/extension/string_extension.dart';
+import 'package:eshop/data/models/cart/cart_item_model.dart';
 import 'package:eshop/presentation/blocs/cart/cart_bloc.dart';
 import 'package:eshop/presentation/blocs/home/navbar_cubit.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ import '../../widgets/input_form_button.dart';
 import '../../widgets/outline_label_card.dart';
 
 class OrderCheckoutView extends StatelessWidget {
-  final List<CartItem> items;
+  final List<Cart> items;
   const OrderCheckoutView({super.key, required this.items});
 
   @override
@@ -73,13 +74,13 @@ class OrderCheckoutView extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "${state.selectedDeliveryInformation!.firstName.capitalize()} ${state.selectedDeliveryInformation!.lastName}, ${state.selectedDeliveryInformation!.contactNumber}",
+                                        "${state.selectedDeliveryInformation!.country?.capitalize()} ${state.selectedDeliveryInformation!.city}, ${state.selectedDeliveryInformation!.phone}",
                                         style: const TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
                                       Text(
-                                        "${state.selectedDeliveryInformation!.addressLineOne}, ${state.selectedDeliveryInformation!.addressLineTwo}, ${state.selectedDeliveryInformation!.city}, ${state.selectedDeliveryInformation!.zipCode}",
+                                        "${state.selectedDeliveryInformation!.address}, ",
                                         style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
@@ -140,8 +141,8 @@ class OrderCheckoutView extends StatelessWidget {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: CachedNetworkImage(
-                                                imageUrl: product
-                                                    .product.images.first,
+                                                imageUrl:
+                                                    product.item?.photo ?? '',
                                               ),
                                             )),
                                       ),
@@ -155,7 +156,7 @@ class OrderCheckoutView extends StatelessWidget {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            product.product.name,
+                                            product.item?.name ?? "",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .labelLarge,
@@ -163,8 +164,7 @@ class OrderCheckoutView extends StatelessWidget {
                                           const SizedBox(
                                             height: 4,
                                           ),
-                                          Text(
-                                              '\$${product.priceTag.price.toStringAsFixed(2)}')
+                                          Text('\$${product.price}')
                                         ],
                                       ),
                                     )
@@ -198,19 +198,19 @@ class OrderCheckoutView extends StatelessWidget {
                           children: [
                             const Text("Total Price"),
                             Text(
-                                "\$${items.fold(0.0, (previousValue, element) => (element.priceTag.price + previousValue))}")
+                                "\$${items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue))}")
                           ],
                         ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Delivery Charge"), Text("\$4.99")],
-                        ),
+                        // const Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [Text("Delivery Charge"), Text("\$4.99")],
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text("Total"),
                             Text(
-                                "\$${(items.fold(0.0, (previousValue, element) => (element.priceTag.price + previousValue)) + 4.99)}")
+                                "\$${(items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue)))}")
                           ],
                         )
                       ],
@@ -240,9 +240,9 @@ class OrderCheckoutView extends StatelessWidget {
                           orderItems: items
                               .map((item) => OrderItem(
                                     id: '',
-                                    product: item.product,
-                                    priceTag: item.priceTag,
-                                    price: item.priceTag.price,
+                                    product: item.item!,
+                                    priceTag: item.price.toString(),
+                                    price: item.price!.toDouble(),
                                     quantity: 1,
                                   ))
                               .toList(),

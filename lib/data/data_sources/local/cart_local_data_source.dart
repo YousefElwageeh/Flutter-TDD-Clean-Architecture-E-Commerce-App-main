@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/cart/cart_item_model.dart';
 
 abstract class CartLocalDataSource {
-  Future<List<CartItemModel>> getCart();
-  Future<void> saveCart(List<CartItemModel> cart);
-  Future<void> saveCartItem(CartItemModel cartItem);
+  Future<CartModel> getCart();
+  Future<void> saveCart(CartModel cart);
+  Future<void> saveCartItem(CartModel cartItem);
   Future<bool> clearCart();
 }
 
@@ -17,43 +17,67 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
   CartLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<void> saveCart(List<CartItemModel> cart) {
-    return sharedPreferences.setString(
-      cachedCart,
-      cartItemModelToJson(cart),
-    );
+  Future<bool> clearCart() {
+    // TODO: implement clearCart
+    throw UnimplementedError();
   }
 
   @override
-  Future<void> saveCartItem(CartItemModel cartItem) {
-    final jsonString = sharedPreferences.getString(cachedCart);
-    final List<CartItemModel> cart = [];
-    if (jsonString != null) {
-      cart.addAll(cartItemModelListFromLocalJson(jsonString));
-    }
-    if (!cart.any((element) =>
-        element.product.id == cartItem.product.id &&
-        element.priceTag.id == cartItem.priceTag.id)) {
-      cart.add(cartItem);
-    }
-    return sharedPreferences.setString(
-      cachedCart,
-      cartItemModelToJson(cart),
-    );
+  Future<CartModel> getCart() {
+    // TODO: implement getCart
+    throw UnimplementedError();
   }
 
   @override
-  Future<List<CartItemModel>> getCart() {
-    final jsonString = sharedPreferences.getString(cachedCart);
-    if (jsonString != null) {
-      return Future.value(cartItemModelListFromLocalJson(jsonString));
-    } else {
-      throw CacheFailure();
-    }
+  Future<void> saveCart(CartModel cart) {
+    // TODO: implement saveCart
+    throw UnimplementedError();
   }
 
   @override
-  Future<bool> clearCart()async {
-    return sharedPreferences.remove(cachedCart);
+  Future<void> saveCartItem(CartModel cartItem) {
+    // TODO: implement saveCartItem
+    throw UnimplementedError();
   }
+
+  // @override
+  // Future<void> saveCart(CartModel cart) {
+  //   return sharedPreferences.setString(
+  //     cachedCart,
+  //     cartItemModelToJson(cart),
+  //   );
+  // }
+
+  // @override
+  // Future<void> saveCartItem(CartModel cartItem) {
+  //   final jsonString = sharedPreferences.getString(cachedCart);
+  //   final CartModel cart;
+  //   if (jsonString != null) {
+  //     cart = CartModel.fromJson(jsonString);
+  //   }
+  //   if (!cart.any((element) =>
+  //       element.product.id == cartItem.product.id &&
+  //       element.priceTag == cartItem.priceTag)) {
+  //     cart.add(cartItem);
+  //   }
+  //   return sharedPreferences.setString(
+  //     cachedCart,
+  //     cartItemModelToJson(cart),
+  //   );
+  // }
+
+  // @override
+  // Future<List<CartItemModel>> getCart() {
+  //   final jsonString = sharedPreferences.getString(cachedCart);
+  //   if (jsonString != null) {
+  //     return Future.value(cartItemModelListFromLocalJson(jsonString));
+  //   } else {
+  //     throw CacheFailure();
+  //   }
+  // }
+
+  // @override
+  // Future<bool> clearCart() async {
+  //   return sharedPreferences.remove(cachedCart);
+  // }
 }

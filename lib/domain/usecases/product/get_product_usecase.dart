@@ -1,18 +1,18 @@
 import 'package:dartz/dartz.dart';
+import 'package:eshop/data/models/category/category_model.dart';
+import 'package:eshop/data/models/product/product_response_model.dart' as pm;
 
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/usecases/usecase.dart';
-import '../../entities/category/category.dart';
-import '../../entities/product/product_response.dart';
 import '../../repositories/product_repository.dart';
 
 class GetProductUseCase
-    implements UseCase<ProductResponse, FilterProductParams> {
+    implements UseCase<pm.ProductResponseModel, FilterProductParams> {
   final ProductRepository repository;
   GetProductUseCase(this.repository);
 
   @override
-  Future<Either<Failure, ProductResponse>> call(
+  Future<Either<Failure, pm.ProductResponseModel>> call(
       FilterProductParams params) async {
     return await repository.getProducts(params);
   }

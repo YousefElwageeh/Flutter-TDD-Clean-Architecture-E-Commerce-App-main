@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 import 'package:eshop/domain/usecases/delivery_info/clear_local_delivery_info_usecase.dart';
 import 'package:eshop/domain/usecases/delivery_info/get_selected_delivery_info_usecase.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,19 +33,19 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
       cachedResult.fold(
         (failure) => (),
         (deliveryInfo) => emit(DeliveryInfoFetchSuccess(
-          deliveryInformation: deliveryInfo,
+          deliveryInformation: const [],
           selectedDeliveryInformation: state.selectedDeliveryInformation,
         )),
       );
-      final selectedDeliveryInfo =
-          await _getSelectedDeliveryInfoInfoUseCase(NoParams());
-      selectedDeliveryInfo.fold(
-        (failure) => (),
-        (deliveryInfo) => emit(DeliveryInfoFetchSuccess(
-          deliveryInformation: state.deliveryInformation,
-          selectedDeliveryInformation: deliveryInfo,
-        )),
-      );
+      // final selectedDeliveryInfo =
+      //     await _getSelectedDeliveryInfoInfoUseCase(NoParams());
+      // selectedDeliveryInfo.fold(
+      //   (failure) => (),
+      //   (deliveryInfo) => emit(DeliveryInfoFetchSuccess(
+      //     deliveryInformation: state.deliveryInformation,
+      //     selectedDeliveryInformation: deliveryInfo,
+      //   )),
+      // );
       final result = await _getRemoteDeliveryInfoUseCase(NoParams());
       result.fold(
         (failure) => emit(DeliveryInfoFetchFail(
@@ -64,7 +65,7 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
 
   /// Add new delivery info into current state
   /// Error: Keep current state values
-  void addDeliveryInfo(DeliveryInfo deliveryInfo) async {
+  void addDeliveryInfo(AddressResponseModel deliveryInfo) async {
     try {
       emit(DeliveryInfoFetchLoading(
         deliveryInformation: state.deliveryInformation,
@@ -84,7 +85,7 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
 
   /// Add edited delivery info into current state
   /// Error: Keep current state values
-  void editDeliveryInfo(DeliveryInfo deliveryInfo) async {
+  void editDeliveryInfo(AddressResponseModel deliveryInfo) async {
     try {
       emit(DeliveryInfoFetchLoading(
           deliveryInformation: state.deliveryInformation,
@@ -104,7 +105,7 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
 
   /// select delivery info into current state
   /// Error: Keep current state values
-  void selectDeliveryInfo(DeliveryInfo deliveryInfo) async {
+  void selectDeliveryInfo(AddressResponseModel deliveryInfo) async {
     try {
       emit(DeliveryInfoFetchLoading(
           deliveryInformation: state.deliveryInformation,

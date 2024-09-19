@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:eshop/data/models/category/category_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../domain/entities/category/category.dart';
@@ -19,7 +20,7 @@ class FilterCubit extends Cubit<FilterProductParams> {
     } else if (categories != null) {
       updatedCategories.addAll(categories);
     } else {
-      updatedCategories.addAll(state.categories);
+      //  updatedCategories.addAll(state.categories);
     }
     emit(FilterProductParams(
       keyword: keyword ?? state.keyword,
@@ -31,7 +32,7 @@ class FilterCubit extends Cubit<FilterProductParams> {
     required Category category,
   }) {
     List<Category> updatedCategories = [];
-    updatedCategories.addAll(state.categories);
+    // updatedCategories.addAll(state.categories);
     if (updatedCategories.contains(category)) {
       updatedCategories.remove(category);
     } else {
@@ -50,7 +51,7 @@ class FilterCubit extends Cubit<FilterProductParams> {
   int getFiltersCount() {
     int count = 0;
     count = (state.categories.length) + count;
-    count = count + ((state.minPrice!=0 || state.maxPrice!=10000)? 1 : 0);
+    count = count + ((state.minPrice != 0 || state.maxPrice != 10000) ? 1 : 0);
     return count;
   }
 

@@ -1,7 +1,7 @@
 part of 'cart_bloc.dart';
 
 abstract class CartState extends Equatable {
-  final List<CartItem> cart;
+  final CartModel cart;
   const CartState({required this.cart});
 }
 
@@ -28,9 +28,7 @@ class CartLoaded extends CartState {
 
 class CartError extends CartState {
   final Failure failure;
-  const CartError({
-    required this.failure,
-    required super.cart});
+  const CartError({required this.failure, required super.cart});
 
   @override
   List<Object> get props => [];

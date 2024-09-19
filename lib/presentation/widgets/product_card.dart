@@ -1,20 +1,22 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/data/models/product/product_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../core/router/app_router.dart';
-import '../../domain/entities/product/product.dart';
 
 class ProductCard extends StatelessWidget {
   final Product? product;
   final Function? onFavoriteToggle;
   final Function? onClick;
   const ProductCard({
-    Key? key,
+    super.key,
     this.product,
     this.onFavoriteToggle,
     this.onClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +33,18 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (product != null) {
-          Navigator.of(context)
-              .pushNamed(AppRouter.productDetails, arguments: product);
+          log('sdaifjsioadfj');
+
+          try {
+            Navigator.of(context)
+                .pushNamed(AppRouter.productDetails, arguments: product);
+          } catch (e) {
+            log(e.toString());
+          }
         }
       },
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
               child: Ink(
@@ -76,11 +84,11 @@ class ProductCard extends StatelessWidget {
                     ),
                   )
                 : Hero(
-                    tag: product!.id,
+                    tag: product?.id ?? "",
                     child: Padding(
                       padding: const EdgeInsets.all(32.0),
                       child: CachedNetworkImage(
-                        imageUrl: product!.images.first,
+                        imageUrl: product!.photo ?? "",
                         placeholder: (context, url) => Shimmer.fromColors(
                           baseColor: Colors.grey.shade100,
                           highlightColor: Colors.white,
@@ -105,13 +113,14 @@ class ProductCard extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        product!.name,
+                        product!.name ?? '',
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
               )),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: 18,
@@ -124,7 +133,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          r'$' + product!.priceTags.first.price.toString(),
+                          r'$' + product!.mobilePrice.toString(),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

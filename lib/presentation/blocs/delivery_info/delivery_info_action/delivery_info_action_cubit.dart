@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:eshop/data/models/adderss/add_address_request.dart';
+import 'package:eshop/data/models/adderss/address_response_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../data/models/user/delivery_info_model.dart';
@@ -21,7 +25,7 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
     this._selectDeliveryInfoUseCase,
   ) : super(DeliveryInfoActionInitial());
 
-  void addDeliveryInfo(DeliveryInfoModel params) async {
+  void addDeliveryInfo(AddressRequestModel params) async {
     try {
       emit(DeliveryInfoActionLoading());
       final result = await _deliveryInfoAddUsecase(params);
@@ -34,29 +38,29 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
     }
   }
 
-  void editDeliveryInfo(DeliveryInfoModel params) async {
+  void editDeliveryInfo(AddressRequestModel params) async {
     try {
       emit(DeliveryInfoActionLoading());
       final result = await _editDeliveryInfoUseCase(params);
-      result.fold(
-        (failure) => emit(DeliveryInfoActionFail()),
-        (deliveryInfo) => emit(DeliveryInfoEditActionSuccess(deliveryInfo)),
-      );
+      result.fold((failure) => emit(DeliveryInfoActionFail()), (deliveryInfo) {
+        log(deliveryInfo.address.toString());
+        emit(DeliveryInfoEditActionSuccess(deliveryInfo));
+      });
     } catch (e) {
       emit(DeliveryInfoActionFail());
     }
   }
 
-  void selectDeliveryInfo(DeliveryInfo params) async {
-    try {
-      emit(DeliveryInfoActionLoading());
-      final result = await _selectDeliveryInfoUseCase(params);
-      result.fold(
-        (failure) => emit(DeliveryInfoActionFail()),
-        (deliveryInfo) => emit(DeliveryInfoSelectActionSuccess(deliveryInfo)),
-      );
-    } catch (e) {
-      emit(DeliveryInfoActionFail());
-    }
+  void selectDeliveryInfo(AddressResponseModel params) async {
+    // try {
+    //   emit(DeliveryInfoActionLoading());
+    //   final result = await _selectDeliveryInfoUseCase(params);
+    //   result.fold(
+    //     (failure) => emit(DeliveryInfoActionFail()),
+    //     (deliveryInfo) => emit(DeliveryInfoSelectActionSuccess(deliveryInfo)),
+    //   );
+    // } catch (e) {
+    //   emit(DeliveryInfoActionFail());
+    // }
   }
 }

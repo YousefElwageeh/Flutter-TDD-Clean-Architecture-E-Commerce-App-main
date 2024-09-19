@@ -1,3 +1,4 @@
+import 'package:eshop/data/models/category/category_model.dart';
 import 'package:eshop/presentation/blocs/product/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +46,7 @@ class FilterView extends StatelessWidget {
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: categoryState.categories.length,
+                itemCount: categoryState.categories.category?.length,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 10,
@@ -53,7 +54,7 @@ class FilterView extends StatelessWidget {
                 itemBuilder: (context, index) => Row(
                   children: [
                     Text(
-                      categoryState.categories[index].name ?? '',
+                      categoryState.categories.category?[index].name ?? '',
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -61,12 +62,14 @@ class FilterView extends StatelessWidget {
                     BlocBuilder<FilterCubit, FilterProductParams>(
                       builder: (context, filterState) {
                         return Checkbox(
-                          value: filterState.categories
-                                  .contains(categoryState.categories[index]) ||
+                          value: filterState.categories.contains(
+                                  categoryState.categories.category?[index]) ||
                               filterState.categories.isEmpty,
                           onChanged: (bool? value) {
                             context.read<FilterCubit>().updateCategory(
-                                category: categoryState.categories[index]);
+                                category:
+                                    categoryState.categories.category?[index] ??
+                                        Category());
                           },
                         );
                       },
@@ -103,9 +106,9 @@ class FilterView extends StatelessWidget {
             return InputFormButton(
               color: Colors.black87,
               onClick: () {
-                context
-                    .read<ProductBloc>()
-                    .add(GetProducts(context.read<FilterCubit>().state));
+                // context
+                //     .read<ProductBloc>()
+                //     .add(GetProducts(context.read<FilterCubit>().state));
                 Navigator.of(context).pop();
               },
               titleText: 'Continue',

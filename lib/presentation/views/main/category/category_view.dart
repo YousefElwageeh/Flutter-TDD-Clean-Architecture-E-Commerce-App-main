@@ -5,7 +5,7 @@ import '../../../blocs/category/category_bloc.dart';
 import '../../../widgets/category_card.dart';
 
 class CategoryView extends StatefulWidget {
-  const CategoryView({Key? key}) : super(key: key);
+  const CategoryView({super.key});
 
   @override
   State<CategoryView> createState() => _CategoryViewState();
@@ -45,16 +45,18 @@ class _CategoryViewState extends State<CategoryView> {
                     ),
                     suffixIcon: _textEditingController.text.isNotEmpty
                         ? Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _textEditingController.clear();
-                              context.read<CategoryBloc>().add(const FilterCategories(''));
-                            });
-                          },
-                          icon: const Icon(Icons.clear)),
-                    )
+                            padding: const EdgeInsets.only(right: 8),
+                            child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _textEditingController.clear();
+                                    context
+                                        .read<CategoryBloc>()
+                                        .add(const FilterCategories(''));
+                                  });
+                                },
+                                icon: const Icon(Icons.clear)),
+                          )
                         : null,
                     border: const OutlineInputBorder(),
                     hintText: "Search Category",
@@ -77,7 +79,7 @@ class _CategoryViewState extends State<CategoryView> {
                   return ListView.builder(
                     itemCount: (state is CategoryLoading)
                         ? 10
-                        : state.categories.length,
+                        : state.categories.category?.length,
                     physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.only(
                         top: 14,
@@ -85,7 +87,7 @@ class _CategoryViewState extends State<CategoryView> {
                     itemBuilder: (context, index) => (state is CategoryLoading)
                         ? const CategoryCard()
                         : CategoryCard(
-                            category: state.categories[index],
+                            category: state.categories.category?[index],
                           ),
                   );
                 },
