@@ -6,6 +6,7 @@ import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/data/models/cart/add_to_card_request.dart';
 import 'package:eshop/data/models/cart/cart_item_model.dart';
 import 'package:eshop/domain/repositories/cart_repository.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -66,13 +67,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       cart = state.cart;
       // cart.add();
       repository.addToCart(event.cartItem).then((va) {
-        va.fold(
-          (failure) => emit(CartError(cart: state.cart, failure: failure)),
-          (cart) => emit(CartLoaded(cart: cart)),
-        );
+        va.fold((failure) {
+          log(failure.errorMessage.toUpperCase());
+          emit(CartError(cart: state.cart, failure: failure));
+        }, (cart) async {
+          EasyLoading.showSuccess('product added to cart successfully');
+
+          emit(CartLoaded(cart: cart));
+        });
       });
     } catch (e) {
-      emit(CartError(cart: state.cart, failure: ExceptionFailure()));
+      //   emit(CartError(cart: state.cart, failure: ExceptionFailure()));
     }
   }
 

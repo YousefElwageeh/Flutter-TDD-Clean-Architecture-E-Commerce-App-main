@@ -5,6 +5,7 @@ import 'package:eshop/data/models/product/product_response_model.dart' as pm;
 import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
 import 'package:eshop/presentation/blocs/cubit/profile_cubit.dart';
 import 'package:eshop/presentation/blocs/product/product_bloc.dart';
+import 'package:eshop/presentation/views/authentication/forget_password.dart';
 import 'package:eshop/presentation/views/main/category/category_view.dart';
 import 'package:eshop/presentation/views/main/home/filter/filter_view.dart';
 import 'package:eshop/presentation/views/product/proudcuts_by_category_id.dart';
@@ -42,6 +43,7 @@ class AppRouter {
   static const String settings = '/settings';
   static const String proudcutsByCategory = '/proudcutsByCategory';
   static const String category = '/category';
+  static const String forgetPassword = '/ForgetPassword';
 
   static const String notifications = '/notifications';
   static const String about = '/about';
@@ -96,6 +98,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const AboutView());
       case filter:
         return MaterialPageRoute(builder: (_) => const FilterView());
+      case forgetPassword:
+        return MaterialPageRoute(builder: (_) => ForgetPasswordScreen());
       default:
         throw const RouteException('Route not found!');
     }

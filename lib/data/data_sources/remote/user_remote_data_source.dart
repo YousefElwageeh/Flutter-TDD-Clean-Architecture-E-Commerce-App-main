@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/error/failures.dart';
@@ -15,6 +16,8 @@ import '../../models/user/authentication_response_model.dart';
 abstract class UserRemoteDataSource {
   Future<UserModel> signIn(SignInParams params);
   Future<UserModel> signUp(SignUpParams params);
+
+  Future<dio.Response> sendOTP(String email);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -52,5 +55,13 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     var result = await DioFactory.postdata(
         url: EndPoints.register, data: params.toMap());
     return UserModel.fromJson(result.data["success"]);
+  }
+
+  @override
+  Future<dio.Response> sendOTP(String email) async {
+    final response = await DioFactory.postdata(url: EndPoints.sendOTp, data: {
+      "email": email,
+    });
+    return response;
   }
 }

@@ -2,7 +2,7 @@
 
 // import 'package:dio/dio.dart';
 // import 'package:eshop/core/api/failure.dart';
-
+// import 'package:eshop/core/util/app_strings.dart';
 
 // class ErrorHandler implements Exception {
 //   late Failure failure;
@@ -27,9 +27,9 @@
 //     case DioExceptionType.receiveTimeout:
 //       return DataSource.RECIEVE_TIMEOUT.getFailure(error.response);
 //     case DioExceptionType.badResponse:
-//       if (error.response?.data["message"] == "Unauthorized") {
-//         GO.toNamedAndCloseAll(Routes.loginRoute);
-//       }
+//       // if (error.response?.data["message"] == "Unauthorized") {
+//       //   GO.toNamedAndCloseAll(Routes.loginRoute);
+//       // }
 //       if (error.response != null &&
 //           error.response?.statusCode != null &&
 //           error.response?.statusMessage != null) {
@@ -142,29 +142,29 @@
 // }
 
 // class ResponseMessage {
-//   static String SUCCESS = AppStrings.success.tr; // success with data
+//   static String SUCCESS = AppStrings.success; // success with data
 //   static String NO_CONTENT =
-//       AppStrings.success.tr; // success with no data (no content)
+//       AppStrings.success; // success with no data (no content)
 //   static String BAD_REQUEST =
-//       AppStrings.badRequestError.tr; // failure, API rejected request
+//       AppStrings.badRequestError; // failure, API rejected request
 //   static String UNAUTORISED =
-//       AppStrings.unauthorizedError.tr; // failure, user is not authorised
+//       AppStrings.unauthorizedError; // failure, user is not authorised
 //   static String FORBIDDEN =
-//       AppStrings.forbiddenError.tr; //  failure, API rejected request
+//       AppStrings.forbiddenError; //  failure, API rejected request
 //   static String INTERNAL_SERVER_ERROR =
-//       AppStrings.internalServerError.tr; // failure, crash in server side
+//       AppStrings.internalServerError; // failure, crash in server side
 //   static String NOT_FOUND =
-//       AppStrings.notFoundError.tr; // failure, crash in server side
+//       AppStrings.notFoundError; // failure, crash in server side
 
 //   // local status code
-//   static String CONNECT_TIMEOUT = AppStrings.timeoutError.tr;
-//   static String CANCEL = AppStrings.defaultError.tr;
-//   static String RECIEVE_TIMEOUT = AppStrings.timeoutError.tr;
-//   static String SEND_TIMEOUT = AppStrings.timeoutError.tr;
-//   static String CACHE_ERROR = AppStrings.cacheError.tr;
-//   static String NO_INTERNET_CONNECTION = AppStrings.noInternetError.tr;
-//   static String BAD_CERTIFICATE = AppStrings.bad_certificate.tr;
-//   static String CONNECTION_ERROR = AppStrings.CONNECTION_ERROR.tr;
+//   static String CONNECT_TIMEOUT = AppStrings.timeoutError;
+//   static String CANCEL = AppStrings.defaultError;
+//   static String RECIEVE_TIMEOUT = AppStrings.timeoutError;
+//   static String SEND_TIMEOUT = AppStrings.timeoutError;
+//   static String CACHE_ERROR = AppStrings.cacheError;
+//   static String NO_INTERNET_CONNECTION = AppStrings.noInternetError;
+//   static String BAD_CERTIFICATE = AppStrings.bad_certificate;
+//   static String CONNECTION_ERROR = AppStrings.CONNECTION_ERROR;
 
 //   static String DEFAULT = AppStrings.defaultError;
 // }

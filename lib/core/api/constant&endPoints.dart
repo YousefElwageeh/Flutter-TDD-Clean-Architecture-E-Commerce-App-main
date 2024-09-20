@@ -20,7 +20,7 @@ class EndPoints {
 
   static const String addTocard = '/api/v2/carts/add';
 
-  static const String sendOTp = '/api/reset-password';
+  static const String sendOTp = '/api/forgot';
 
   static const String submitOTP = '/api/submit-code';
   static const String changePassword = '/api/reset-change-password';

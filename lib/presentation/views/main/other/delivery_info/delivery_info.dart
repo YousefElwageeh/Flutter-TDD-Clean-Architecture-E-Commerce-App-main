@@ -55,21 +55,30 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
                 ],
               );
             }
-            return ListView.builder(
-              itemCount: (state is DeliveryInfoFetchLoading &&
-                      state.deliveryInformation.isEmpty)
-                  ? 5
-                  : state.deliveryInformation.length,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              itemBuilder: (context, index) =>
-                  (state is DeliveryInfoFetchLoading &&
-                          state.deliveryInformation.isEmpty)
-                      ? const DeliveryInfoCard()
-                      : DeliveryInfoCard(
-                          deliveryInformation: state.deliveryInformation[index],
-                          isSelected: state.deliveryInformation[index] ==
-                              state.selectedDeliveryInformation,
-                        ),
+            return RefreshIndicator.adaptive(
+              onRefresh: () {
+                context.read<DeliveryInfoFetchCubit>().fetchDeliveryInfo();
+
+                return Future.value();
+              },
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: (state is DeliveryInfoFetchLoading &&
+                        state.deliveryInformation.isEmpty)
+                    ? 5
+                    : state.deliveryInformation.length,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                itemBuilder: (context, index) => (state
+                            is DeliveryInfoFetchLoading &&
+                        state.deliveryInformation.isEmpty)
+                    ? const DeliveryInfoCard()
+                    : DeliveryInfoCard(
+                        deliveryInformation: state.deliveryInformation[index],
+                        isSelected: state.deliveryInformation[index] ==
+                            state.selectedDeliveryInformation,
+                      ),
+              ),
             );
           },
         ),

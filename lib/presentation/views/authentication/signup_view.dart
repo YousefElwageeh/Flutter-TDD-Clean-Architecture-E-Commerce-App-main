@@ -67,7 +67,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 80,
                       child: Image.asset(
                         kAppLogo,
-                        color: Colors.black,
                       )),
                   const SizedBox(
                     height: 20,

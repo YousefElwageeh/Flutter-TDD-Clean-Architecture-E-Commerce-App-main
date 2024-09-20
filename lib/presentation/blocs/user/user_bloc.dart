@@ -8,9 +8,11 @@ import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/data/models/profile/update_profile_request.dart';
 import 'package:eshop/data/repositories/profile_repo_impl.dart';
+import 'package:eshop/domain/repositories/user_repository.dart';
 import 'package:eshop/domain/usecases/user/sign_out_usecase.dart';
 import 'package:eshop/domain/usecases/user/sign_up_usecase.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/error/failures.dart';
@@ -27,6 +29,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final SignInUseCase _signInUseCase;
   final SignUpUseCase _signUpUseCase;
   final SignOutUseCase _signOutUseCase;
+  final UserRepository repository = sl();
+
   UserBloc(
     this._signInUseCase,
     this._getCachedUserUseCase,
@@ -106,5 +110,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));
     }
+  }
+
+  resetPassword(String emailForgotPasswordController) {
+    repository
+        .sendOTP(emailForgotPasswordController)
+        .then((value) => value.fold((error) {}, (data) {
+              if (data.data["status"] == "true") {
+                EasyLoading.showSuccess(
+                  data.data["message"],
+                );
+              } else {
+                EasyLoading.showError(
+                  data.data["message"],
+                );
+              }
+            }));
   }
 }

@@ -34,7 +34,7 @@ class CartRepositoryImpl implements CartRepository {
       );
       return Right(remoteProduct);
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(Failure(errorMessage: e.toString()));
     }
   }
 

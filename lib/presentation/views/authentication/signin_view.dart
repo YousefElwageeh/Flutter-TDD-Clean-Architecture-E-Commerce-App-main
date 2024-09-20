@@ -123,7 +123,7 @@ class _SignInViewState extends State<SignInView> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        // Navigator.pushNamed(context, AppRouter.forgotPassword);
+                        Navigator.pushNamed(context, AppRouter.forgetPassword);
                       },
                       child: const Text(
                         'Forgot Password?',

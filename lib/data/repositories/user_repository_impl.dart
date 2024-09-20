@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/src/response.dart';
 import 'package:eshop/core/usecases/usecase.dart';
 import 'package:eshop/data/models/user/user_model.dart';
 
@@ -71,6 +72,15 @@ class UserRepositoryImpl implements UserRepository {
       }
     } else {
       return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Response>> sendOTP(String email) async {
+    try {
+      return Right(await remoteDataSource.sendOTP(email));
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
     }
   }
 }
