@@ -1,4 +1,8 @@
+import 'package:eshop/core/api/constant&endPoints.dart';
+import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/error/failures.dart';
+import 'package:eshop/domain/entities/order/order_reponce_model.dart';
+import 'package:eshop/domain/entities/order/order_request_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/error/exceptions.dart';
@@ -6,7 +10,9 @@ import '../../../core/constant/strings.dart';
 import '../../models/order/order_details_model.dart';
 
 abstract class OrderRemoteDataSource {
-  Future<OrderDetailsModel> addOrder(OrderDetailsModel params, String token);
+  Future<OrderResponseModel> addOrder(
+    OrderRequestModel params,
+  );
   Future<List<OrderDetailsModel>> getOrders(String token);
 }
 
@@ -15,20 +21,12 @@ class OrderRemoteDataSourceSourceImpl implements OrderRemoteDataSource {
   OrderRemoteDataSourceSourceImpl({required this.client});
 
   @override
-  Future<OrderDetailsModel> addOrder(params, token) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/orders'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: orderDetailsModelToJson(params),
-    );
-    if (response.statusCode == 200) {
-      return orderDetailsModelFromJson(response.body);
-    } else {
-      throw ServerException();
-    }
+  Future<OrderResponseModel> addOrder(
+    params,
+  ) async {
+    final response = await DioFactory.postdata(
+        url: EndPoints.creatOrder, data: params.toJson());
+    return OrderResponseModel.fromJson(response.data);
   }
 
   @override

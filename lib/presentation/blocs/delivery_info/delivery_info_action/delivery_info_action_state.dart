@@ -23,3 +23,13 @@ class DeliveryInfoSelectActionSuccess extends DeliveryInfoActionState {
 }
 
 class DeliveryInfoActionFail extends DeliveryInfoActionState {}
+
+class GetCitiesSuccess extends DeliveryInfoActionState {}
+
+class ChangeSelectedValue extends DeliveryInfoActionState {}
+
+class GetNearestBrancheLoading extends DeliveryInfoActionState {}
+
+class GetNearestBrancheSuccess extends DeliveryInfoActionState {}
+
+class GetNearestBrancheFail extends DeliveryInfoActionState {}

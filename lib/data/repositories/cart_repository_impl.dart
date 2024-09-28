@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:eshop/data/models/cart/add_to_card_request.dart';
 
 import '../../../../core/error/failures.dart';
@@ -24,7 +27,7 @@ class CartRepositoryImpl implements CartRepository {
   });
 
   @override
-  Future<Either<Failure, CartModel>> addToCart(AddToCardRequest params) async {
+  Future<Either<Failure, Response>> addToCart(AddToCardRequest params) async {
     try {
       // await localDataSource.saveCartItem(CartItemModel.fromParent(params));
       //final String token = await userLocalDataSource.getToken();
@@ -83,6 +86,20 @@ class CartRepositoryImpl implements CartRepository {
       return Right(result);
     } else {
       return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Response>> delteItemFromCart(int itemId) async {
+    try {
+      final delteItemFromCart = await remoteDataSource.delteItemFromCart(
+        itemId,
+        //  token,
+      );
+      return Right(delteItemFromCart);
+    } catch (e) {
+      log(e.toString());
+      return Left(ServerFailure());
     }
   }
 }

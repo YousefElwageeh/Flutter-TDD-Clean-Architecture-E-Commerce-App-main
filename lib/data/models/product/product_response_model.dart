@@ -160,7 +160,7 @@ class Product {
             ? []
             : List<String>.from(json["size_price"]!.map((x) => x)),
         // color: json["color"],
-        // price: double.parse(json["price"].To),
+        price: json["price"] + 0.0,
         mobilePrice: json["mobile_price"].toString(),
         // previousPrice: json["previous_price"],
         details: json["details"],

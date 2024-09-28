@@ -26,8 +26,12 @@ class EndPoints {
   static const String changePassword = '/api/reset-change-password';
 
   static const String addresses = '/api/addresses';
-  static const String teams = '/api/game-teams';
-  static const String singleGame = '/api/single-game';
+  static const String countries = '/api/Country';
+  static const String city = '/api/city';
+  static const String nearestBranches = '/api/branches/nearest';
+  static const String creatOrder = '/api/makeorder';
+  static const String deleteFromCart = '/api/v2/carts/remove';
+  static const String shippingprice = '/api/shipping-price/';
 
   static const String joinGame = '/api/join-game';
   static const String gameChallenges = '/api/game-challenges';
@@ -35,7 +39,6 @@ class EndPoints {
   static const String submitChallenge = '/api/submit-challenge';
   static const String leaderboard = '/api/leaderboard';
   static const String gamingHub = '/api/mobile-settings';
-  static const String countries = '/api/countries';
 
   static const String gameCategories = '/api/categories';
   static const String challengeCategories = '/api/challenge-categories';

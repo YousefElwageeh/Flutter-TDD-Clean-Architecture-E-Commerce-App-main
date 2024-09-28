@@ -47,12 +47,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final syncResult = await _syncCartUseCase(NoParams());
 
       syncResult.fold((failure) {
-        log('sfgdhdfghfdgh');
-
         log(failure.toString());
         emit(CartError(cart: state.cart, failure: failure));
       }, (cart) {
-        log('sfgdhdfghfdgh');
         emit(CartLoaded(cart: cart));
       });
     } catch (e) {
@@ -69,11 +66,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       repository.addToCart(event.cartItem).then((va) {
         va.fold((failure) {
           log(failure.errorMessage.toUpperCase());
+          EasyLoading.showError('SomeThing Went Wrong');
+
           emit(CartError(cart: state.cart, failure: failure));
         }, (cart) async {
-          EasyLoading.showSuccess('product added to cart successfully');
+          EasyLoading.showSuccess('Product added to cart successfully');
 
-          emit(CartLoaded(cart: cart));
+          emit(CartLoaded(cart: state.cart));
         });
       });
     } catch (e) {
@@ -89,5 +88,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } catch (e) {
       emit(CartError(cart: CartModel(), failure: ExceptionFailure()));
     }
+  }
+
+  void delteItem(int id) {
+    emit(CartLoading(cart: state.cart));
+
+    repository.delteItemFromCart(id).then((value) {
+      value.fold((l) {
+        log(l.toString());
+        emit(CartError(cart: state.cart, failure: l));
+      }, (r) {
+        state.cart.cart?.removeWhere((element) => element.item!.id == id);
+        emit(CartLoaded(cart: state.cart));
+      });
+    });
   }
 }

@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:eshop/data/models/adderss/add_address_request.dart';
 import 'package:eshop/data/models/adderss/address_response_model.dart';
+import 'package:eshop/data/models/adderss/cities_model.dart';
+import 'package:eshop/data/models/adderss/countries_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -21,6 +25,13 @@ class DeliveryInfoView extends StatefulWidget {
 }
 
 class _DeliveryInfoViewState extends State<DeliveryInfoView> {
+  @override
+  void initState() {
+    context.read<DeliveryInfoActionCubit>().getCountries();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<DeliveryInfoActionCubit, DeliveryInfoActionState>(
@@ -124,9 +135,9 @@ class DeliveryInfoForm extends StatefulWidget {
 
 class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
   String? id;
-  final TextEditingController countryName = TextEditingController();
+  String countryName = '';
   final TextEditingController addressLineOne = TextEditingController();
-  final TextEditingController city = TextEditingController();
+  String city = '';
   final TextEditingController contactNumber = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -134,11 +145,11 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
   void initState() {
     if (widget.deliveryInfo != null) {
       id = widget.deliveryInfo?.id.toString() ?? '';
-      countryName.text = widget.deliveryInfo!.country ?? "";
+      countryName = widget.deliveryInfo!.country ?? "";
       // lastName.text = widget.deliveryInfo!.city ?? '';
       addressLineOne.text = widget.deliveryInfo!.address ?? '';
       // addressLineTwo.text = widget.deliveryInfo!.addressLineTwo;
-      city.text = widget.deliveryInfo!.city ?? '';
+      city = widget.deliveryInfo!.city ?? '';
       // zipCode.text = widget.deliveryInfo!.zipCode;
       contactNumber.text = widget.deliveryInfo!.phone ?? '';
     }
@@ -181,31 +192,59 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                   const SizedBox(
                     height: 24,
                   ),
-                  InputTextFormField(
-                    controller: countryName,
-                    hint: 'Country',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
+                  DropdownMenu<String>(
+                    label: Text(countryName),
+                    width: double.infinity,
+                    dropdownMenuEntries: context
+                            .read<DeliveryInfoActionCubit>()
+                            .countries
+                            .country
+                            ?.map<DropdownMenuEntry<String>>(
+                              (e) => DropdownMenuEntry(
+                                label: e.countryName ?? '',
+                                value: e.id.toString() ?? '',
+                              ),
+                            )
+                            .toList() ??
+                        [],
+                    onSelected: (value) {
+                      context
+                          .read<DeliveryInfoActionCubit>()
+                          .selectCountry(value ?? '');
+                      context
+                          .read<DeliveryInfoActionCubit>()
+                          .getCiteies(value ?? '');
                     },
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // InputTextFormField(
-                  //   controller: lastName,
-                  //   hint: 'Last name',
-                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  //   validation: (String? val) {
-                  //     if (val == null || val.isEmpty) {
-                  //       return 'This field can\'t be empty';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BlocBuilder<DeliveryInfoActionCubit, DeliveryInfoActionState>(
+                    builder: (context, state) {
+                      return DropdownMenu<String>(
+                        label: Text(city),
+                        width: double.infinity,
+                        dropdownMenuEntries: context
+                                .read<DeliveryInfoActionCubit>()
+                                .cities
+                                .city
+                                ?.map<DropdownMenuEntry<String>>(
+                                  (e) => DropdownMenuEntry(
+                                    label: e.name ?? '',
+                                    value: e.id.toString() ?? '',
+                                  ),
+                                )
+                                .toList() ??
+                            [],
+                        onSelected: (value) {
+                          context
+                              .read<DeliveryInfoActionCubit>()
+                              .selectCity(value ?? '');
+                        },
+                      );
+                    },
+                  ),
+
                   const SizedBox(
                     height: 10,
                   ),
@@ -237,17 +276,7 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                   const SizedBox(
                     height: 10,
                   ),
-                  InputTextFormField(
-                    controller: city,
-                    hint: 'City',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
+
                   // const SizedBox(
                   //   height: 10,
                   // ),
@@ -288,11 +317,10 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                               .read<DeliveryInfoActionCubit>()
                               .addDeliveryInfo(AddressRequestModel(
                                 id: '',
-                                country: countryName.text,
                                 // lastName: lastName.text,
                                 address: addressLineOne.text,
                                 // country: addressLineTwo.text,
-                                city: city.text,
+
                                 // zipCode: zipCode.text,
                                 phone: contactNumber.text,
                               ));
@@ -301,11 +329,11 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                               .read<DeliveryInfoActionCubit>()
                               .editDeliveryInfo(AddressRequestModel(
                                 id: id!,
-                                country: countryName.text,
+
                                 // lastName: lastName.text,
                                 address: addressLineOne.text,
                                 //  country: addressLineTwo.text,
-                                city: city.text,
+
                                 // zipCode: zipCode.text,
                                 phone: contactNumber.text,
                               ));

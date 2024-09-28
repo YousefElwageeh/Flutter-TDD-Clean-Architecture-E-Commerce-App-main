@@ -59,12 +59,12 @@ class OrderDetailsModel extends OrderDetails {
         "discount": discount,
       };
 
-  factory OrderDetailsModel.fromEntity(OrderDetails entity) =>
-      OrderDetailsModel(
-          id: entity.id,
-          orderItems: entity.orderItems
-              .map((orderItem) => OrderItemModel.fromEntity(orderItem))
-              .toList(),
-          deliveryInfo: AddressResponseModel.fromEntity(entity.deliveryInfo),
-          discount: entity.discount);
+  // factory OrderDetailsModel.fromEntity(OrderRequestModel entity) =>
+  //     OrderDetailsModel(
+  //         id: entity.id,
+  //         orderItems: entity.orderItems
+  //             .map((orderItem) => OrderItemModel.fromEntity(orderItem))
+  //             .toList(),
+  //         deliveryInfo: AddressResponseModel.fromEntity(entity.deliveryInfo),
+  //         discount: entity.discount);
 }

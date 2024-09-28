@@ -22,33 +22,34 @@ void main() {
   });
 
   group('addToCart', () {
-    test('should perform a POST request to the correct URL with authorization', () async {
+    test('should perform a POST request to the correct URL with authorization',
+        () async {
       // Arrange
       const fakeToken = 'fakeToken';
       final fakeCartItem = tCartItemModel;
       final fakeResponse = fixture('cart/cart_item_add_response.json');
       const expectedUrl = '$baseUrl/users/cart';
       when(() => mockHttpClient.post(
-        Uri.parse(expectedUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $fakeToken',
-        },
-        body: jsonEncode(fakeCartItem.toBodyJson()),
-      )).thenAnswer((_) async => http.Response(fakeResponse, 200));
+            Uri.parse(expectedUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $fakeToken',
+            },
+            body: jsonEncode(fakeCartItem.toBodyJson()),
+          )).thenAnswer((_) async => http.Response(fakeResponse, 200));
 
       // Act
       final result = await dataSource.addToCart(fakeCartItem, fakeToken);
 
       // Assert
       verify(() => mockHttpClient.post(
-        Uri.parse(expectedUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $fakeToken',
-        },
-        body: jsonEncode(fakeCartItem.toBodyJson()),
-      ));
+            Uri.parse(expectedUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $fakeToken',
+            },
+            body: jsonEncode(fakeCartItem.toBodyJson()),
+          ));
       expect(result, isA<CartItemModel>());
     });
 
@@ -58,13 +59,13 @@ void main() {
       final fakeCartItem = tCartItemModel;
       const expectedUrl = '$baseUrl/users/cart';
       when(() => mockHttpClient.post(
-        Uri.parse(expectedUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $fakeToken',
-        },
-        body: jsonEncode(fakeCartItem.toBodyJson()),
-      )).thenAnswer((_) async => http.Response('Error message', 404));
+            Uri.parse(expectedUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $fakeToken',
+            },
+            body: jsonEncode(fakeCartItem.toBodyJson()),
+          )).thenAnswer((_) async => http.Response('Error message', 404));
 
       // Act
       final result = dataSource.addToCart(fakeCartItem, fakeToken);
@@ -75,47 +76,48 @@ void main() {
   });
 
   group('syncCart', () {
-    test('should perform a POST request to the correct URL with authorization', () async {
+    test('should perform a POST request to the correct URL with authorization',
+        () async {
       // Arrange
       const fakeToken = 'fakeToken';
       final fakeCart = [tCartItemModel];
       const expectedUrl = '$baseUrl/users/cart/sync';
       final fakeResponse = fixture('cart/cart_item_fetch_response.json');
       when(() => mockHttpClient.post(
-        Uri.parse(expectedUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $fakeToken',
-        },
-        body: jsonEncode({
-          "data": fakeCart
-              .map((e) => {
-            "product": e.product.id,
-            "priceTag": e.priceTag.id,
-          })
-              .toList()
-        }),
-      )).thenAnswer((_) async => http.Response(fakeResponse, 200));
+            Uri.parse(expectedUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $fakeToken',
+            },
+            body: jsonEncode({
+              "data": fakeCart
+                  .map((e) => {
+                        "product": e.product.id,
+                        "priceTag": e.priceTag.id,
+                      })
+                  .toList()
+            }),
+          )).thenAnswer((_) async => http.Response(fakeResponse, 200));
 
       // Act
       final result = await dataSource.syncCart(fakeCart, fakeToken);
 
       // Assert
       verify(() => mockHttpClient.post(
-        Uri.parse(expectedUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $fakeToken',
-        },
-        body: jsonEncode({
-          "data": fakeCart
-              .map((e) => {
-            "product": e.product.id,
-            "priceTag": e.priceTag.id,
-          })
-              .toList()
-        }),
-      ));
+            Uri.parse(expectedUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $fakeToken',
+            },
+            body: jsonEncode({
+              "data": fakeCart
+                  .map((e) => {
+                        "product": e.product.id,
+                        "priceTag": e.priceTag.id,
+                      })
+                  .toList()
+            }),
+          ));
       expect(result, isA<List<CartItemModel>>());
     });
 

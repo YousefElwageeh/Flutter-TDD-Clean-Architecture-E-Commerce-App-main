@@ -11,8 +11,9 @@ import '../../../core/constant/strings.dart';
 import '../../models/cart/cart_item_model.dart';
 
 abstract class CartRemoteDataSource {
-  Future<CartModel> addToCart(AddToCardRequest addToCardRequest);
+  Future<Response> addToCart(AddToCardRequest addToCardRequest);
   Future<CartModel> syncCart(String token);
+  Future<Response> delteItemFromCart(int itemId);
 }
 
 class CartRemoteDataSourceSourceImpl implements CartRemoteDataSource {
@@ -20,12 +21,10 @@ class CartRemoteDataSourceSourceImpl implements CartRemoteDataSource {
   CartRemoteDataSourceSourceImpl({required this.client});
 
   @override
-  Future<CartModel> addToCart(AddToCardRequest addToCardRequest) async {
+  Future<Response> addToCart(AddToCardRequest addToCardRequest) async {
     var result = await DioFactory.postdata(
         url: EndPoints.addTocard, data: addToCardRequest.toJson());
-    return CartModel.fromJson(
-      result.data,
-    );
+    return result;
   }
 
   @override
@@ -35,5 +34,13 @@ class CartRemoteDataSourceSourceImpl implements CartRemoteDataSource {
     );
 
     return CartModel.fromJson(result.data);
+  }
+
+  @override
+  Future<Response> delteItemFromCart(int itemId) async {
+    var result = await DioFactory.postdata(
+        url: EndPoints.deleteFromCart, data: {"id": itemId});
+
+    return result;
   }
 }

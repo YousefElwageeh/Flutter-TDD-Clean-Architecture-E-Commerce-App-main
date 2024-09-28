@@ -1,16 +1,20 @@
 import 'package:dartz/dartz.dart';
+import 'package:eshop/domain/entities/order/order_reponce_model.dart';
+import 'package:eshop/domain/entities/order/order_request_model.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../entities/order/order_details.dart';
 import '../../repositories/order_repository.dart';
 
-class AddOrderUseCase implements UseCase<OrderDetails, OrderDetails> {
+class AddOrderUseCase
+    implements UseCase<OrderResponseModel, OrderRequestModel> {
   final OrderRepository repository;
   AddOrderUseCase(this.repository);
 
   @override
-  Future<Either<Failure, OrderDetails>> call(OrderDetails params) async {
+  Future<Either<Failure, OrderResponseModel>> call(
+      OrderRequestModel params) async {
     return await repository.addOrder(params);
   }
 }

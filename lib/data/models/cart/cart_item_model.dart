@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:eshop/data/models/product/product_response_model.dart';
 
@@ -43,7 +44,7 @@ class Cart {
   int? qty;
   int? sizeKey;
   String? sizeQty;
-  int? sizePrice;
+  String? sizePrice;
   String? size;
   String? color;
   String? cartVar;
@@ -78,23 +79,27 @@ class Cart {
 
   String toRawJson() => json.encode(toJson());
 
-  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-        qty: json["qty"],
-        sizeKey: json["size_key"],
-        sizeQty: json["size_qty"],
-        sizePrice: json["size_price"],
-        size: json["size"],
-        color: json["color"],
-        cartVar: json["var"],
-        stock: json["stock"],
-        price: json["price"],
-        item: json["item"] == null ? null : Product.fromJson(json["item"]),
-        license: json["license"],
-        dp: json["dp"],
-        keys: json["keys"],
-        values: json["values"],
-        image: json["image"],
-      );
+  factory Cart.fromJson(Map<String, dynamic> json) {
+    log(json["price"].toString());
+    return Cart(
+      qty: json["qty"],
+      //  sizeKey: json["size_key"],
+      sizeQty: json["size_qty"],
+      sizePrice:
+          json["size_price"] == null ? "" : json["size_price"].toString(),
+      size: json["size"],
+      //  color: json["color"],
+      //  cartVar: json["var"],
+      stock: json["stock"],
+      price: json["price"],
+      item: json["item"] == null ? null : Product.fromJson(json["item"]),
+      // license: json["license"],
+      // dp: json["dp"],
+      // keys: json["keys"],
+      // values: json["values"],
+      // image: json["image"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "qty": qty,

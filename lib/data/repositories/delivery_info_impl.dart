@@ -2,6 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:eshop/core/usecases/usecase.dart';
 import 'package:eshop/data/models/adderss/add_address_request.dart';
 import 'package:eshop/data/models/adderss/address_response_model.dart';
+import 'package:eshop/data/models/adderss/cities_model.dart';
+import 'package:eshop/data/models/adderss/countries_model.dart';
+import 'package:eshop/data/models/adderss/nearest_branches.dart';
+import 'package:eshop/data/models/adderss/shipmet_price_model.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../core/network/network_info.dart';
@@ -119,6 +123,48 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
     try {
       await localDataSource.clearDeliveryInfo();
       return Right(NoParams());
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CitiesModel>> getCities(String countryId) async {
+    try {
+      var result = await remoteDataSource.getCities(countryId);
+      return Right(result);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, CountriesModel>> getCountrys() async {
+    try {
+      var result = await remoteDataSource.getCountrys();
+      return Right(result);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<NearestBrancheModel>>> getNearictsBranches(
+      double lat, double long) async {
+    try {
+      var result = await remoteDataSource.getNearictsBranches(lat, long);
+      return Right(result);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ShipmentPriceModel>> getDeliveryPriceDependsOnZone(
+      String cityId) async {
+    try {
+      var result = await remoteDataSource.getDeliveryPriceDependsOnZone(cityId);
+      return Right(result);
     } on Failure catch (failure) {
       return Left(failure);
     }

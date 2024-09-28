@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/data/models/cart/cart_item_model.dart';
 import 'package:eshop/domain/entities/cart/cart_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../core/router/app_router.dart';
+import '../blocs/cart/cart_bloc.dart';
 
 class CartItemCard extends StatelessWidget {
   final Cart? cartItem;
@@ -49,19 +51,6 @@ class CartItemCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // if (isSelected)
-              //   Container(
-              //     width: 20,
-              //     alignment: Alignment.center,
-              //     child: Container(
-              //       width: 25,
-              //       height: 25,
-              //       decoration: BoxDecoration(
-              //           color: Colors.black87,
-              //           shape: BoxShape.circle
-              //       ),
-              //     ),
-              //   ),
               Container(
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
@@ -157,7 +146,7 @@ class CartItemCard extends StatelessWidget {
                           cartItem?.sizePrice == null
                               ? const SizedBox.shrink()
                               : Text(
-                                  '${cartItem!.sizePrice}x${cartItem!.qty}',
+                                  '${cartItem!.sizePrice == null || cartItem!.sizePrice!.isEmpty ? cartItem!.item?.price.toString() : cartItem!.sizePrice}x${cartItem!.qty}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -168,7 +157,12 @@ class CartItemCard extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              IconButton(
+                  onPressed: () {
+                    context.read<CartBloc>().delteItem(cartItem!.item!.id!);
+                  },
+                  icon: const Icon(Icons.delete)),
             ],
           ),
           // Positioned(

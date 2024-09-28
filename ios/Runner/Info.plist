@@ -16,6 +16,10 @@
 		<string>eshop</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+        <string>To provide you with the nearest branch information, this app requires access to your location. Please enable location services to help us find the branch closest to you.</string>
+        <key>NSLocationAlwaysUsageDescription</key>
+        <string>To provide you with the nearest branch information, this app requires access to your location. Please enable location services to help us find the branch closest to you.</string>
 		<key>CFBundleShortVersionString</key>
 		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
