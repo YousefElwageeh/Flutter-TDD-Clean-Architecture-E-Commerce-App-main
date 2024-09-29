@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/domain/repositories/order_repository.dart';
-import 'package:eshop/domain/usecases/order/add_order_usecase.dart';
+import 'package:eshop/features/order_chekout/domain/repositories/order_repository.dart';
+import 'package:eshop/features/order_chekout/domain/usecases/add_order_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -20,7 +20,7 @@ void main() {
 
   test(
     'Should get order from the repository when Order Repository add data successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockOrderRepository.addOrder(tOrderDetailsModel))
           .thenAnswer((_) async => Right(tOrderDetailsModel));
@@ -30,8 +30,8 @@ void main() {
 
       /// Assert
       result.fold(
-            (failure) => fail('Test Fail!'),
-            (cart) => expect(cart, tOrderDetailsModel),
+        (failure) => fail('Test Fail!'),
+        (cart) => expect(cart, tOrderDetailsModel),
       );
       verify(() => mockOrderRepository.addOrder(tOrderDetailsModel));
       verifyNoMoreInteractions(mockOrderRepository);

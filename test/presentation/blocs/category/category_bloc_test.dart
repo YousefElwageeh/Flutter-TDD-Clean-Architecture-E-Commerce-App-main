@@ -2,10 +2,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/domain/usecases/category/filter_category_usecase.dart';
-import 'package:eshop/domain/usecases/category/get_cached_category_usecase.dart';
-import 'package:eshop/domain/usecases/category/get_remote_category_usecase.dart';
-import 'package:eshop/presentation/blocs/category/category_bloc.dart';
+import 'package:eshop/features/category/domain/usecases/filter_category_usecase.dart';
+import 'package:eshop/features/category/domain/usecases/get_cached_category_usecase.dart';
+import 'package:eshop/features/category/domain/usecases/get_remote_category_usecase.dart';
+import 'package:eshop/features/category/presentation/bloc/category_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -86,7 +86,8 @@ void main() {
     expect: () => [
       const CategoryLoading(categories: []),
       const CategoryCacheLoaded(categories: [tCategoryModel]),
-      CategoryError(categories: const [tCategoryModel], failure: ExceptionFailure()),
+      CategoryError(
+          categories: const [tCategoryModel], failure: ExceptionFailure()),
     ],
   );
 

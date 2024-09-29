@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/domain/repositories/user_repository.dart';
-import 'package:eshop/domain/usecases/user/sign_out_usecase.dart';
+import 'package:eshop/features/auth/domain/repositories/user_repository.dart';
+import 'package:eshop/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 
 class MockRepository extends Mock implements UserRepository {}
 
@@ -20,7 +19,7 @@ void main() {
 
   test(
     'Should call sign out method successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockRepository.signOut())
           .thenAnswer((_) async => Right(NoParams()));
@@ -38,8 +37,7 @@ void main() {
   test('should return a Failure from the repository', () async {
     /// Arrange
     final failure = NetworkFailure();
-    when(() => mockRepository.signOut())
-        .thenAnswer((_) async => Left(failure));
+    when(() => mockRepository.signOut()).thenAnswer((_) async => Left(failure));
 
     /// Act
     final result = await usecase(NoParams());

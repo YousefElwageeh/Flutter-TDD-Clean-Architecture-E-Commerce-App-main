@@ -1,4 +1,4 @@
-import 'package:eshop/presentation/blocs/home/navbar_cubit.dart';
+import 'package:eshop/features/home/presentation/bloc/navbar_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/domain/repositories/delivery_info_repository.dart';
-import 'package:eshop/domain/usecases/delivery_info/clear_local_delivery_info_usecase.dart';
+import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
+import 'package:eshop/features/delivery/domain/usecases/clear_local_delivery_info_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 
 class MockDeliveryInfoRepository extends Mock
     implements DeliveryInfoRepository {}

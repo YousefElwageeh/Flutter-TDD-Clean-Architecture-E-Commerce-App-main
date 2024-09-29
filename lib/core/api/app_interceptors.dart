@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/services/services_locator.dart';
-import 'package:eshop/data/data_sources/local/user_local_data_source.dart';
+import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
 import 'package:flutter/foundation.dart';
 
 class AppIntercepters extends Interceptor {

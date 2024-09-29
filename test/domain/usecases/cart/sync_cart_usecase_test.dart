@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/domain/repositories/cart_repository.dart';
-import 'package:eshop/domain/usecases/cart/sync_cart_usecase.dart';
+import 'package:eshop/features/cart/domain/repositories/cart_repository.dart';
+import 'package:eshop/features/cart/domain/usecases/sync_cart_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -21,7 +21,7 @@ void main() {
 
   test(
     'Should get cart item from the repository when Cart Repository add data successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockProductRepository.syncCart())
           .thenAnswer((_) async => Right([tCartItemModel]));
@@ -31,8 +31,8 @@ void main() {
 
       /// Assert
       result.fold(
-            (failure) => fail('Test Fail!'),
-            (cart) => expect(cart, [tCartItemModel]),
+        (failure) => fail('Test Fail!'),
+        (cart) => expect(cart, [tCartItemModel]),
       );
       verify(() => mockProductRepository.syncCart());
       verifyNoMoreInteractions(mockProductRepository);

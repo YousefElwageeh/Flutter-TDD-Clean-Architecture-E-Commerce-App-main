@@ -1,7 +1,7 @@
 import 'package:eshop/core/constant/strings.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/data/data_sources/remote/category_remote_data_source.dart';
-import 'package:eshop/data/models/category/category_model.dart';
+import 'package:eshop/features/category/data/datasources/category_remote_data_source.dart';
+import 'package:eshop/features/category/data/models/category_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';

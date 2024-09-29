@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/domain/repositories/user_repository.dart';
-import 'package:eshop/domain/usecases/user/sign_in_usecase.dart';
+import 'package:eshop/features/auth/domain/repositories/user_repository.dart';
+import 'package:eshop/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -20,7 +20,7 @@ void main() {
 
   test(
     'Should get User from the repository when User Repository return data successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockRepository.signIn(tSignInParams))
           .thenAnswer((_) async => const Right(tUserModel));

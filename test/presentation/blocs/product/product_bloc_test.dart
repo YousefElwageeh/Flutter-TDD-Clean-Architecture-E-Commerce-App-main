@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/domain/entities/product/pagination_meta_data.dart';
-import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
-import 'package:eshop/presentation/blocs/product/product_bloc.dart';
+import 'package:eshop/features/product/domain/entities/pagination_meta_data.dart';
+import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';
+import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 

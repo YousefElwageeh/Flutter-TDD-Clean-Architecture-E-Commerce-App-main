@@ -1,10 +1,10 @@
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/network/network_info.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/data/data_sources/local/delivery_info_local_data_source.dart';
-import 'package:eshop/data/data_sources/local/user_local_data_source.dart';
-import 'package:eshop/data/data_sources/remote/delivery_info_remote_data_source.dart';
-import 'package:eshop/data/repositories/delivery_info_impl.dart';
+import 'package:eshop/features/delivery/data/datasources/delivery_info_local_data_source.dart';
+import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
+import 'package:eshop/features/delivery/data/datasources/delivery_info_remote_data_source.dart';
+import 'package:eshop/features/delivery/data/repositories/delivery_info_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -423,7 +423,7 @@ void main() {
 
         test(
           'should call local data source\'s clearDeliveryInfo when the call to clearLocalDeliveryInfo method',
-              () async {
+          () async {
             /// Arrange
             when(() => mockLocalDataSource.clearDeliveryInfo())
                 .thenAnswer((_) => Future<void>.value());
@@ -438,7 +438,7 @@ void main() {
 
         test(
           'should return failure when local data source throw failure',
-              () async {
+          () async {
             /// Arrange
             when(() => mockLocalDataSource.clearDeliveryInfo())
                 .thenThrow(CacheFailure());
@@ -448,8 +448,8 @@ void main() {
 
             /// Assert
             result.fold(
-                  (left) =>  expect(left, CacheFailure()),
-                  (right) => fail('test failed'),
+              (left) => expect(left, CacheFailure()),
+              (right) => fail('test failed'),
             );
           },
         );

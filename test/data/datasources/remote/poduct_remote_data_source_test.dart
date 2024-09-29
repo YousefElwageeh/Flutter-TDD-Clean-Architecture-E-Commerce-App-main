@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:eshop/core/constant/strings.dart';
 import 'package:eshop/core/error/exceptions.dart';
-import 'package:eshop/data/data_sources/remote/product_remote_data_source.dart';
-import 'package:eshop/data/models/product/product_response_model.dart';
-import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
+import 'package:eshop/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:eshop/features/product/data/models/product_response_model.dart';
+import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';

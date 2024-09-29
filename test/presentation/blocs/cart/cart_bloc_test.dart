@@ -2,11 +2,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/domain/usecases/cart/add_cart_item_usecase.dart';
-import 'package:eshop/domain/usecases/cart/clear_cart_usecase.dart';
-import 'package:eshop/domain/usecases/cart/get_cached_cart_usecase.dart';
-import 'package:eshop/domain/usecases/cart/sync_cart_usecase.dart';
-import 'package:eshop/presentation/blocs/cart/cart_bloc.dart';
+import 'package:eshop/features/cart/domain/usecases/add_cart_item_usecase.dart';
+import 'package:eshop/features/cart/domain/usecases/clear_cart_usecase.dart';
+import 'package:eshop/features/cart/domain/usecases/get_cached_cart_usecase.dart';
+import 'package:eshop/features/cart/domain/usecases/sync_cart_usecase.dart';
+import 'package:eshop/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,13 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/domain/repositories/delivery_info_repository.dart';
-import 'package:eshop/domain/usecases/delivery_info/add_dilivey_info_usecase.dart';
+import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
+import 'package:eshop/features/delivery/domain/usecases/add_dilivey_info_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../fixtures/constant_objects.dart';
 
-class MockDeliveryInfoRepository extends Mock implements DeliveryInfoRepository {}
+class MockDeliveryInfoRepository extends Mock
+    implements DeliveryInfoRepository {}
 
 void main() {
   late AddDeliveryInfoUseCase usecase;
@@ -20,7 +21,7 @@ void main() {
 
   test(
     'Should get delivery info from the repository when DeliveryInfo Repository add data successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockProductRepository.addDeliveryInfo(tDeliveryInfoModel))
           .thenAnswer((_) async => const Right(tDeliveryInfoModel));
@@ -30,8 +31,8 @@ void main() {
 
       /// Assert
       result.fold(
-            (failure) => fail('Test Fail!'),
-            (cart) => expect(cart, tDeliveryInfoModel),
+        (failure) => fail('Test Fail!'),
+        (cart) => expect(cart, tDeliveryInfoModel),
       );
       verify(() => mockProductRepository.addDeliveryInfo(tDeliveryInfoModel));
       verifyNoMoreInteractions(mockProductRepository);

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/domain/repositories/category_repository.dart';
-import 'package:eshop/domain/usecases/category/filter_category_usecase.dart';
+import 'package:eshop/features/category/domain/repositories/category_repository.dart';
+import 'package:eshop/features/category/domain/usecases/filter_category_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -20,7 +20,7 @@ void main() {
 
   test(
     'Should get category from the repository when Category Repository add data successfully',
-        () async {
+    () async {
       /// Arrange
       when(() => mockProductRepository.filterCachedCategories('search-word'))
           .thenAnswer((_) async => const Right([tCategoryModel]));
@@ -30,8 +30,8 @@ void main() {
 
       /// Assert
       result.fold(
-            (failure) => fail('Test Fail!'),
-            (cart) => expect(cart, [tCategoryModel]),
+        (failure) => fail('Test Fail!'),
+        (cart) => expect(cart, [tCategoryModel]),
       );
       verify(() => mockProductRepository.filterCachedCategories('search-word'));
       verifyNoMoreInteractions(mockProductRepository);

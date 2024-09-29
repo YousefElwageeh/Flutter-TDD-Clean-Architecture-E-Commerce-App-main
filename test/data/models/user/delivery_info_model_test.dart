@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:eshop/data/models/user/delivery_info_model.dart';
-import 'package:eshop/domain/entities/user/delivery_info.dart';
+import 'package:eshop/features/delivery/data/models/delivery_info_model.dart';
+import 'package:eshop/features/delivery/domain/entities/delivery_info.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fixtures/constant_objects.dart';

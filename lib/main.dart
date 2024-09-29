@@ -1,6 +1,6 @@
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/services/services_locator.dart';
-import 'package:eshop/data/data_sources/local/user_local_data_source.dart';
+import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oktoast/oktoast.dart';
@@ -8,19 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/constant/strings.dart';
 import 'core/router/app_router.dart';
-import 'core/theme/app_theme.dart';
-import 'domain/usecases/product/get_product_usecase.dart';
-import 'presentation/blocs/cart/cart_bloc.dart';
-import 'presentation/blocs/category/category_bloc.dart';
-import 'presentation/blocs/delivery_info/delivery_info_action/delivery_info_action_cubit.dart';
-import 'presentation/blocs/delivery_info/delivery_info_fetch/delivery_info_fetch_cubit.dart';
-import 'presentation/blocs/filter/filter_cubit.dart';
+import 'config/theme/app_theme.dart';
+import 'features/product/domain/usecases/get_product_usecase.dart';
+import 'features/cart/presentation/bloc/cart_bloc.dart';
+import 'features/category/presentation/bloc/category_bloc.dart';
+import 'features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
+import 'features/delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
+import 'features/home/presentation/bloc/filter_cubit.dart';
 
 import 'core/services/services_locator.dart' as di;
-import 'presentation/blocs/home/navbar_cubit.dart';
-import 'presentation/blocs/order/order_fetch/order_fetch_cubit.dart';
-import 'presentation/blocs/product/product_bloc.dart';
-import 'presentation/blocs/user/user_bloc.dart';
+import 'features/home/presentation/bloc/navbar_cubit.dart';
+import 'features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
+import 'features/product/presentation/bloc/product_bloc.dart';
+import 'features/profile/presentation/bloc/user/user_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

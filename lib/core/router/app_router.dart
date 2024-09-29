@@ -1,31 +1,32 @@
 import 'package:eshop/core/services/services_locator.dart';
-import 'package:eshop/data/models/cart/cart_item_model.dart';
-import 'package:eshop/data/models/category/category_model.dart';
-import 'package:eshop/data/models/product/product_response_model.dart' as pm;
-import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
-import 'package:eshop/presentation/blocs/cubit/profile_cubit.dart';
-import 'package:eshop/presentation/blocs/product/product_bloc.dart';
-import 'package:eshop/presentation/views/authentication/forget_password.dart';
-import 'package:eshop/presentation/views/main/category/category_view.dart';
-import 'package:eshop/presentation/views/main/home/filter/filter_view.dart';
-import 'package:eshop/presentation/views/order_chekout/pickup_screen.dart';
-import 'package:eshop/presentation/views/product/proudcuts_by_category_id.dart';
+import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/category/data/models/category_model.dart';
+import 'package:eshop/features/product/data/models/product_response_model.dart'
+    as pm;
+import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';
+import 'package:eshop/features/profile/presentation/bloc/profile_cubit.dart';
+import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
+import 'package:eshop/features/auth/presentation/pages/forget_password.dart';
+import 'package:eshop/features/category/presentation/pages/category_view.dart';
+import 'package:eshop/features/home/presentation/pages/filter/filter_view.dart';
+import 'package:eshop/features/order_chekout/presentation/pages/pickup_screen.dart';
+import 'package:eshop/features/product/presentation/pages/proudcuts_by_category_id.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/cart/cart_item.dart';
-import '../../domain/entities/user/user.dart';
-import '../../presentation/views/authentication/signin_view.dart';
-import '../../presentation/views/authentication/signup_view.dart';
-import '../../presentation/views/main/main_view.dart';
-import '../../presentation/views/main/other/about/about_view.dart';
-import '../../presentation/views/main/other/delivery_info/delivery_info.dart';
-import '../../presentation/views/main/other/notification/notification_view.dart';
-import '../../presentation/views/main/other/orders/order_view.dart';
-import '../../presentation/views/main/other/profile/profile_screen.dart';
-import '../../presentation/views/main/other/settings/settings_view.dart';
-import '../../presentation/views/order_chekout/order_checkout_view.dart';
-import '../../presentation/views/product/product_details_view.dart';
+import '../../features/cart/domain/entities/cart_item.dart';
+import '../../features/auth/domain/entities/user.dart';
+import '../../features/auth/presentation/pages/signin_view.dart';
+import '../../features/auth/presentation/pages/signup_view.dart';
+import '../../features/home/presentation/pages/main_view.dart';
+import '../../features/profile/presentation/pages/about_view.dart';
+import '../../features/delivery/presentation/pages/delivery_info.dart';
+import '../../features/profile/presentation/pages/notification_view.dart';
+import '../../features/order/presentation/pages/order_view.dart';
+import '../../features/profile/presentation/pages/profile_screen.dart';
+import '../../features/profile/presentation/pages/settings_view.dart';
+import '../../features/order_chekout/presentation/pages/order_checkout_view.dart';
+import '../../features/product/presentation/pages/product_details_view.dart';
 import '../error/exceptions.dart';
 
 class AppRouter {

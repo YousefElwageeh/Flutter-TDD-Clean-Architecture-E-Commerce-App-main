@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/exceptions.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/network/network_info.dart';
-import 'package:eshop/data/data_sources/local/product_local_data_source.dart';
-import 'package:eshop/data/data_sources/remote/product_remote_data_source.dart';
-import 'package:eshop/data/repositories/product_repository_impl.dart';
-import 'package:eshop/domain/usecases/product/get_product_usecase.dart';
+import 'package:eshop/features/product/data/datasources/product_local_data_source.dart';
+import 'package:eshop/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:eshop/features/product/data/repositories/product_repository_impl.dart';
+import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

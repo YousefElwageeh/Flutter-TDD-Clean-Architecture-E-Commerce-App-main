@@ -1,9 +1,9 @@
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/network/network_info.dart';
-import 'package:eshop/data/data_sources/local/cart_local_data_source.dart';
-import 'package:eshop/data/data_sources/local/user_local_data_source.dart';
-import 'package:eshop/data/data_sources/remote/cart_remote_data_source.dart';
-import 'package:eshop/data/repositories/cart_repository_impl.dart';
+import 'package:eshop/features/cart/data/datasources/cart_local_data_source.dart';
+import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
+import 'package:eshop/features/cart/data/datasources/cart_remote_data_source.dart';
+import 'package:eshop/features/cart/data/repositories/cart_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

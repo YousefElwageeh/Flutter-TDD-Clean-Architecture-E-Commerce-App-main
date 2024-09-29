@@ -1,6 +1,6 @@
 import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/data/data_sources/local/order_local_data_source.dart';
-import 'package:eshop/data/models/order/order_details_model.dart';
+import 'package:eshop/features/order_chekout/data/datasources/order_local_data_source.dart';
+import 'package:eshop/features/order_chekout/data/models/order_details_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,14 +16,17 @@ void main() {
 
   setUp(() {
     mockSharedPreferences = MockSharedPreferences();
-    localDataSource = OrderLocalDataSourceImpl(sharedPreferences: mockSharedPreferences);
+    localDataSource =
+        OrderLocalDataSourceImpl(sharedPreferences: mockSharedPreferences);
   });
 
   group('getOrders', () {
-    test('should return a list of OrderDetailsModel from SharedPreferences', () async {
+    test('should return a list of OrderDetailsModel from SharedPreferences',
+        () async {
       /// Arrange
       final jsonString = fixture('order/order_details_list.json');
-      when(() => mockSharedPreferences.getString('CACHED_ORDERS')).thenReturn(jsonString);
+      when(() => mockSharedPreferences.getString('CACHED_ORDERS'))
+          .thenReturn(jsonString);
 
       /// Act
       final result = await localDataSource.getOrders();
@@ -33,8 +36,8 @@ void main() {
       verify(() => mockSharedPreferences.getString(cachedOrders)).called(1);
     });
 
-
-    test('should throw CacheFailure if SharedPreferences returns null', () async {
+    test('should throw CacheFailure if SharedPreferences returns null',
+        () async {
       /// Arrange
       when(() => mockSharedPreferences.getString(any())).thenReturn(null);
 
@@ -48,29 +51,31 @@ void main() {
     test('should set a string in SharedPreferences', () async {
       /// Arrange
       final sampleOrders = [tOrderDetailsModel];
-      when(() => mockSharedPreferences.setString(any(), any())).thenAnswer((_) => Future.value(true));
+      when(() => mockSharedPreferences.setString(any(), any()))
+          .thenAnswer((_) => Future.value(true));
 
       /// Act
       await localDataSource.saveOrders(sampleOrders);
 
       /// Assert
-      verify(() => mockSharedPreferences.setString(cachedOrders, any())).called(1);
+      verify(() => mockSharedPreferences.setString(cachedOrders, any()))
+          .called(1);
     });
   });
 
   group('clearDeliveryInfo', () {
     test('should call SharedPreferences.getString with the correct arguments',
-            () async {
-          /// Arrange
-          when(() => mockSharedPreferences.remove(
+        () async {
+      /// Arrange
+      when(() => mockSharedPreferences.remove(
             cachedOrders,
           )).thenAnswer((invocation) => Future<bool>.value(true));
 
-          /// Act
-          await localDataSource.clearOrder();
+      /// Act
+      await localDataSource.clearOrder();
 
-          /// Assert
-          verify(() => mockSharedPreferences.remove(cachedOrders));
-        });
+      /// Assert
+      verify(() => mockSharedPreferences.remove(cachedOrders));
+    });
   });
 }
