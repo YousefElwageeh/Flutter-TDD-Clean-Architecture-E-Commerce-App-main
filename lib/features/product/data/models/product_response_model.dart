@@ -124,14 +124,7 @@ class Product {
     this.currencyAr,
     this.currencyEn,
     this.discount,
-  }) {
-    if (details != null) {
-      details = details!.cleanHtml();
-    }
-    if (detailsAr != null) {
-      detailsAr = detailsAr!.cleanHtml();
-    }
-  }
+  });
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
 

@@ -8,6 +8,7 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 import 'package:eshop/features/delivery/data/models/cities_model.dart';
 import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
+import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,8 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
     try {
       selectedDlivery = params;
       log(selectedDlivery.toJson().toString() ?? '');
-      //   getDeliveryPriceDependsOnZone(params.city ?? '');
+      selectedBranch = NearestBrancheModel();
+      getDeliveryPriceDependsOnZone(params.cityId.toString());
       emit(DeliveryInfoSelectActionSuccess(params));
     } catch (e) {
       emit(DeliveryInfoActionFail());
@@ -184,19 +186,27 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
   }
 
   NearestBrancheModel selectedBranch = NearestBrancheModel();
+
   cahngeSelectedCalue(NearestBrancheModel Branch) {
+    emit(LoadingSelectedValue());
+
     selectedBranch = Branch;
+    deliveryPrice = '';
+    selectedDlivery = AddressResponseModel();
     emit(ChangeSelectedValue());
   }
 
   String deliveryPrice = '';
+  ShipmentPriceModel shipmentPrice = ShipmentPriceModel();
   void getDeliveryPriceDependsOnZone(String cityId) {
-    //   emit(DeliveryInfoActionLoading());
+    emit(DeliveryInfoActionLoading());
 
-    repository
-        .getDeliveryPriceDependsOnZone(cityId)
-        .then((value) => value.fold((failure) {}, (data) {
-              deliveryPrice = data.data?.shipmentPrice?.value.toString() ?? "";
-            }));
+    repository.getDeliveryPriceDependsOnZone(cityId).then((value) =>
+        value.fold((failure) {}, (data) {
+          shipmentPrice = data;
+          deliveryPrice = data.data?.shipmentPrice?.value.toString() ?? "";
+          log(shipmentPrice.data?.shipmentPrice?.shipmentId.toString() ?? '');
+          emit(GetDliveryPriceSuccess());
+        }));
   }
 }

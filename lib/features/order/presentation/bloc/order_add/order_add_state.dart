@@ -8,8 +8,13 @@ class OrderAddInitial extends OrderAddState {}
 class OrderAddLoading extends OrderAddState {}
 
 class OrderAddSuccess extends OrderAddState {
-  final OrderResponseModel order;
-  OrderAddSuccess(this.order);
+  OrderAddSuccess();
 }
 
 class OrderAddFail extends OrderAddState {}
+
+class OrderGetVatLoading extends OrderAddState {}
+
+class OrderGEtVatSuccess extends OrderAddState {}
+
+class OrderGEtVatError extends OrderAddState {}

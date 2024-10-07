@@ -6,7 +6,7 @@ class AppTheme {
 
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
-    primaryColor: kLightPrimaryColor,
+    primaryColor: Colors.green,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: kBackgroundColor,
     appBarTheme: AppBarTheme(
@@ -17,7 +17,7 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: kLightSecondaryColor)),
     colorScheme: ColorScheme.light(secondary: kLightSecondaryColor)
-        .copyWith(background: kLightBackgroundColor),
+        .copyWith(surface: kLightBackgroundColor),
   );
 
   // static final darkTheme = ThemeData(

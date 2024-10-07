@@ -2,9 +2,9 @@ import 'dart:convert';
 
 class OrderRequestModel {
   List<int>? productsId;
-  List<String>? productsSize;
+  List<dynamic>? productsSize;
   List<int>? productsQu;
-  List<String>? productsColor;
+  List<dynamic>? productsColor;
   int? shipmentId;
   int? paymentMethod;
   int? addressId;
@@ -35,13 +35,13 @@ class OrderRequestModel {
             : List<int>.from(json["products_id"]!.map((x) => x)),
         productsSize: json["products_size"] == null
             ? []
-            : List<String>.from(json["products_size"]!.map((x) => x)),
+            : List<dynamic>.from(json["products_size"]!.map((x) => x)),
         productsQu: json["products_qu"] == null
             ? []
             : List<int>.from(json["products_qu"]!.map((x) => x)),
         productsColor: json["products_color"] == null
             ? []
-            : List<String>.from(json["products_color"]!.map((x) => x)),
+            : List<dynamic>.from(json["products_color"]!.map((x) => x)),
         shipmentId: json["shipment_id"],
         paymentMethod: json["payment_method"],
         addressId: json["address_id"],

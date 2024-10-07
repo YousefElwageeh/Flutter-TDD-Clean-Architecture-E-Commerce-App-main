@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
@@ -31,17 +34,33 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
       label: 'Pick up',
     ),
   ];
+  double? totalPrice;
+  int vatValue = 0;
+
   @override
   void initState() {
-    double totalPrice = widget.items.fold(
+    log('test');
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      log('test');
+
+      vatValue = await context.read<OrderAddCubit>().getVat() ?? 0;
+    });
+    totalPrice = widget.items.fold(
         0.0,
         (previousValue, element) =>
-            (element.price!.toDouble() + previousValue));
-    if (totalPrice > 1000) {
+            (element.price!.toDouble() + previousValue!));
+    if (totalPrice! > 1000) {
       options.add(const DropdownMenuEntry(
         value: 'Delivery',
         label: 'Delivery',
       ));
+
+      context.read<DeliveryInfoActionCubit>().deliveryPrice = '';
+      context.read<DeliveryInfoActionCubit>().selectedBranch =
+          NearestBrancheModel();
+      context.read<DeliveryInfoActionCubit>().selectedDlivery =
+          AddressResponseModel();
     }
     super.initState();
   }
@@ -60,7 +79,6 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
             context.read<NavbarCubit>().controller.jumpToPage(0);
             context.read<CartBloc>().add(const ClearCart());
             Navigator.of(context).pop();
-            EasyLoading.showSuccess("Order Placed Successfully");
           } else if (state is OrderAddFail) {
             EasyLoading.showError("Error");
           }
@@ -169,34 +187,58 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text("VAt Prectage $vatValue%"),
+                            Text("x${vatValue * totalPrice! / 100}")
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             const Text("Total Price"),
                             Text(
                                 "\$${widget.items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue))}")
                           ],
                         ),
-                        context.read<DeliveryInfoActionCubit>().deliveryPrice ==
-                                ''
-                            ? const SizedBox.shrink()
-                            : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Dleivery Charge"),
-                                  Text(
-                                      "\$${context.read<DeliveryInfoActionCubit>().deliveryPrice}")
-                                ],
-                              ),
+                        BlocBuilder<DeliveryInfoActionCubit,
+                            DeliveryInfoActionState>(
+                          builder: (context, state) {
+                            return context
+                                        .read<DeliveryInfoActionCubit>()
+                                        .deliveryPrice ==
+                                    ''
+                                ? const SizedBox.shrink()
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text("Dleivery Charge"),
+                                      Text(
+                                          "\$${context.read<DeliveryInfoActionCubit>().deliveryPrice}")
+                                    ],
+                                  );
+                          },
+                        ),
                         // const Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: [Text("Delivery Charge"), Text("\$4.99")],
                         // ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Total"),
-                            Text(
-                                "\$${(widget.items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue)))}")
-                          ],
+                        BlocBuilder<DeliveryInfoActionCubit,
+                            DeliveryInfoActionState>(
+                          builder: (context, state) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Total"),
+                                context
+                                            .read<DeliveryInfoActionCubit>()
+                                            .deliveryPrice ==
+                                        ''
+                                    ? Text("\$${totalPrice!}")
+                                    : Text(
+                                        "\$${totalPrice! + int.parse(context.read<DeliveryInfoActionCubit>().deliveryPrice)}")
+                              ],
+                            );
+                          },
                         )
                       ],
                     ),
@@ -235,16 +277,22 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                               ?.id!,
                           isPickup: context
                                       .read<DeliveryInfoActionCubit>()
-                                      .selectedBranch !=
-                                  NearestBrancheModel()
-                              ? 1
-                              : 0,
+                                      .selectedBranch
+                                      .id ==
+                                  null
+                              ? 0
+                              : 1,
                           branchId: context
                               .read<DeliveryInfoActionCubit>()
                               .selectedBranch
                               .id,
-                          shipmentId: 0,
-                          paymentMethod: 0,
+                          shipmentId: context
+                              .read<DeliveryInfoActionCubit>()
+                              .shipmentPrice
+                              .data
+                              ?.shipmentPrice
+                              ?.shipmentId,
+                          paymentMethod: 94,
                           productsQu: widget.items
                               .map((item) => item.qty ?? 1)
                               .toList()));

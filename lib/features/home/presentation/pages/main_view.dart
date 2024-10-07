@@ -86,7 +86,7 @@ class _MainViewState extends State<MainView> {
                           activeIcon: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: CircleAvatar(
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Colors.green,
                               maxRadius: 4,
                             ),
                           ),
@@ -114,7 +114,7 @@ class _MainViewState extends State<MainView> {
                           activeIcon: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: CircleAvatar(
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Colors.green,
                               maxRadius: 4,
                             ),
                           ),
@@ -128,7 +128,7 @@ class _MainViewState extends State<MainView> {
                           activeIcon: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: CircleAvatar(
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Colors.green,
                               maxRadius: 4,
                             ),
                           ),

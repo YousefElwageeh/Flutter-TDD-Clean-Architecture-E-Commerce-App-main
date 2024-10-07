@@ -2,7 +2,7 @@ part of 'order_fetch_cubit.dart';
 
 @immutable
 abstract class OrderFetchState {
-  final List<OrderDetails> orders;
+  final OrdersModel orders;
   const OrderFetchState(this.orders);
 }
 

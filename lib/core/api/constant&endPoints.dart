@@ -33,6 +33,9 @@ class EndPoints {
   static const String deleteFromCart = '/api/v2/carts/remove';
   static const String shippingprice = '/api/shipping-price/';
 
+  static const String getOrders = '/api/orders';
+  static const String getVat = '/api/vat';
+
   static const String joinGame = '/api/join-game';
   static const String gameChallenges = '/api/game-challenges';
   static const String getPlayerGames = '/api/player-games';

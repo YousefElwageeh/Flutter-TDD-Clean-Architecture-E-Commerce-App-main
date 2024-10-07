@@ -1,5 +1,6 @@
 import 'package:eshop/core/extension/string_extension.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
+import 'package:eshop/features/delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,8 +12,8 @@ import 'outline_label_card.dart';
 
 class DeliveryInfoCard extends StatelessWidget {
   final AddressResponseModel? deliveryInformation;
-  final bool isSelected;
-  const DeliveryInfoCard(
+  bool isSelected = false;
+  DeliveryInfoCard(
       {super.key, this.deliveryInformation, this.isSelected = false});
 
   @override
@@ -60,6 +61,7 @@ class DeliveryInfoCard extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 4),
                           child: InkWell(
                             onTap: () {
+                              // context.read<DeliveryInfoActionCubit>().getCiteies(deliveryInformation.c)
                               showModalBottomSheet<void>(
                                 context: context,
                                 isScrollControlled: true,
@@ -96,6 +98,17 @@ class DeliveryInfoCard extends StatelessWidget {
                             )
                           : const SizedBox(),
                     ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                        onPressed: () {
+                          context
+                              .read<DeliveryInfoFetchCubit>()
+                              .deleteDeliveryAdderss(
+                                  deliveryInformation!.id.toString());
+                        },
+                        icon: const Icon(Icons.remove_circle_outline)),
                   )
                 ],
               ),

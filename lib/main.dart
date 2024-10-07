@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:eshop/core/Bloc_observer.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
@@ -24,8 +27,10 @@ import 'features/profile/presentation/bloc/user/user_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await di.init();
+  Bloc.observer = MyBlocObserver();
 
+  await di.init();
+  log(Constants.token ?? "");
   runApp(const MyApp());
   configLoading();
 }

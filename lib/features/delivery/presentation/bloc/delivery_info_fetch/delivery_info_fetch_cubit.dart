@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
+import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
 import 'package:eshop/features/delivery/domain/usecases/clear_local_delivery_info_usecase.dart';
 import 'package:eshop/features/delivery/domain/usecases/get_selected_delivery_info_usecase.dart';
+import 'package:eshop/features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/usecases/usecase.dart';
@@ -16,6 +19,8 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
   final GetCachedDeliveryInfoUseCase _getCachedDeliveryInfoUseCase;
   final GetSelectedDeliveryInfoInfoUseCase _getSelectedDeliveryInfoInfoUseCase;
   final ClearLocalDeliveryInfoUseCase _clearLocalDeliveryInfoUseCase;
+  final DeliveryInfoRepository repository = sl();
+
   DeliveryInfoFetchCubit(
     this._getRemoteDeliveryInfoUseCase,
     this._getCachedDeliveryInfoUseCase,
@@ -140,5 +145,23 @@ class DeliveryInfoFetchCubit extends Cubit<DeliveryInfoFetchState> {
           deliveryInformation: state.deliveryInformation,
           selectedDeliveryInformation: state.selectedDeliveryInformation));
     }
+  }
+
+  void deleteDeliveryAdderss(String deliveryID) {
+    emit(DeliveryInfoFetchLoading(
+        selectedDeliveryInformation: state.selectedDeliveryInformation,
+        deliveryInformation: state.deliveryInformation));
+    repository.deleteDeliveryAdderss(deliveryID).then((value) => value.fold(
+          (failure) => emit(DeliveryInfoFetchFail(
+              deliveryInformation: state.deliveryInformation)),
+          (data) {
+            state.deliveryInformation
+                .removeWhere((element) => element.id == deliveryID);
+            emit(DeliveryInfoFetchSuccess(
+                deliveryInformation: state.deliveryInformation,
+                selectedDeliveryInformation:
+                    state.selectedDeliveryInformation));
+          },
+        ));
   }
 }

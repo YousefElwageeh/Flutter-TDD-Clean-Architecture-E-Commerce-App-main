@@ -9,9 +9,11 @@ class ProfileRemoteDataSourceImpl {
   Future<UserModel> updateProfile(
       {required UpdateProfileRequest updateUserRequest}) async {
     var result = await DioFactory.postdata(
-      url: EndPoints.editprofile,
-      data: await updateUserRequest.toMap(),
-    );
+        url: EndPoints.editprofile,
+        data: await updateUserRequest.toMap(),
+        options: updateUserRequest.photo != null
+            ? Options(contentType: APPLICATION_file)
+            : null);
     return UserModel.fromJson(result.data["user"]);
   }
 

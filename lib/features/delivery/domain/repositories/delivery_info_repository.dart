@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/data/models/cities_model.dart';
@@ -25,6 +26,7 @@ abstract class DeliveryInfoRepository {
   Future<Either<Failure, CountriesModel>> getCountrys();
   Future<Either<Failure, List<NearestBrancheModel>>> getNearictsBranches(
       double lat, double long);
+  Future<Either<Failure, Response>> deleteDeliveryAdderss(String deliveryID);
 
   Future<Either<Failure, ShipmentPriceModel>> getDeliveryPriceDependsOnZone(
       String cityId);

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
@@ -7,10 +8,6 @@ import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
 import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 import 'package:http/http.dart' as http;
-
-import '../../../../../core/error/exceptions.dart';
-import '../../../../core/constant/strings.dart';
-import '../models/delivery_info_model.dart';
 
 abstract class DeliveryInfoRemoteDataSource {
   Future<List<AddressResponseModel>> getDeliveryInfo();
@@ -23,6 +20,7 @@ abstract class DeliveryInfoRemoteDataSource {
   Future<CountriesModel> getCountrys();
   Future<List<NearestBrancheModel>> getNearictsBranches(
       double lat, double long);
+  Future<Response> deleteDeliveryAdderss(String deliveryID);
 
   Future<ShipmentPriceModel> getDeliveryPriceDependsOnZone(String cityId);
 }
@@ -90,5 +88,13 @@ class DeliveryInfoRemoteDataSourceImpl implements DeliveryInfoRemoteDataSource {
       url: EndPoints.shippingprice + cityId,
     );
     return ShipmentPriceModel.fromJson(result.data);
+  }
+
+  @override
+  Future<Response> deleteDeliveryAdderss(String deliveryID) async {
+    final result = await DioFactory.delteData(
+      url: '${EndPoints.addresses}/$deliveryID',
+    );
+    return result;
   }
 }

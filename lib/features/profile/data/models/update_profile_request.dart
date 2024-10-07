@@ -13,25 +13,28 @@ class UpdateProfileRequest {
     this.phone,
     this.photo,
   });
-
-  Future<Map<String, dynamic>> toMap() async {
-    final result = <String, dynamic>{};
+  Future<FormData> toMap() async {
+    final formData = FormData(); // Initialize an empty FormData
 
     if (name != null) {
-      result.addAll({'name': name});
+      formData.fields
+          .add(MapEntry('name', name!)); // Add 'name' field if not null
     }
     if (email != null) {
-      result.addAll({'email': email});
+      formData.fields
+          .add(MapEntry('email', email!)); // Add 'email' field if not null
     }
-
     if (phone != null) {
-      result.addAll({'phone': phone});
+      formData.fields
+          .add(MapEntry('phone', phone!)); // Add 'phone' field if not null
     }
     if (photo != null) {
-      result.addAll({'photo': await MultipartFile.fromFile(photo!)});
+      formData.files.add(MapEntry('photo',
+          await MultipartFile.fromFile(photo!) // Add 'photo' file if not null
+          ));
     }
 
-    return result;
+    return formData; // Return the FormData object
   }
 
   factory UpdateProfileRequest.fromMap(Map<String, dynamic> map) {

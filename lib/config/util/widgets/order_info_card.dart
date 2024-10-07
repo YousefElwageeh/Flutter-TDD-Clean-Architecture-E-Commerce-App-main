@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -6,7 +7,7 @@ import '../../../features/order_chekout/domain/entities/order_details.dart';
 import 'outline_label_card.dart';
 
 class OrderInfoCard extends StatelessWidget {
-  final OrderDetails? orderDetails;
+  final Order? orderDetails;
   const OrderInfoCard({super.key, this.orderDetails});
 
   @override
@@ -28,25 +29,25 @@ class OrderInfoCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Order Items : ${orderDetails!.orderItems.length}",
+                  "Order Items : ${orderDetails!.cart?.length}",
                   style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  "Order Price : ${orderDetails!.orderItems.fold(0.0, (previousValue, element) => (previousValue + (element.price * element.quantity)))}",
+                  "Order Price : ${orderDetails!.cart?.fold(0.0, (previousValue, element) => (previousValue + (element.price!)))}",
                   style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
-                Text(
-                  "Discount : ${orderDetails!.discount}",
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
+                // Text(
+                //   "Discount : ${orderDetails!.}",
+                //   style: const TextStyle(
+                //     fontSize: 14,
+                //   ),
+                // ),
                 Column(
-                  children: orderDetails!.orderItems
+                  children: orderDetails!.cart!
                       .map((product) => Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Row(
@@ -61,8 +62,7 @@ class OrderInfoCard extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: CachedNetworkImage(
-                                            imageUrl:
-                                                product.product.photo ?? '',
+                                            imageUrl: product.item?.photo ?? '',
                                           ),
                                         )),
                                   ),
@@ -75,7 +75,7 @@ class OrderInfoCard extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        product.product.name ?? '',
+                                        product.item?.name ?? '',
                                         style: Theme.of(context)
                                             .textTheme
                                             .labelLarge,
@@ -83,7 +83,7 @@ class OrderInfoCard extends StatelessWidget {
                                       const SizedBox(
                                         height: 4,
                                       ),
-                                      Text('\$${product.priceTag}')
+                                      Text('\$${product.price}')
                                     ],
                                   ),
                                 )

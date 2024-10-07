@@ -1,19 +1,21 @@
+import 'dart:ffi';
+
+import 'package:dio/dio.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
-import 'package:eshop/core/error/failures.dart';
-import 'package:eshop/features/order_chekout/domain/entities/order_reponce_model.dart';
+import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/error/exceptions.dart';
-import '../../../../core/constant/strings.dart';
 import '../models/order_details_model.dart';
 
 abstract class OrderRemoteDataSource {
-  Future<OrderResponseModel> addOrder(
+  Future<Response> addOrder(
     OrderRequestModel params,
   );
-  Future<List<OrderDetailsModel>> getOrders(String token);
+  Future<OrdersModel> getOrders();
+
+  Future<int> getVatprectage();
 }
 
 class OrderRemoteDataSourceSourceImpl implements OrderRemoteDataSource {
@@ -21,27 +23,29 @@ class OrderRemoteDataSourceSourceImpl implements OrderRemoteDataSource {
   OrderRemoteDataSourceSourceImpl({required this.client});
 
   @override
-  Future<OrderResponseModel> addOrder(
+  Future<Response> addOrder(
     params,
   ) async {
     final response = await DioFactory.postdata(
-        url: EndPoints.creatOrder, data: params.toJson());
-    return OrderResponseModel.fromJson(response.data);
+      url: EndPoints.creatOrder,
+      data: params.toJson(),
+    );
+    return response;
   }
 
   @override
-  Future<List<OrderDetailsModel>> getOrders(String token) async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/orders'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
+  Future<OrdersModel> getOrders() async {
+    final response = await DioFactory.getdata(
+      url: EndPoints.getOrders,
     );
-    if (response.statusCode == 200) {
-      return orderDetailsModelListFromJson(response.body);
-    } else {
-      throw ServerFailure();
-    }
+    return OrdersModel.fromJson(response.data);
+  }
+
+  @override
+  Future<int> getVatprectage() async {
+    final response = await DioFactory.getdata(
+      url: EndPoints.getVat,
+    );
+    return response.data["vat_percentage"];
   }
 }

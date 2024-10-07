@@ -10,6 +10,7 @@ import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../cart/domain/entities/cart_item.dart';
@@ -60,8 +61,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         listener: (context, state) {
           if (state is CartError) {
             EasyLoading.showError(state.failure.toString());
-          } else if (state is CartLoaded) {
-            EasyLoading.showSuccess("Product added to cart");
           }
         },
         child: ListView(
@@ -218,9 +217,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   right: 10,
                   top: 16,
                   bottom: MediaQuery.of(context).padding.bottom),
-              child: Text(
+              child: HtmlWidget(
                 widget.product.details ?? '',
-                style: const TextStyle(fontSize: 14),
+                //style: const TextStyle(fontSize: 14),
               ),
             ),
           ],

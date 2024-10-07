@@ -83,11 +83,14 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
                 itemBuilder: (context, index) => (state
                             is DeliveryInfoFetchLoading &&
                         state.deliveryInformation.isEmpty)
-                    ? const DeliveryInfoCard()
+                    ? DeliveryInfoCard()
                     : DeliveryInfoCard(
                         deliveryInformation: state.deliveryInformation[index],
-                        isSelected: state.deliveryInformation[index] ==
-                            state.selectedDeliveryInformation,
+                        isSelected: state.deliveryInformation[index].id ==
+                            context
+                                .read<DeliveryInfoActionCubit>()
+                                .selectedDlivery
+                                .id,
                       ),
               ),
             );

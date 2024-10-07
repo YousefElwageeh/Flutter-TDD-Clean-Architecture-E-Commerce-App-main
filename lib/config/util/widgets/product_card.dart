@@ -88,6 +88,9 @@ class ProductCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(32.0),
                       child: CachedNetworkImage(
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
                         imageUrl: product!.photo ?? "",
                         placeholder: (context, url) => Shimmer.fromColors(
                           baseColor: Colors.grey.shade100,

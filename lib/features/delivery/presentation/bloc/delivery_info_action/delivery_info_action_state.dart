@@ -26,7 +26,11 @@ class DeliveryInfoActionFail extends DeliveryInfoActionState {}
 
 class GetCitiesSuccess extends DeliveryInfoActionState {}
 
+class LoadingSelectedValue extends DeliveryInfoActionState {}
+
 class ChangeSelectedValue extends DeliveryInfoActionState {}
+
+class GetDliveryPriceSuccess extends DeliveryInfoActionState {}
 
 class GetNearestBrancheLoading extends DeliveryInfoActionState {}
 

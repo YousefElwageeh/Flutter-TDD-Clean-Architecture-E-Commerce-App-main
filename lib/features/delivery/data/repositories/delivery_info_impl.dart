@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/src/response.dart';
 import 'package:eshop/core/usecases/usecase.dart';
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
@@ -164,6 +165,17 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
       String cityId) async {
     try {
       var result = await remoteDataSource.getDeliveryPriceDependsOnZone(cityId);
+      return Right(result);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Response>> deleteDeliveryAdderss(
+      String deliveryID) async {
+    try {
+      var result = await remoteDataSource.deleteDeliveryAdderss(deliveryID);
       return Right(result);
     } on Failure catch (failure) {
       return Left(failure);

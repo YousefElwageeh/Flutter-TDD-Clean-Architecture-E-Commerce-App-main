@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:eshop/core/usecases/usecase.dart';
-import 'package:eshop/features/order_chekout/domain/entities/order_reponce_model.dart';
+import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
 
 import '../../../../../../core/error/failures.dart';
@@ -10,7 +13,6 @@ import '../../domain/repositories/order_repository.dart';
 import '../datasources/order_local_data_source.dart';
 import '../../../auth/data/datasources/user_local_data_source.dart';
 import '../datasources/order_remote_data_source.dart';
-import '../models/order_details_model.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remoteDataSource;
@@ -26,36 +28,25 @@ class OrderRepositoryImpl implements OrderRepository {
   });
 
   @override
-  Future<Either<Failure, OrderResponseModel>> addOrder(
-      OrderRequestModel params) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      final String token = await userLocalDataSource.getToken();
+  Future<Either<Failure, Response>> addOrder(OrderRequestModel params) async {
+    try {
       final remoteProduct = await remoteDataSource.addOrder(params);
       return Right(remoteProduct);
-    } else {
+    } catch (e) {
       return Left(NetworkFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<OrderDetails>>> getRemoteOrders() async {
-    if (await networkInfo.isConnected) {
-      if (await userLocalDataSource.isTokenAvailable()) {
-        try {
-          final String token = await userLocalDataSource.getToken();
-          final remoteProduct = await remoteDataSource.getOrders(
-            token,
-          );
-          await localDataSource.saveOrders(remoteProduct);
-          return Right(remoteProduct);
-        } on Failure catch (failure) {
-          return Left(failure);
-        }
-      } else {
-        return Left(AuthenticationFailure());
-      }
-    } else {
-      return Left(NetworkFailure());
+  Future<Either<Failure, OrdersModel>> getRemoteOrders() async {
+    try {
+      final remoteProduct = await remoteDataSource.getOrders();
+      log(remoteProduct.toRawJson().toString());
+
+      return Right(remoteProduct);
+    } on Failure catch (failure) {
+      log(failure.toString());
+      return Left(failure);
     }
   }
 
@@ -74,6 +65,16 @@ class OrderRepositoryImpl implements OrderRepository {
     try {
       await localDataSource.clearOrder();
       return Right(NoParams());
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> getVatprectage() async {
+    try {
+      final vatprectage = await remoteDataSource.getVatprectage();
+      return Right(vatprectage);
     } on Failure catch (failure) {
       return Left(failure);
     }
