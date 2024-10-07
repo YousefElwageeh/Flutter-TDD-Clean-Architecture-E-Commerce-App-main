@@ -1,0 +1,247 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-ios10.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name CCAvenueUaeVertical
+@_exported import CCAvenueUaeVertical
+import Foundation
+import Security
+import Swift
+import SystemConfiguration
+import UIKit
+import WebKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public class AlphaNumericRule : CCAvenueUaeVertical.CharacterSetRule {
+  public init(message: Swift.String = "Enter valid numeric characters")
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class PasswordRule : CCAvenueUaeVertical.RegexRule {
+  convenience public init(message: Swift.String = "Must be 8 characters with 1 uppercase")
+  override public init(regex: Swift.String, message: Swift.String = super)
+  @objc deinit
+}
+open class RequiredRule : CCAvenueUaeVertical.Rule {
+  public init(message: Swift.String = "This field is required")
+  open func validate(_ value: Swift.String) -> Swift.Bool
+  open func errorMessage() -> Swift.String
+  @objc deinit
+}
+extension UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) public func addConstraintsWithFormat(_ format: Swift.String, views: UIKit.UIView...)
+  @_Concurrency.MainActor(unsafe) public func fillSuperview()
+  @_Concurrency.MainActor(unsafe) public func anchor(_ top: UIKit.NSLayoutYAxisAnchor? = nil, left: UIKit.NSLayoutXAxisAnchor? = nil, bottom: UIKit.NSLayoutYAxisAnchor? = nil, right: UIKit.NSLayoutXAxisAnchor? = nil, topConstant: CoreFoundation.CGFloat = 0, leftConstant: CoreFoundation.CGFloat = 0, bottomConstant: CoreFoundation.CGFloat = 0, rightConstant: CoreFoundation.CGFloat = 0, widthConstant: CoreFoundation.CGFloat = 0, heightConstant: CoreFoundation.CGFloat = 0)
+  @_Concurrency.MainActor(unsafe) public func anchorWithReturnAnchors(_ top: UIKit.NSLayoutYAxisAnchor? = nil, left: UIKit.NSLayoutXAxisAnchor? = nil, bottom: UIKit.NSLayoutYAxisAnchor? = nil, right: UIKit.NSLayoutXAxisAnchor? = nil, topConstant: CoreFoundation.CGFloat = 0, leftConstant: CoreFoundation.CGFloat = 0, bottomConstant: CoreFoundation.CGFloat = 0, rightConstant: CoreFoundation.CGFloat = 0, widthConstant: CoreFoundation.CGFloat = 0, heightConstant: CoreFoundation.CGFloat = 0) -> [UIKit.NSLayoutConstraint]
+  @_Concurrency.MainActor(unsafe) public func anchorCenterXToSuperview(constant: CoreFoundation.CGFloat = 0)
+  @_Concurrency.MainActor(unsafe) public func anchorCenterYToSuperview(constant: CoreFoundation.CGFloat = 0)
+  @_Concurrency.MainActor(unsafe) public func anchorCenterSuperview()
+}
+public class MaxLengthRule : CCAvenueUaeVertical.Rule {
+  public init()
+  public init(length: Swift.Int, message: Swift.String = "Must be at most %ld characters long")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+public struct ValidatorDictionary<T> : Swift.Sequence {
+  public subscript(key: (any Swift.AnyObject & CCAvenueUaeVertical.Validatable)?) -> T? {
+    get
+    set(newValue)
+  }
+  public mutating func removeAll()
+  public mutating func removeValueForKey(_ key: any Swift.AnyObject & CCAvenueUaeVertical.Validatable)
+  public var isEmpty: Swift.Bool {
+    get
+  }
+  public func makeIterator() -> Swift.DictionaryIterator<Swift.ObjectIdentifier, T>
+  public typealias Element = Swift.Dictionary<Swift.ObjectIdentifier, T>.Iterator.Element
+  public typealias Iterator = Swift.DictionaryIterator<Swift.ObjectIdentifier, T>
+}
+public class CharacterSetRule : CCAvenueUaeVertical.Rule {
+  public init(characterSet: Foundation.CharacterSet, message: Swift.String = "Enter valid alpha")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class Reach {
+  @objc deinit
+}
+public class MinLengthRule : CCAvenueUaeVertical.Rule {
+  public init()
+  public init(length: Swift.Int, message: Swift.String = "Must be at least %ld characters long")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CCRSAUtils {
+  @objc @_hasMissingDesignatedInitializers @available(iOS 1.2.0, *)
+  public class RSAUtilsError : Foundation.NSError {
+    @available(*, unavailable)
+    @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+    @objc deinit
+  }
+  @available(iOS 1.2.0, *)
+  public static func deleteRSAKeyFromKeychain(_ tagName: Swift.String)
+  @available(iOS 1.2.0, *)
+  public static func getRSAKeyFromKeychain(_ tagName: Swift.String) -> Security.SecKey?
+  @available(iOS 1.2.0, *)
+  @discardableResult
+  public static func addRSAPrivateKey(_ privkeyBase64: Swift.String, tagName: Swift.String) throws -> Security.SecKey?
+  @available(iOS 1.2.0, *)
+  public static func addRSAPublicKey(_ pubkeyBase64: Swift.String, tagName: Swift.String) throws -> Security.SecKey?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAKey(_ data: Foundation.Data, rsaKeyRef: Security.SecKey, padding: Security.SecPadding) -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func decryptWithRSAKey(_ encryptedData: Foundation.Data, rsaKeyRef: Security.SecKey, padding: Security.SecPadding) -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAKey(data: Foundation.Data, tagName: Swift.String) -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAKey(str: Swift.String, tagName: Swift.String) -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func decryptWithRSAKey(encryptedData: Foundation.Data, tagName: Swift.String) -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAPublicKey(data: Foundation.Data, pubkeyBase64: Swift.String) throws -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAPublicKey(str: Swift.String, pubkeyBase64: Swift.String) throws -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAPublicKey(data: Foundation.Data, pubkeyBase64: Swift.String, tagName: Swift.String) throws -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func encryptWithRSAPublicKey(str: Swift.String, pubkeyBase64: Swift.String, tagName: Swift.String) throws -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func decryptWithRSAPrivateKey(encryptedData: Foundation.Data, privkeyBase64: Swift.String) throws -> Foundation.Data?
+  @available(iOS 1.2.0, *)
+  public static func decryptWithRSAPrivateKey(encryptedData: Foundation.Data, privkeyBase64: Swift.String, tagName: Swift.String) throws -> Foundation.Data?
+  @objc deinit
+}
+public class ConfirmationRule : CCAvenueUaeVertical.Rule {
+  public init(confirmField: any Swift.AnyObject & CCAvenueUaeVertical.Validatable, message: Swift.String = "This field does not match")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+public protocol ValidationDelegate {
+  func validationSuccessful()
+  func validationFailed(_ errors: [(any CCAvenueUaeVertical.Validatable, CCAvenueUaeVertical.ValidationError)])
+}
+@_inheritsConvenienceInitializers public class EmailRule : CCAvenueUaeVertical.RegexRule {
+  convenience public init(message: Swift.String = " Please enter valid email address.")
+  override public init(regex: Swift.String, message: Swift.String = super)
+  @objc deinit
+}
+open class RegexRule : CCAvenueUaeVertical.Rule {
+  public init(regex: Swift.String, message: Swift.String = "Invalid Regular Expression")
+  open func validate(_ value: Swift.String) -> Swift.Bool
+  open func errorMessage() -> Swift.String
+  @objc deinit
+}
+public typealias ValidatableField = Swift.AnyObject & CCAvenueUaeVertical.Validatable
+public protocol Validatable {
+  var validationText: Swift.String { get }
+}
+extension UIKit.UIView : CCAvenueUaeVertical.Validatable {
+  @_Concurrency.MainActor(unsafe) public var validationText: Swift.String {
+    get
+  }
+}
+public class FullNameRule : CCAvenueUaeVertical.Rule {
+  public init(message: Swift.String = "Please provide a first & last name")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+@objc public class ValidationError : ObjectiveC.NSObject {
+  final public let field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable
+  public var errorLabel: UIKit.UILabel?
+  final public let errorMessage: Swift.String
+  public init(field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable, errorLabel: UIKit.UILabel?, error: Swift.String)
+  @objc deinit
+}
+public class FloatRule : CCAvenueUaeVertical.Rule {
+  public init(message: Swift.String = "This must be a number with or without a decimal")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}
+public protocol CCMainViewControllerDelegate : AnyObject {
+  func getResponse(_ jsonResponse: [Swift.AnyHashable : Any]?)
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class CCMainViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any CCAvenueUaeVertical.CCMainViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) convenience public init(request: [Swift.String : Any])
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewWillAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewWillDisappear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func willTransition(to newCollection: UIKit.UITraitCollection, with coordinator: any UIKit.UIViewControllerTransitionCoordinator)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+extension CCAvenueUaeVertical.CCMainViewController : UIKit.UIPopoverPresentationControllerDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func adaptivePresentationStyle(for controller: UIKit.UIPresentationController) -> UIKit.UIModalPresentationStyle
+}
+@_inheritsConvenienceInitializers public class PhoneNumberRule : CCAvenueUaeVertical.RegexRule {
+  convenience public init(message: Swift.String = "Enter a valid phone number")
+  override public init(regex: Swift.String, message: Swift.String = super)
+  @objc deinit
+}
+public class IPV4Rule : CCAvenueUaeVertical.RegexRule {
+  public init(message: Swift.String = "Must be a valid IP address")
+  @objc deinit
+}
+public class Validator {
+  public var validations: CCAvenueUaeVertical.ValidatorDictionary<CCAvenueUaeVertical.ValidationRule>
+  public var errors: CCAvenueUaeVertical.ValidatorDictionary<CCAvenueUaeVertical.ValidationError>
+  public init()
+  public func validateField(_ field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable, callback: (_ error: CCAvenueUaeVertical.ValidationError?) -> Swift.Void)
+  public func styleTransformers(success: ((_ validationRule: CCAvenueUaeVertical.ValidationRule) -> Swift.Void)?, error: ((_ validationError: CCAvenueUaeVertical.ValidationError) -> Swift.Void)?)
+  public func registerField(_ field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable, errorLabel: UIKit.UILabel? = nil, rules: [any CCAvenueUaeVertical.Rule])
+  public func unregisterField(_ field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable)
+  public func validate(_ delegate: any CCAvenueUaeVertical.ValidationDelegate)
+  public func validate(_ callback: (_ errors: [(any CCAvenueUaeVertical.Validatable, CCAvenueUaeVertical.ValidationError)]) -> Swift.Void)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class UICustomCollectionViewLayout : UIKit.UICollectionViewLayout {
+  @_Concurrency.MainActor(unsafe) public var numberOfColumns: Swift.Int
+  @_Concurrency.MainActor(unsafe) public var cellPadding: CoreFoundation.CGFloat
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public var collectionViewContentSize: CoreFoundation.CGSize {
+    @objc get
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func prepare()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func layoutAttributesForElements(in rect: CoreFoundation.CGRect) -> [UIKit.UICollectionViewLayoutAttributes]?
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init()
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+public class AlphaRule : CCAvenueUaeVertical.CharacterSetRule {
+  public init(message: Swift.String = "Enter valid alphabetic characters")
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class NumbersRule : CCAvenueUaeVertical.RegexRule {
+  convenience public init(message: Swift.String = "Invalid Number")
+  override public init(regex: Swift.String, message: Swift.String = super)
+  @objc deinit
+}
+public protocol Rule {
+  func validate(_ value: Swift.String) -> Swift.Bool
+  func errorMessage() -> Swift.String
+}
+public class ValidationRule {
+  public var field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable
+  public var errorLabel: UIKit.UILabel?
+  public var rules: [any CCAvenueUaeVertical.Rule]
+  public init(field: any Swift.AnyObject & CCAvenueUaeVertical.Validatable, rules: [any CCAvenueUaeVertical.Rule], errorLabel: UIKit.UILabel?)
+  public func validateField() -> CCAvenueUaeVertical.ValidationError?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class LoadingOverlay {
+  public func showOverlay(view: UIKit.UIView!)
+  public func showLoader(view: UIKit.UIView!)
+  public func hideOverlayView()
+  public func isShowingOverlay() -> Swift.Bool
+  @objc deinit
+}
+public class ExactLengthRule : CCAvenueUaeVertical.Rule {
+  public init(length: Swift.Int, message: Swift.String = "Must be exactly %ld characters long")
+  public func validate(_ value: Swift.String) -> Swift.Bool
+  public func errorMessage() -> Swift.String
+  @objc deinit
+}

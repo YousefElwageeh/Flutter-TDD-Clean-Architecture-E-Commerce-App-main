@@ -1,0 +1,11 @@
+framework module CCAvenueUaeVertical {
+  umbrella header "CCAvenueUaeVertical.h"
+  export *
+
+  module * { export * }
+}
+
+module CCAvenueUaeVertical.Swift {
+  header "CCAvenueUaeVertical-Swift.h"
+  requires objc
+}

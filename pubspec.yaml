@@ -51,7 +51,7 @@ dependencies:
   html_unescape: ^2.0.0
   http: ^1.2.2
   image_picker: ^1.1.2
-  internet_connection_checker: ^2.0.0
+  internet_connection_checker: ^1.0.0+1
   oktoast: ^3.3.1
   permission_handler: ^11.3.1
   pretty_dio_logger: ^1.4.0
