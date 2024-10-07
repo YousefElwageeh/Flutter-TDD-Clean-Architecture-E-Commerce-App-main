@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:eshop/features/category/data/models/category_model.dart';
-import 'package:eshop/features/category/domain/entities/category.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fixtures/constant_objects.dart';

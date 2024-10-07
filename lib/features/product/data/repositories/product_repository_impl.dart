@@ -5,7 +5,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../../../core/error/failures.dart';
 import '../../../../../../core/error/exceptions.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/product_response.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../../domain/usecases/get_product_usecase.dart';
 import '../datasources/product_local_data_source.dart';

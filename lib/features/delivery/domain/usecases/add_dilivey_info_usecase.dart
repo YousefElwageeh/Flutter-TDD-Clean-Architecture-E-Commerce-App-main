@@ -4,8 +4,6 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../data/models/delivery_info_model.dart';
-import '../entities/delivery_info.dart';
 import '../repositories/delivery_info_repository.dart';
 
 class AddDeliveryInfoUseCase

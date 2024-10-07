@@ -1,7 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/config/helpers/spacing.dart';
 import 'package:eshop/features/home/model/slider_model.dart';
 import 'package:eshop/features/category/presentation/bloc/category_bloc.dart';
@@ -14,7 +11,6 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../core/constant/images.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../profile/presentation/bloc/user/user_bloc.dart';
 import '../../../../config/util/widgets/alert_card.dart';
 import '../../../../config/util/widgets/product_card.dart';
 

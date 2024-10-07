@@ -6,7 +6,6 @@ import 'package:eshop/features/order_chekout/domain/usecases/clear_local_order_u
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/usecases/usecase.dart';
-import '../../../../order_chekout/domain/entities/order_details.dart';
 import '../../../../order_chekout/domain/usecases/get_cached_orders_usecase.dart';
 import '../../../../order_chekout/domain/usecases/get_remote_orders_usecase.dart';
 

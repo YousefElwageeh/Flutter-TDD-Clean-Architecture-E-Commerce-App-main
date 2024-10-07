@@ -38,9 +38,7 @@ import '../../features/delivery/domain/repositories/delivery_info_repository.dar
 import '../../features/order_chekout/domain/repositories/order_repository.dart';
 import '../../features/product/domain/repositories/product_repository.dart';
 import '../../features/auth/domain/repositories/user_repository.dart';
-import '../../features/cart/domain/usecases/add_cart_item_usecase.dart';
 import '../../features/cart/domain/usecases/clear_cart_usecase.dart';
-import '../../features/cart/domain/usecases/get_cached_cart_usecase.dart';
 import '../../features/cart/domain/usecases/sync_cart_usecase.dart';
 import '../../features/category/domain/usecases/filter_category_usecase.dart';
 import '../../features/category/domain/usecases/get_cached_category_usecase.dart';

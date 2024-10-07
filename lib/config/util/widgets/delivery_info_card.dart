@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../features/delivery/domain/entities/delivery_info.dart';
 import '../../../features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
 import '../../../features/delivery/presentation/pages/delivery_info.dart';
 import 'outline_label_card.dart';

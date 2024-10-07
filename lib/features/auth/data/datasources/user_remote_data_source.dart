@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart' as dio;
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
-import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/features/auth/data/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/error/exceptions.dart';
-import '../../../../core/constant/strings.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
-import '../models/authentication_response_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<UserModel> signIn(SignInParams params);

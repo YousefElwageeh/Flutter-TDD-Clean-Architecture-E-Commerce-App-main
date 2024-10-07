@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/cart/domain/entities/cart_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 

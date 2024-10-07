@@ -10,10 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../domain/entities/cart_item.dart';
-import '../../domain/usecases/add_cart_item_usecase.dart';
 import '../../domain/usecases/clear_cart_usecase.dart';
-import '../../domain/usecases/get_cached_cart_usecase.dart';
 import '../../domain/usecases/sync_cart_usecase.dart';
 
 part 'cart_event.dart';

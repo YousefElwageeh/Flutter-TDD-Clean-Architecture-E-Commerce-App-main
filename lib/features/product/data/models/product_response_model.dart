@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:eshop/core/extension/string_extension.dart';
-
 class ProductResponseModel {
   String? status;
   List<Product>? products;

@@ -3,7 +3,6 @@ import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../features/order_chekout/domain/entities/order_details.dart';
 import 'outline_label_card.dart';
 
 class OrderInfoCard extends StatelessWidget {

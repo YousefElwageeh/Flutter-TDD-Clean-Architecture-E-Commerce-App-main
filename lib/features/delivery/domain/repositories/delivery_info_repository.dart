@@ -9,7 +9,6 @@ import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../data/models/delivery_info_model.dart';
 import '../entities/delivery_info.dart';
 
 abstract class DeliveryInfoRepository {

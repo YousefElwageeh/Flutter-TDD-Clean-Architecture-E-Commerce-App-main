@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constant/images.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/router/app_router.dart';
-import '../../domain/entities/cart_item.dart';
 import '../bloc/cart_bloc.dart';
 import '../../../../config/util/widgets/cart_item_card.dart';
 import '../../../../config/util/widgets/input_form_button.dart';

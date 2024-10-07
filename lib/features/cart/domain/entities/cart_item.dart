@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 
-import '../../../product/domain/entities/price_tag.dart';
-
 class CartItem extends Equatable {
   final String? id;
   final Product product;

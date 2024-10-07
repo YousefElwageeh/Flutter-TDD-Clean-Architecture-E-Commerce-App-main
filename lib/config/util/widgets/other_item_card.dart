@@ -4,20 +4,15 @@ class OtherItemCard extends StatelessWidget {
   final String title;
   final Function()? onClick;
   const OtherItemCard({
-    Key? key,
+    super.key,
     required this.title,
     this.onClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 20,
-        right: 20,
-        bottom: 4,
-        top: 2
-      ),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 4, top: 2),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onClick,

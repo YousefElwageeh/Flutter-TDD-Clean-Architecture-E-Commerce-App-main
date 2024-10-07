@@ -1,11 +1,7 @@
-import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
-import 'package:eshop/features/category/data/models/category_model.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart'
     as pm;
-import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';
 import 'package:eshop/features/profile/presentation/bloc/profile_cubit.dart';
-import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:eshop/features/auth/presentation/pages/forget_password.dart';
 import 'package:eshop/features/category/presentation/pages/category_view.dart';
 import 'package:eshop/features/home/presentation/pages/filter/filter_view.dart';
@@ -14,7 +10,6 @@ import 'package:eshop/features/product/presentation/pages/proudcuts_by_category_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/cart/domain/entities/cart_item.dart';
 import '../../features/auth/domain/entities/user.dart';
 import '../../features/auth/presentation/pages/signin_view.dart';
 import '../../features/auth/presentation/pages/signup_view.dart';

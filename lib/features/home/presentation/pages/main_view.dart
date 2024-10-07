@@ -4,7 +4,6 @@ import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 
 import '../bloc/navbar_cubit.dart';
 import '../../../cart/presentation/pages/cart_view.dart';
-import '../../../category/presentation/pages/category_view.dart';
 import 'home_view.dart';
 import '../../../profile/presentation/pages/other_view.dart';
 

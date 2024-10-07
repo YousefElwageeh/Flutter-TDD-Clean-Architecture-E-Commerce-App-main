@@ -1,4 +1,3 @@
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 
 import '../../domain/entities/order_item.dart';

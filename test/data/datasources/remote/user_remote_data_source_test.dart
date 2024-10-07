@@ -3,7 +3,6 @@ import 'package:eshop/core/constant/strings.dart';
 import 'package:eshop/core/error/exceptions.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/features/auth/data/datasources/user_remote_data_source.dart';
-import 'package:eshop/features/auth/data/models/authentication_response_model.dart';
 import 'package:eshop/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:eshop/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';

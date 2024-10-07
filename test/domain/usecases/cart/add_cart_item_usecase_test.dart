@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/features/cart/domain/repositories/cart_repository.dart';
-import 'package:eshop/features/cart/domain/usecases/add_cart_item_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

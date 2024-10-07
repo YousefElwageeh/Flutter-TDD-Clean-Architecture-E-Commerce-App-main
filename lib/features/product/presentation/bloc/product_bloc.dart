@@ -3,12 +3,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
-import 'package:eshop/features/category/domain/entities/category.dart';
-import 'package:eshop/features/product/domain/entities/price_tag.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/pagination_meta_data.dart';
-import '../../domain/entities/product.dart';
 import '../../domain/usecases/get_product_usecase.dart';
 
 part 'product_event.dart';

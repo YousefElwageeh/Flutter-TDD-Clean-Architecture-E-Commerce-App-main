@@ -13,8 +13,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../cart/domain/entities/cart_item.dart';
-import '../../domain/entities/price_tag.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../cart/presentation/bloc/cart_bloc.dart';
 import '../../../../config/util/widgets/input_form_button.dart';

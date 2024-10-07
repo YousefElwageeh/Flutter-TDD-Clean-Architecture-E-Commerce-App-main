@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:eshop/features/delivery/domain/entities/delivery_info.dart';
-
 class AddressResponseModel {
   String? country;
   String? city;

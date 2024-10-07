@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
-import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/features/home/model/slider_model.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../../core/constant/strings.dart';
 import '../models/category_model.dart';

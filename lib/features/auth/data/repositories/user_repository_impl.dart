@@ -9,7 +9,6 @@ import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/user_local_data_source.dart';
 import '../datasources/user_remote_data_source.dart';
-import '../models/authentication_response_model.dart';
 
 typedef _DataSourceChooser = Future<UserModel> Function();
 
