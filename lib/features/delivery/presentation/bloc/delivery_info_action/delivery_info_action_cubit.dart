@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:eshop/core/error/failures.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
@@ -16,8 +15,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../data/models/delivery_info_model.dart';
-import '../../../domain/entities/delivery_info.dart';
 import '../../../domain/usecases/add_dilivey_info_usecase.dart';
 import '../../../domain/usecases/edit_delivery_info_usecase.dart';
 import '../../../domain/usecases/select_delivery_info_usecase.dart';

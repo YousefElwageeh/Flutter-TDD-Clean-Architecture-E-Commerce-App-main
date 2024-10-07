@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 
-import '../../../delivery/domain/entities/delivery_info.dart';
 import 'order_item.dart';
 
 class OrderDetails extends Equatable {

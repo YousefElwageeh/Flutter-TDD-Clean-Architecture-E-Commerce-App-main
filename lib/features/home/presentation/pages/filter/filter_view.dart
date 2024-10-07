@@ -1,5 +1,4 @@
 import 'package:eshop/features/category/data/models/category_model.dart';
-import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

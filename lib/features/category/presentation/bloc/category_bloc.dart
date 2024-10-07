@@ -11,7 +11,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../domain/entities/category.dart';
 import '../../domain/usecases/filter_category_usecase.dart';
 import '../../domain/usecases/get_cached_category_usecase.dart';
 import '../../domain/usecases/get_remote_category_usecase.dart';

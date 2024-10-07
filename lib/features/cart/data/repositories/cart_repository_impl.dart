@@ -6,7 +6,6 @@ import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 
 import '../../../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/cart_item.dart';
 import '../../domain/repositories/cart_repository.dart';
 import '../datasources/cart_local_data_source.dart';
 import '../../../auth/data/datasources/user_local_data_source.dart';

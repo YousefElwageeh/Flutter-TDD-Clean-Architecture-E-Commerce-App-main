@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:eshop/features/category/data/models/category_model.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../category/domain/entities/category.dart';
 import '../../../product/domain/usecases/get_product_usecase.dart';
 
 class FilterCubit extends Cubit<FilterProductParams> {

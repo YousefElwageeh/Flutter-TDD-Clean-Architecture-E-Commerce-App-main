@@ -3,7 +3,6 @@ import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/features/profile/data/models/update_profile_request.dart';
 import 'package:eshop/features/auth/data/models/user_model.dart';
-import 'package:eshop/features/auth/domain/entities/user.dart';
 
 class ProfileRemoteDataSourceImpl {
   Future<UserModel> updateProfile(

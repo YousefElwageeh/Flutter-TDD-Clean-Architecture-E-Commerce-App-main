@@ -1,13 +1,9 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/profile/data/models/update_profile_request.dart';
 import 'package:eshop/features/profile/data/datasources/profile_repo_impl.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 
 part 'profile_state.dart';
 

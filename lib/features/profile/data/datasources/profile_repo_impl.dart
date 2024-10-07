@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:eshop/core/network/network_info.dart';
 import 'package:eshop/features/auth/data/datasources/user_local_data_source.dart';
 import 'package:eshop/features/auth/data/models/user_model.dart';
-import 'package:eshop/features/auth/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eshop/core/error/failures.dart';

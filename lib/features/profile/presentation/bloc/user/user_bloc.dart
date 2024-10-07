@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/core/services/services_locator.dart';
-import 'package:eshop/features/profile/data/models/update_profile_request.dart';
-import 'package:eshop/features/profile/data/datasources/profile_repo_impl.dart';
 import 'package:eshop/features/auth/domain/repositories/user_repository.dart';
 import 'package:eshop/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:eshop/features/auth/domain/usecases/sign_up_usecase.dart';

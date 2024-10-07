@@ -1,14 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/core/router/app_router.dart';
 import 'package:eshop/features/category/data/models/category_model.dart';
-import 'package:eshop/features/category/domain/entities/category.dart';
 import 'package:eshop/features/home/presentation/bloc/filter_cubit.dart';
 import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../../features/home/presentation/bloc/navbar_cubit.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category? category;

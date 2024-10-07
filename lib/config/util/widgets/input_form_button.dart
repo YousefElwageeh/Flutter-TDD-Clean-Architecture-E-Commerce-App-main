@@ -10,28 +10,27 @@ class InputFormButton extends StatelessWidget {
   final EdgeInsets padding;
 
   const InputFormButton(
-      {Key? key,
+      {super.key,
       required this.onClick,
       this.titleText,
       this.icon,
       this.color,
       this.cornerRadius,
-      this.padding = const EdgeInsets.symmetric(horizontal: 16)})
-      : super(key: key);
+      this.padding = const EdgeInsets.symmetric(horizontal: 16)});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onClick,
       style: ButtonStyle(
-        padding: MaterialStateProperty.all<EdgeInsets>(padding),
+        padding: WidgetStateProperty.all<EdgeInsets>(padding),
         maximumSize:
-            MaterialStateProperty.all<Size>(const Size(double.maxFinite, 50)),
+            WidgetStateProperty.all<Size>(const Size(double.maxFinite, 50)),
         minimumSize:
-            MaterialStateProperty.all<Size>(const Size(double.maxFinite, 50)),
-        backgroundColor: MaterialStateProperty.all<Color>(
+            WidgetStateProperty.all<Size>(const Size(double.maxFinite, 50)),
+        backgroundColor: WidgetStateProperty.all<Color>(
             color ?? Theme.of(context).primaryColor),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(cornerRadius ?? 12.0)),
         ),

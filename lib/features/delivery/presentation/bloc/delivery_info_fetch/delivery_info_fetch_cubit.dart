@@ -4,11 +4,9 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
 import 'package:eshop/features/delivery/domain/usecases/clear_local_delivery_info_usecase.dart';
 import 'package:eshop/features/delivery/domain/usecases/get_selected_delivery_info_usecase.dart';
-import 'package:eshop/features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/usecases/usecase.dart';
-import '../../../domain/entities/delivery_info.dart';
 import '../../../domain/usecases/get_cached_delivery_info_usecase.dart';
 import '../../../domain/usecases/get_remote_delivery_info_usecase.dart';
 

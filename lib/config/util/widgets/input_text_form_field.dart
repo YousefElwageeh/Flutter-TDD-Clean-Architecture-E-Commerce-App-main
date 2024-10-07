@@ -12,7 +12,7 @@ class InputTextFormField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onFieldSubmitted;
   const InputTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     this.isSecureField = false,
     this.autoCorrect = false,
@@ -23,7 +23,7 @@ class InputTextFormField extends StatefulWidget {
     this.textInputAction,
     this.hintTextSize = 14,
     this.onFieldSubmitted,
-  }) : super(key: key);
+  });
 
   @override
   State<InputTextFormField> createState() => _InputTextFormFieldState();
@@ -64,11 +64,11 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
               )
             : null,
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 0.0,
-            ),
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(
+            color: Colors.transparent,
+            width: 0.0,
+          ),
         ),
       ),
     );

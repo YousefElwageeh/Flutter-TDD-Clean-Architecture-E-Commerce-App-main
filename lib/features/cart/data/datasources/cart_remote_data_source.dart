@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/error/exceptions.dart';
-import '../../../../core/constant/strings.dart';
 import '../models/cart_item_model.dart';
 
 abstract class CartRemoteDataSource {

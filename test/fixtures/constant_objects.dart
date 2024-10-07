@@ -1,12 +1,9 @@
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/category/data/models/category_model.dart';
 import 'package:eshop/features/order_chekout/data/models/order_details_model.dart';
 import 'package:eshop/features/order_chekout/data/models/order_item_model.dart';
 import 'package:eshop/features/product/data/models/pagination_data_model.dart';
 import 'package:eshop/features/product/data/models/price_tag_model.dart';
-import 'package:eshop/features/product/data/models/product_model.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
-import 'package:eshop/features/auth/data/models/authentication_response_model.dart';
 import 'package:eshop/features/delivery/data/models/delivery_info_model.dart';
 import 'package:eshop/features/auth/data/models/user_model.dart';
 import 'package:eshop/features/product/domain/usecases/get_product_usecase.dart';

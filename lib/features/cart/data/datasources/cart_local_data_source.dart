@@ -1,4 +1,3 @@
-import 'package:eshop/core/error/failures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/cart_item_model.dart';

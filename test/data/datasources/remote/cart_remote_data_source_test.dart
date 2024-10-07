@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:eshop/core/constant/strings.dart';
 import 'package:eshop/core/error/exceptions.dart';
 import 'package:eshop/features/cart/data/datasources/cart_remote_data_source.dart';
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';

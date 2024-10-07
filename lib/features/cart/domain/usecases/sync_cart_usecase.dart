@@ -3,7 +3,6 @@ import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 
 import '../../../../../../core/error/failures.dart';
 import '../../../../../../core/usecases/usecase.dart';
-import '../entities/cart_item.dart';
 import '../repositories/cart_repository.dart';
 
 class SyncCartUseCase implements UseCase<CartModel, NoParams> {
