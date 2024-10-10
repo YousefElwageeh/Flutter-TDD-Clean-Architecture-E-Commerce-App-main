@@ -19,7 +19,7 @@ const String ACCEPT = "Accept";
 const String AUTHORIZATION = "Authorization";
 const String DEFAULT_LANGUAGE = "lang";
 
-const int apiTimeOut = 600000;
+const int apiTimeOut = 600000000;
 
 class DioFactory {
   static late Dio dio;

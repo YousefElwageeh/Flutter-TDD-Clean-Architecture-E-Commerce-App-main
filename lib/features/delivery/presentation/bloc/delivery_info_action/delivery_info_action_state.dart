@@ -37,3 +37,14 @@ class GetNearestBrancheLoading extends DeliveryInfoActionState {}
 class GetNearestBrancheSuccess extends DeliveryInfoActionState {}
 
 class GetNearestBrancheFail extends DeliveryInfoActionState {}
+
+class OrderGetVatLoading extends DeliveryInfoActionState {}
+
+class OrderGEtVatSuccess extends DeliveryInfoActionState {
+  final double vatValue;
+  bool updateTotalPrice = false;
+
+  OrderGEtVatSuccess(this.vatValue, {this.updateTotalPrice = false});
+}
+
+class OrderGEtVatError extends DeliveryInfoActionState {}

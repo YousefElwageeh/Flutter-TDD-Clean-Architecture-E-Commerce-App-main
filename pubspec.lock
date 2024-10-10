@@ -118,6 +118,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  cc_avenue:
+    dependency: "direct main"
+    description:
+      name: cc_avenue
+      sha256: "15d75b65354be6ce20be75354c22aa9921735d5279aef72825331931da021907"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
+  ccavenue_unofficial:
+    dependency: "direct main"
+    description:
+      name: ccavenue_unofficial
+      sha256: "322f2a875e8a4aba0b1df91cd115bc6fafad1b5450274b933ebcd1ee8bfce3f6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   characters:
     dependency: transitive
     description:
@@ -1635,7 +1651,7 @@ packages:
     source: hosted
     version: "1.2.1"
   webview_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter
       sha256: ec81f57aa1611f8ebecf1d2259da4ef052281cb5ad624131c93546c79ccc7736

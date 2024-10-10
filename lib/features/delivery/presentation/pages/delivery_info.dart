@@ -1,18 +1,23 @@
-import 'package:eshop/features/delivery/data/models/add_address_request.dart';
-import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '../../../../core/constant/images.dart';
-import '../bloc/delivery_info_action/delivery_info_action_cubit.dart';
-import '../bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
+import 'package:eshop/features/delivery/data/models/add_address_request.dart';
+import 'package:eshop/features/delivery/data/models/address_response_model.dart';
+
 import '../../../../config/util/widgets/delivery_info_card.dart';
 import '../../../../config/util/widgets/input_form_button.dart';
 import '../../../../config/util/widgets/input_text_form_field.dart';
+import '../../../../core/constant/images.dart';
+import '../bloc/delivery_info_action/delivery_info_action_cubit.dart';
+import '../bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
 
 class DeliveryInfoView extends StatefulWidget {
-  const DeliveryInfoView({super.key});
+  bool isFromCheckout;
+  DeliveryInfoView({
+    super.key,
+    required this.isFromCheckout,
+  });
 
   @override
   State<DeliveryInfoView> createState() => _DeliveryInfoViewState();
@@ -93,24 +98,53 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
         floatingActionButton: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24.0),
-                  ),
-                  builder: (BuildContext context) {
-                    return const DeliveryInfoForm();
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                widget.isFromCheckout
+                    ? FloatingActionButton(
+                        onPressed: () {
+                          if (context
+                                  .read<DeliveryInfoActionCubit>()
+                                  .selectedDlivery
+                                  .id !=
+                              null) {
+                            context
+                                .read<DeliveryInfoActionCubit>()
+                                .updateVATWidget();
+
+                            Navigator.pop(context);
+                          } else {
+                            EasyLoading.showError(
+                                "Please select a Delivery Info");
+                          }
+                        },
+                        child: const Icon(Icons.done),
+                      )
+                    : const SizedBox.shrink(),
+                const SizedBox(
+                  width: 20,
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                      builder: (BuildContext context) {
+                        return const DeliveryInfoForm();
+                      },
+                    );
                   },
-                );
-              },
-              tooltip: 'Increment',
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
+                  tooltip: 'Increment',
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

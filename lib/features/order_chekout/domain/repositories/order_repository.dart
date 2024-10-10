@@ -13,4 +13,6 @@ abstract class OrderRepository {
   Future<Either<Failure, List<OrderDetails>>> getCachedOrders();
   Future<Either<Failure, NoParams>> clearLocalOrders();
   Future<Either<Failure, int>> getVatprectage();
+  Future<Either<Failure, Response>> getPaymentWebView(
+      {required String orderID});
 }

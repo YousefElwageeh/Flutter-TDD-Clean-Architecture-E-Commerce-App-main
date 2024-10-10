@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/config/helpers/spacing.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/order/presentation/bloc/order_add/order_add_cubit.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';

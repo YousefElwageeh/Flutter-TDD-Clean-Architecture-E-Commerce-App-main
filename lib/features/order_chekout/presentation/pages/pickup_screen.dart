@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
@@ -24,6 +25,18 @@ class _PickUpScreenState extends State<PickUpScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (context.read<DeliveryInfoActionCubit>().selectedBranch.id !=
+              null) {
+            context.read<DeliveryInfoActionCubit>().updateVATWidget();
+            Navigator.pop(context);
+          } else {
+            EasyLoading.showError("Please select a branch");
+          }
+        },
+        child: const Icon(Icons.done),
+      ),
       appBar: AppBar(),
       body: SafeArea(
         child: BlocBuilder<DeliveryInfoActionCubit, DeliveryInfoActionState>(

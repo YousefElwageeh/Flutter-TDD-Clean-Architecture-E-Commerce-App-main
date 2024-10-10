@@ -9,6 +9,7 @@ import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
 import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 import 'package:eshop/features/delivery/domain/repositories/delivery_info_repository.dart';
+import 'package:eshop/features/order_chekout/domain/repositories/order_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,6 +29,7 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
   final EditDeliveryInfoUseCase _editDeliveryInfoUseCase;
   final SelectDeliveryInfoUseCase _selectDeliveryInfoUseCase;
   final DeliveryInfoRepository repository = sl();
+  final OrderRepository repo = sl();
 
   DeliveryInfoActionCubit(
     this._deliveryInfoAddUsecase,
@@ -205,5 +207,26 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
           log(shipmentPrice.data?.shipmentPrice?.shipmentId.toString() ?? '');
           emit(GetDliveryPriceSuccess());
         }));
+  }
+
+  double VATPrectage = 0.0;
+  void getVat() async {
+    emit(OrderGetVatLoading());
+    log("Loading VAT");
+
+    // ignore: void_checks
+    repo.getVatprectage().then(
+      (value) {
+        value.fold((failure) => emit(OrderGEtVatError()), (value) {
+          log("Fetched VAT: ${value.toDouble()}");
+          VATPrectage = value.toDouble();
+          emit(OrderGEtVatSuccess(value.toDouble(), updateTotalPrice: true));
+        });
+      },
+    );
+  }
+
+  void updateVATWidget() {
+    emit(OrderGEtVatSuccess(VATPrectage.toDouble(), updateTotalPrice: false));
   }
 }

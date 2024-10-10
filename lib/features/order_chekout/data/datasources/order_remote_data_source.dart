@@ -10,6 +10,7 @@ abstract class OrderRemoteDataSource {
     OrderRequestModel params,
   );
   Future<OrdersModel> getOrders();
+  Future<Response> getPaymentWebView({required String orderID});
 
   Future<int> getVatprectage();
 }
@@ -43,5 +44,13 @@ class OrderRemoteDataSourceSourceImpl implements OrderRemoteDataSource {
       url: EndPoints.getVat,
     );
     return response.data["vat_percentage"];
+  }
+
+  @override
+  Future<Response> getPaymentWebView({required String orderID}) async {
+    final response = await DioFactory.getdata(
+      url: "${EndPoints.getOrders}/$orderID/ccavenue-payment",
+    );
+    return response;
   }
 }

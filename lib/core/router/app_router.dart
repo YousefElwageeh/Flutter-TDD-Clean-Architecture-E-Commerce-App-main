@@ -1,4 +1,7 @@
+import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/order/presentation/bloc/order_add/order_add_cubit.dart';
+import 'package:eshop/features/order_chekout/presentation/pages/webview.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart'
     as pm;
 import 'package:eshop/features/profile/presentation/bloc/profile_cubit.dart';
@@ -42,6 +45,7 @@ class AppRouter {
   static const String category = '/category';
   static const String forgetPassword = '/ForgetPassword';
   static const String pickUp = '/pickUp';
+  static const String webView = '/webView';
 
   static const String notifications = '/notifications';
   static const String about = '/about';
@@ -53,6 +57,17 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainView());
       case signIn:
         return MaterialPageRoute(builder: (_) => const SignInView());
+      case webView:
+        return MaterialPageRoute(builder: (_) {
+          String webViewUrl = routeSettings.arguments as String;
+
+          return BlocProvider(
+            create: (context) => OrderAddCubit(sl()),
+            child: PaymentWebView(
+              webViewUrl: webViewUrl,
+            ),
+          );
+        });
       case category:
         return MaterialPageRoute(builder: (_) => const CategoryView());
       case proudcutsByCategory:
@@ -81,11 +96,20 @@ class AppRouter {
       case orderCheckout:
         List<Cart> items = routeSettings.arguments as List<Cart>;
         return MaterialPageRoute(
-            builder: (_) => OrderCheckoutView(
-                  items: items,
+            builder: (_) => BlocProvider(
+                  create: (context) => OrderAddCubit(sl()),
+                  child: OrderCheckoutView(
+                    items: items,
+                  ),
                 ));
       case deliveryDetails:
-        return MaterialPageRoute(builder: (_) => const DeliveryInfoView());
+        return MaterialPageRoute(builder: (_) {
+          bool isFromCheckout = routeSettings.arguments as bool? ?? false;
+
+          return DeliveryInfoView(
+            isFromCheckout: isFromCheckout,
+          );
+        });
       case orders:
         return MaterialPageRoute(builder: (_) => const OrderView());
       case settings:

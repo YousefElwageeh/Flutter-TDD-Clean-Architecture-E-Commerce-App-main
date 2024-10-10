@@ -79,4 +79,16 @@ class OrderRepositoryImpl implements OrderRepository {
       return Left(failure);
     }
   }
+
+  @override
+  Future<Either<Failure, Response>> getPaymentWebView(
+      {required String orderID}) async {
+    try {
+      final webView =
+          await remoteDataSource.getPaymentWebView(orderID: orderID);
+      return Right(webView);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
 }
