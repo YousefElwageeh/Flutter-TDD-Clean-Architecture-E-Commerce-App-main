@@ -101,8 +101,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       sl<FlutterSecureStorage>().delete(
         key: Constants.tokenKey,
       );
-      DioFactory.getDio();
+      Constants.token = null;
 
+      DioFactory.getDio();
       emit(UserLoggedOut());
     } catch (e) {
       emit(UserLoggedFail(ExceptionFailure()));

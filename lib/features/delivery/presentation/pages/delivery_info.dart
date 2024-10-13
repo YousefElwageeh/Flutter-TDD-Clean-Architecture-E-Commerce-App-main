@@ -68,6 +68,7 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
             return RefreshIndicator.adaptive(
               onRefresh: () {
                 context.read<DeliveryInfoFetchCubit>().fetchDeliveryInfo();
+                context.read<DeliveryInfoActionCubit>().getCountries();
 
                 return Future.value();
               },

@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cc_avenue/cc_avenue.dart';
-import 'package:ccavenue_unofficial/ccavenue_unofficial.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
@@ -71,7 +69,7 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
             EasyLoading.show(status: 'Loading...');
           } else if (state is OrderAddSuccess) {
             context.read<NavbarCubit>().update(0);
-            // context.read<NavbarCubit>().controller.jumpToPage(0);
+            context.read<NavbarCubit>().controller.jumpToPage(0);
             // context.read<CartBloc>().add(const ClearCart());
             // Navigator.of(context).pop();
           } else if (state is OrderAddFail) {
@@ -279,14 +277,15 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                     if (context
                                 .read<DeliveryInfoFetchCubit>()
                                 .state
-                                .selectedDeliveryInformation ==
+                                .selectedDeliveryInformation
+                                ?.id ==
                             null &&
                         context
                                 .read<DeliveryInfoActionCubit>()
-                                .selectedBranch ==
-                            NearestBrancheModel()) {
-                      EasyLoading.showError(
-                          "Error \nPlease select delivery add your delivery information");
+                                .selectedBranch
+                                .id ==
+                            null) {
+                      EasyLoading.showError("Please select delivery Method");
                     } else {
                       context.read<OrderAddCubit>().addOrder(OrderRequestModel(
                           productsId: widget.items
@@ -329,84 +328,4 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
       ),
     );
   }
-}
-
-// Method to initiate the payment
-_initiateSDK() async {
-  //final ccavenue = CcavenueUnofficial();
-  // ccavenue.initiatePayment(
-  //     transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
-  //     accessCode: 'AVXO05LI16CK65OXKC',
-  //     amount: '1',
-  //     cancelUrl: 'http://127.0.0.1:3001/ccavResponseHandler',
-  //     currencyType: 'INR',
-  //     merchantId: '45990',
-  //     orderId: '2344',
-  //     redirectUrl: 'http://127.0.0.1:3001/ccavResponseHandler',
-  //     rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
-  CcAvenue.cCAvenueInit(
-      transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
-      accessCode: 'AVXO05LI16CK65OXKC',
-      amount: '10',
-      cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-      currencyType: 'INR',
-      merchantId: '45990',
-      orderId: '519',
-      redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-      rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
-  // final Map<String, String> data = {
-  //   "mId": "45990", // Your merchant ID
-  //   'accessCode': "AVXO05LI16CK65OXKC", // Your access code
-  //   'currency': "AED", // Currency for the transaction
-  //   'amount': "126", // Amount for the transaction
-  //   'redirect_url':
-  //       "https://www.linkedin.com/in/yousef-elwageeh/", // Redirect URL after payment
-  //   'cancel_url':
-  //       "https://www.linkedin.com/in/yousef-elwageeh/", // URL for payment cancellation
-  //   'order_id': "627627267222288", // Unique order ID
-  //   'customer_id': "728728728", // Customer ID
-  //   'tracking_id': "2678278278272", // Tracking ID for the transaction
-  //   'request_hash':
-  //       "HDUY8WYD8UY8WDU8U38DUE83U8DYU38Y8YF83YF83Y8F383U8", // Request hash
-  //   'promo': "", // Promo code if any
-  //   'billing_name': "John", // Billing name
-  //   'billing_address': "Santacruz", // Billing address
-  //   'billing_country': "India", // Billing country
-  //   'billing_state': "Maharashtra", // Billing state
-  //   'billing_city': "Mumbai", // Billing city
-  //   'billing_telephone': "67566523452112", // Billing telephone
-  //   'billing_email': "mymail@gmail.com", // Billing email
-  //   'shipping_name': "John", // Shipping name
-  //   'shipping_address': "Santacruz", // Shipping address
-  //   'shipping_country': "India", // Shipping country
-  //   'shipping_state': "Maharashtra", // Shipping state
-  //   'shipping_city': "Mumbai", // Shipping city
-  //   'shipping_telephone': "67566523452112", // Shipping telephone
-  //   'merchantParam1': "",
-  //   'merchantParam2': "",
-  //   'merchantParam3': "",
-  //   'merchantParam4': "",
-  //   'merchantParam5': "",
-  //   'siType': "",
-  //   'siRef': "",
-  //   'siSetupAmount': "",
-  //   'siAmount': "",
-  //   'siStartDate': "",
-  //   'siFreqType': "",
-  //   'siFreq': "",
-  //   'siBillCycle': "",
-  //   'display_address': "Y", // Show billing address
-  // };
-
-  // // Call native code to perform payment
-  // final response = await pay(data); // Handle response as per requirement
-  // // Optionally, handle the response
-  // print(response);
-}
-
-// Method to call the native payment method
-Future<String> pay(Map<String, String> data) async {
-  const MethodChannel channel =
-      MethodChannel('plugin_ccavenue'); // Your method channel name
-  return await channel.invokeMethod('payCCAvenue', data);
 }

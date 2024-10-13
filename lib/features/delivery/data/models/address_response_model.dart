@@ -8,7 +8,7 @@ class AddressResponseModel {
   int? userId;
   int? id;
   int? cityId;
-
+  int? countryId;
   AddressResponseModel({
     this.country,
     this.city,
@@ -17,6 +17,7 @@ class AddressResponseModel {
     this.userId,
     this.id,
     this.cityId,
+    this.countryId,
   });
 
   factory AddressResponseModel.fromRawJson(String str) =>
@@ -33,6 +34,7 @@ class AddressResponseModel {
         userId: json["user_id"],
         id: json["id"],
         cityId: json["city_id"],
+        countryId: json["country_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,6 +45,7 @@ class AddressResponseModel {
         "user_id": userId,
         "id": id,
         "city_id": cityId,
+        "country_id": countryId,
       };
   factory AddressResponseModel.fromEntity(AddressResponseModel entity) =>
       AddressResponseModel(
@@ -53,5 +56,6 @@ class AddressResponseModel {
         userId: entity.userId,
         id: entity.id,
         cityId: entity.cityId,
+        countryId: entity.countryId,
       );
 }

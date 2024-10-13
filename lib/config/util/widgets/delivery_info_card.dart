@@ -60,7 +60,11 @@ class DeliveryInfoCard extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 4),
                           child: InkWell(
                             onTap: () {
-                              // context.read<DeliveryInfoActionCubit>().getCiteies(deliveryInformation.c)
+                              context
+                                  .read<DeliveryInfoActionCubit>()
+                                  .getCiteies(deliveryInformation?.countryId
+                                          .toString() ??
+                                      '');
                               showModalBottomSheet<void>(
                                 context: context,
                                 isScrollControlled: true,

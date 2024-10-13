@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/config/helpers/spacing.dart';
+import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/order/presentation/bloc/order_add/order_add_cubit.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
+import 'package:eshop/features/profile/presentation/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -58,9 +60,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       ),
       body: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
-          if (state is CartError) {
-            EasyLoading.showError(state.failure.toString());
-          }
+          // if (state is CartError) {
+          //   EasyLoading.showError(state.failure.toString());
+          // }
         },
         child: ListView(
           children: [
@@ -147,7 +149,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     height: 10,
                   ),
                   Text(
-                    widget.product.stock == 0 || widget.product.stock == null
+                    widget.product.stock == null ||
+                            (widget.product.stock ?? 0) <= 0
                         ? "Out Of Stock"
                         : 'Stock: ${widget.product.sizeQty == null || widget.product.sizeQty!.isEmpty ? widget.product.stock : widget.product.sizeQty?[_selectedsizeIndex]}',
                     style: const TextStyle(
@@ -224,90 +227,104 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           ],
         ),
       ),
-      bottomNavigationBar: widget.product.stock == 0
-          ? const SizedBox.shrink()
-          : Container(
-              color: Theme.of(context).colorScheme.secondary,
-              height: 80 + MediaQuery.of(context).padding.bottom,
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom + 10,
-                top: 10,
-                left: 20,
-                right: 20,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Total",
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
-                      ),
-                      BlocBuilder<ProductBloc, ProductState>(
-                        builder: (context, state) {
-                          return Text(
-                            '\$${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 120,
-                    child: InputFormButton(
-                      onClick: () {
-                        context.read<CartBloc>().add(AddProduct(
-                            cartItem: AddToCardRequest(
-                                id: widget.product.id,
-                                qty: context
-                                    .read<ProductBloc>()
-                                    .countity
-                                    .toString(),
-                                // sizePrice:
-                                //     double.parse(_selectedPriceTag).toInt(),
-                                size: widget.product.size == null ||
-                                        widget.product.size!.isEmpty
-                                    ? null
-                                    : widget
-                                        .product.size?[_selectedsizeIndex])));
-                        // print("test");
-                        Navigator.pop(context);
-                      },
-                      titleText: "Add to Cart",
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  SizedBox(
-                    width: 90,
-                    child: InputFormButton(
-                      onClick: () {
-                        Navigator.of(context)
-                            .pushNamed(AppRouter.orderCheckout, arguments: [
-                          Cart(
-                            item: widget.product,
-                            price: (double.parse(_selectedPriceTag) *
-                                    context.read<ProductBloc>().countity)
-                                .toInt(),
-                          )
-                        ]);
-                      },
-                      titleText: "Buy",
-                    ),
-                  ),
-                ],
+      bottomNavigationBar:
+
+          //  (widget.product.stock ?? 0) <= 0
+          //     ?
+          //      const SizedBox.shrink()
+          //     :
+
+          Container(
+        color: Theme.of(context).colorScheme.secondary,
+        height: 80 + MediaQuery.of(context).padding.bottom,
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom + 10,
+          top: 10,
+          left: 20,
+          right: 20,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Total",
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                ),
+                BlocBuilder<ProductBloc, ProductState>(
+                  builder: (context, state) {
+                    return Text(
+                      '\$${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 120,
+              child: InputFormButton(
+                onClick: () {
+                  if (Constants.token != null) {
+                    context.read<CartBloc>().add(AddProduct(
+                        isGuest: Constants.token == null,
+                        cartItem: AddToCardRequest(
+                            id: widget.product.id,
+                            qty:
+                                context.read<ProductBloc>().countity.toString(),
+                            // sizePrice:
+                            //     double.parse(_selectedPriceTag).toInt(),
+                            size: widget.product.size == null ||
+                                    widget.product.size!.isEmpty
+                                ? null
+                                : widget.product.size?[_selectedsizeIndex])));
+                    Navigator.pop(context);
+                  } else {
+                    EasyLoading.showError('Please Login First');
+                    Navigator.of(context).pushNamed(AppRouter.signIn);
+                  }
+
+                  // print("test");
+                },
+                titleText: "Add to Cart",
               ),
             ),
+            const SizedBox(
+              width: 6,
+            ),
+            SizedBox(
+              width: 90,
+              child: InputFormButton(
+                onClick: () {
+                  if (Constants.token != null) {
+                    Navigator.of(context)
+                        .pushNamed(AppRouter.orderCheckout, arguments: [
+                      Cart(
+                        item: widget.product,
+                        price: (double.parse(_selectedPriceTag) *
+                                context.read<ProductBloc>().countity)
+                            .toInt(),
+                      )
+                    ]);
+                  } else {
+                    EasyLoading.showError('Please Login First');
+                    Navigator.of(context).pushNamed(AppRouter.signIn);
+                  }
+                },
+                titleText: "Buy",
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

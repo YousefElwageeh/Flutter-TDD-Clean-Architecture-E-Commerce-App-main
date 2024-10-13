@@ -41,8 +41,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       //   (failure) => emit(CartError(cart: state.cart, failure: failure)),
       //   (cart) => emit(CartLoaded(cart: cart)),
       // );
-      final syncResult = await _syncCartUseCase(NoParams());
 
+      final syncResult = await _syncCartUseCase(NoParams());
       syncResult.fold((failure) {
         log(failure.toString());
         emit(CartError(cart: state.cart, failure: failure));
@@ -57,21 +57,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onAddToCart(AddProduct event, Emitter<CartState> emit) async {
     try {
       emit(CartLoading(cart: state.cart));
-      CartModel cart = CartModel();
-      cart = state.cart;
-      // cart.add();
-      repository.addToCart(event.cartItem).then((va) {
-        va.fold((failure) {
-          log(failure.errorMessage.toUpperCase());
-          EasyLoading.showError('SomeThing Went Wrong');
 
-          emit(CartError(cart: state.cart, failure: failure));
-        }, (cart) async {
-          EasyLoading.showSuccess('Product added to cart successfully');
+      if (event.isGuest) {
+        CartModel cart = CartModel();
+        cart = state.cart;
+        // cart.add();
+        repository.addToCart(event.cartItem).then((va) {
+          va.fold((failure) {
+            log(failure.errorMessage.toUpperCase());
+            EasyLoading.showError('SomeThing Went Wrong');
 
-          emit(CartLoaded(cart: state.cart));
+            emit(CartError(cart: state.cart, failure: failure));
+          }, (cart) async {
+            EasyLoading.showSuccess('Product added to cart successfully');
+
+            emit(CartLoaded(cart: state.cart));
+          });
         });
-      });
+      } else {
+        EasyLoading.showError('Please Login First');
+        emit(CartError(failure: ExceptionFailure(), cart: state.cart));
+      }
     } catch (e) {
       //   emit(CartError(cart: state.cart, failure: ExceptionFailure()));
     }

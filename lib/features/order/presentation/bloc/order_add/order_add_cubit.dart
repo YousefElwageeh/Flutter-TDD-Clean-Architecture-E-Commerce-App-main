@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
@@ -20,19 +22,21 @@ class OrderAddCubit extends Cubit<OrderAddState> {
     final result = await _addOrderUseCase(params);
     result.fold((failure) => emit(OrderAddFail()), (order) {
       emit(OrderAddSuccess());
-      EasyLoading.showSuccess("Order Placed Successfully");
+     //   EasyLoading.showSuccess("Order Placed Successfully");
       getPaymentWebView(order.data['id']);
     });
   }
 
   String webViewUrl = "";
   getPaymentWebView(int orderID) {
-    emit(OrderGetWebViewLoading());
+   
     repository.getPaymentWebView(orderID: orderID.toString()).then(
       (value) {
-        value.fold((failure) => emit(OrderGetWebViewFail()), (order) {
+        value.fold((failure) => log(failure.toString()), (order) {
           webViewUrl = order.data.toString();
-          emit(OrderGetWebViewSuccess());
+                    emit(OrderGetWebViewSuccess());
+
+
           //  EasyLoading.showSuccess("Order Placed Successfully");
         });
       },

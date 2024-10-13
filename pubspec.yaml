@@ -31,8 +31,6 @@ dependencies:
   bloc: ^8.1.2
   cached_network_image: ^3.3.1
   carousel_slider: ^5.0.0
-  cc_avenue: ^1.0.3
-  ccavenue_unofficial: ^0.0.2
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^5.7.0
