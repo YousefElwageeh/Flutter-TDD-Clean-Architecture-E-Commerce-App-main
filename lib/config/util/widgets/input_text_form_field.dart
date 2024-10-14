@@ -11,18 +11,20 @@ class InputTextFormField extends StatefulWidget {
   final bool enable;
   final TextInputAction? textInputAction;
   final Function(String)? onFieldSubmitted;
+  final TextInputType? keyboardType;
   const InputTextFormField({
     super.key,
     required this.controller,
     this.isSecureField = false,
     this.autoCorrect = false,
-    this.enable = true,
     this.hint,
-    this.validation,
     this.contentPadding,
-    this.textInputAction,
+    this.validation,
     this.hintTextSize = 14,
+    this.enable = true,
+    this.textInputAction,
     this.onFieldSubmitted,
+    this.keyboardType,
   });
 
   @override
@@ -43,6 +45,7 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
       enabled: widget.enable,
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         filled: true,
         hintText: widget.hint,

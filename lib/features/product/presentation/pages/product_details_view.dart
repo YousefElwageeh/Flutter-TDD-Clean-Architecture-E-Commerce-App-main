@@ -227,104 +227,101 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           ],
         ),
       ),
-      bottomNavigationBar:
+      bottomNavigationBar: (widget.product.stock ?? 0) <= 0
+          ? const SizedBox.shrink()
+          : Container(
+              color: Theme.of(context).colorScheme.secondary,
+              height: 80 + MediaQuery.of(context).padding.bottom,
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom + 10,
+                top: 10,
+                left: 20,
+                right: 20,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Total",
+                        style: TextStyle(color: Colors.white70, fontSize: 16),
+                      ),
+                      BlocBuilder<ProductBloc, ProductState>(
+                        builder: (context, state) {
+                          return Text(
+                            '\$${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 120,
+                    child: InputFormButton(
+                      onClick: () {
+                        if (Constants.token != null) {
+                          context.read<CartBloc>().add(AddProduct(
+                              cartItem: AddToCardRequest(
+                                  id: widget.product.id,
+                                  qty: context
+                                      .read<ProductBloc>()
+                                      .countity
+                                      .toString(),
+                                  // sizePrice:
+                                  //     double.parse(_selectedPriceTag).toInt(),
+                                  size: widget.product.size == null ||
+                                          widget.product.size!.isEmpty
+                                      ? null
+                                      : widget
+                                          .product.size?[_selectedsizeIndex])));
+                          Navigator.pop(context);
+                        } else {
+                          EasyLoading.showError('Please Login First');
+                          Navigator.of(context).pushNamed(AppRouter.signIn);
+                        }
 
-          //  (widget.product.stock ?? 0) <= 0
-          //     ?
-          //      const SizedBox.shrink()
-          //     :
-
-          Container(
-        color: Theme.of(context).colorScheme.secondary,
-        height: 80 + MediaQuery.of(context).padding.bottom,
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom + 10,
-          top: 10,
-          left: 20,
-          right: 20,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Total",
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
-                ),
-                BlocBuilder<ProductBloc, ProductState>(
-                  builder: (context, state) {
-                    return Text(
-                      '\$${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    );
-                  },
-                ),
-              ],
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 120,
-              child: InputFormButton(
-                onClick: () {
-                  if (Constants.token != null) {
-                    context.read<CartBloc>().add(AddProduct(
-                        isGuest: Constants.token == null,
-                        cartItem: AddToCardRequest(
-                            id: widget.product.id,
-                            qty:
-                                context.read<ProductBloc>().countity.toString(),
-                            // sizePrice:
-                            //     double.parse(_selectedPriceTag).toInt(),
-                            size: widget.product.size == null ||
-                                    widget.product.size!.isEmpty
-                                ? null
-                                : widget.product.size?[_selectedsizeIndex])));
-                    Navigator.pop(context);
-                  } else {
-                    EasyLoading.showError('Please Login First');
-                    Navigator.of(context).pushNamed(AppRouter.signIn);
-                  }
-
-                  // print("test");
-                },
-                titleText: "Add to Cart",
+                        // print("test");
+                      },
+                      titleText: "Add to Cart",
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 6,
+                  ),
+                  SizedBox(
+                    width: 90,
+                    child: InputFormButton(
+                      onClick: () {
+                        if (Constants.token != null) {
+                          Navigator.of(context)
+                              .pushNamed(AppRouter.orderCheckout, arguments: [
+                            Cart(
+                              item: widget.product,
+                              price: (double.parse(_selectedPriceTag) *
+                                      context.read<ProductBloc>().countity)
+                                  .toInt(),
+                            )
+                          ]);
+                        } else {
+                          EasyLoading.showError('Please Login First');
+                          Navigator.of(context).pushNamed(AppRouter.signIn);
+                        }
+                      },
+                      titleText: "Buy",
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              width: 6,
-            ),
-            SizedBox(
-              width: 90,
-              child: InputFormButton(
-                onClick: () {
-                  if (Constants.token != null) {
-                    Navigator.of(context)
-                        .pushNamed(AppRouter.orderCheckout, arguments: [
-                      Cart(
-                        item: widget.product,
-                        price: (double.parse(_selectedPriceTag) *
-                                context.read<ProductBloc>().countity)
-                            .toInt(),
-                      )
-                    ]);
-                  } else {
-                    EasyLoading.showError('Please Login First');
-                    Navigator.of(context).pushNamed(AppRouter.signIn);
-                  }
-                },
-                titleText: "Buy",
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

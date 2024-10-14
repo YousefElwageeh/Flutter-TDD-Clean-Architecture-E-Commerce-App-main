@@ -329,6 +329,7 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                   InputTextFormField(
                     controller: contactNumber,
                     hint: 'Contact number',
+                    keyboardType: TextInputType.phone,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {

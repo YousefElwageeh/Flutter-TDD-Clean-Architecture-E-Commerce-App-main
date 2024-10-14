@@ -58,26 +58,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       emit(CartLoading(cart: state.cart));
 
-      if (event.isGuest) {
-        CartModel cart = CartModel();
-        cart = state.cart;
-        // cart.add();
-        repository.addToCart(event.cartItem).then((va) {
-          va.fold((failure) {
-            log(failure.errorMessage.toUpperCase());
-            EasyLoading.showError('SomeThing Went Wrong');
+      CartModel cart = CartModel();
+      cart = state.cart;
+      // cart.add();
+      repository.addToCart(event.cartItem).then((va) {
+        va.fold((failure) {
+          log(failure.errorMessage.toUpperCase());
+          EasyLoading.showError('SomeThing Went Wrong');
 
-            emit(CartError(cart: state.cart, failure: failure));
-          }, (cart) async {
-            EasyLoading.showSuccess('Product added to cart successfully');
+          emit(CartError(cart: state.cart, failure: failure));
+        }, (cart) async {
+          EasyLoading.showSuccess('Product added to cart successfully');
 
-            emit(CartLoaded(cart: state.cart));
-          });
+          emit(CartLoaded(cart: state.cart));
         });
-      } else {
-        EasyLoading.showError('Please Login First');
-        emit(CartError(failure: ExceptionFailure(), cart: state.cart));
-      }
+      });
     } catch (e) {
       //   emit(CartError(cart: state.cart, failure: ExceptionFailure()));
     }
