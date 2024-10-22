@@ -6,6 +6,7 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 import 'package:eshop/features/delivery/data/models/cities_model.dart';
 import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
+import 'package:eshop/features/delivery/data/models/payment_model.dart';
 import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +22,7 @@ abstract class DeliveryInfoRemoteDataSource {
   Future<List<NearestBrancheModel>> getNearictsBranches(
       double lat, double long);
   Future<Response> deleteDeliveryAdderss(String deliveryID);
+  Future<PaymentMethodModel> getPaymrntsMethode();
 
   Future<ShipmentPriceModel> getDeliveryPriceDependsOnZone(String cityId);
 }
@@ -96,5 +98,13 @@ class DeliveryInfoRemoteDataSourceImpl implements DeliveryInfoRemoteDataSource {
       url: '${EndPoints.addresses}/$deliveryID',
     );
     return result;
+  }
+
+  @override
+  Future<PaymentMethodModel> getPaymrntsMethode() async {
+    final result = await DioFactory.getdata(
+      url: EndPoints.paymentMethodes,
+    );
+    return PaymentMethodModel.fromJson(result.data);
   }
 }

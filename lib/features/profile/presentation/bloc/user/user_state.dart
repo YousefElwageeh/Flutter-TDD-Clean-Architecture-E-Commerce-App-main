@@ -31,3 +31,10 @@ class UserLoggedOut extends UserState {
   @override
   List<Object> get props => [];
 }
+
+class UserSignUpFail extends UserState {
+  final Failure failure;
+  UserSignUpFail(this.failure);
+  @override
+  List<Object> get props => [failure];
+}

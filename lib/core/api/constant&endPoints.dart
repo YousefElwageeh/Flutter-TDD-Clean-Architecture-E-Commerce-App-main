@@ -35,6 +35,7 @@ class EndPoints {
 
   static const String getOrders = '/api/orders';
   static const String getVat = '/api/vat';
+  static const String paymentMethodes = '/api/payment/1';
 
   static const String joinGame = '/api/join-game';
   static const String gameChallenges = '/api/game-challenges';

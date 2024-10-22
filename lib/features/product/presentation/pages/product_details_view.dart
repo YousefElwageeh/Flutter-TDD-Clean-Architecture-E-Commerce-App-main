@@ -2,6 +2,12 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:eshop/config/helpers/spacing.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
@@ -10,20 +16,20 @@ import 'package:eshop/features/order/presentation/bloc/order_add/order_add_cubit
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:eshop/features/profile/presentation/bloc/user/user_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../config/util/widgets/input_form_button.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../cart/presentation/bloc/cart_bloc.dart';
-import '../../../../config/util/widgets/input_form_button.dart';
 
 class ProductDetailsView extends StatefulWidget {
   final Product product;
+  final int? itemIndex;
 
-  const ProductDetailsView({super.key, required this.product});
+  const ProductDetailsView({
+    super.key,
+    required this.product,
+    this.itemIndex,
+  });
 
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
@@ -264,35 +270,49 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ],
                   ),
                   const Spacer(),
-                  SizedBox(
-                    width: 120,
-                    child: InputFormButton(
-                      onClick: () {
-                        if (Constants.token != null) {
-                          context.read<CartBloc>().add(AddProduct(
-                              cartItem: AddToCardRequest(
-                                  id: widget.product.id,
-                                  qty: context
-                                      .read<ProductBloc>()
-                                      .countity
-                                      .toString(),
-                                  // sizePrice:
-                                  //     double.parse(_selectedPriceTag).toInt(),
-                                  size: widget.product.size == null ||
-                                          widget.product.size!.isEmpty
-                                      ? null
-                                      : widget
-                                          .product.size?[_selectedsizeIndex])));
-                          Navigator.pop(context);
-                        } else {
-                          EasyLoading.showError('Please Login First');
-                          Navigator.of(context).pushNamed(AppRouter.signIn);
-                        }
+                  BlocBuilder<CartBloc, CartState>(
+                    builder: (context, state) {
+                      return SizedBox(
+                        width: 120,
+                        child: InputFormButton(
+                          onClick: () {
+                            if (Constants.token != null) {
+                              context.read<CartBloc>().add(AddProduct(
+                                  cartItem: AddToCardRequest(
+                                      id: widget.product.id,
+                                      qty: context
+                                          .read<ProductBloc>()
+                                          .countity
+                                          .toString(),
+                                      // sizePrice:
+                                      //     double.parse(_selectedPriceTag).toInt(),
+                                      size: widget.product.size == null ||
+                                              widget.product.size!.isEmpty
+                                          ? null
+                                          : widget.product
+                                              .size?[_selectedsizeIndex])));
 
-                        // print("test");
-                      },
-                      titleText: "Add to Cart",
-                    ),
+                              if (widget.itemIndex != null) {
+                                final quantityToUpdate = context
+                                    .read<ProductBloc>()
+                                    .countity; // Assuming this gives the quantity to add
+                                context.read<CartBloc>().add(
+                                    UpdateCartItemQuantity(
+                                        widget.itemIndex!, quantityToUpdate));
+                              }
+
+                              Navigator.pop(context);
+                            } else {
+                              EasyLoading.showError('Please Login First');
+                              Navigator.of(context).pushNamed(AppRouter.signIn);
+                            }
+
+                            // print("test");
+                          },
+                          titleText: "Add to Cart",
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(
                     width: 6,
@@ -306,6 +326,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               .pushNamed(AppRouter.orderCheckout, arguments: [
                             Cart(
                               item: widget.product,
+                              qty: context.read<ProductBloc>().countity,
                               price: (double.parse(_selectedPriceTag) *
                                       context.read<ProductBloc>().countity)
                                   .toInt(),

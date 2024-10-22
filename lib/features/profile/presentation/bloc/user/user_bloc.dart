@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/core/api/dio_factory.dart';
@@ -45,7 +47,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserLoading());
       final result = await _signInUseCase(event.params);
       result.fold(
-        (failure) => emit(UserLoggedFail(failure)),
+        (failure) {
+          emit(UserLoggedFail(failure));
+        },
         (user) {
           sl<FlutterSecureStorage>()
               .write(key: Constants.tokenKey, value: user.token);
@@ -80,7 +84,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserLoading());
       final result = await _signUpUseCase(event.params);
       result.fold(
-        (failure) => emit(UserLoggedFail(failure)),
+        (failure) {
+          emit(UserSignUpFail(failure));
+        },
         (user) {
           sl<FlutterSecureStorage>()
               .write(key: Constants.tokenKey, value: user.token);

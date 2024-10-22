@@ -228,6 +228,25 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
     );
   }
 
+  List<DropdownMenuEntry> paymentOption = [];
+  String selectedPaymentMethode = '';
+  getpaymentOption() {
+    repository.getPaymrntsMethode().then((value) => value.fold((failure) {
+          emit(GetPaymentOptionFail());
+        }, (data) {
+          if (data.payments != null) {
+            paymentOption = data.payments!.map((e) {
+              return DropdownMenuEntry(
+                value: e.id.toString(),
+                label: e.title ?? '',
+              );
+            }).toList();
+          }
+
+          updateVATWidget();
+        }));
+  }
+
   void updateVATWidget() {
     emit(OrderGEtVatSuccess(VATPrectage.toDouble(), updateTotalPrice: false));
   }

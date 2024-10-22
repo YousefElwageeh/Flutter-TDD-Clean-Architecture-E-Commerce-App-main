@@ -41,12 +41,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             AppRouter.home,
             ModalRoute.withName(''),
           );
-        } else if (state is UserLoggedFail) {
-          if (state.failure is CredentialFailure) {
-            EasyLoading.showError("Username/Password Wrong!");
-          } else {
-            EasyLoading.showError("Error");
-          }
+        } else if (state is UserSignUpFail) {
+          EasyLoading.showError(state
+                  .failure.errorMessage?.response!.data['error']
+                  .toString()
+                  .replaceAll('{', '')
+                  .replaceAll('}', '') ??
+              '');
         }
       },
       child: Scaffold(

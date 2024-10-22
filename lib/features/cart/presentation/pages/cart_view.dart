@@ -52,49 +52,71 @@ class _CartViewState extends State<CartView> {
                           return const CardEmptyWidget();
                         }
                         if (state is CartLoading) {
-                          return ListView.builder(
-                              itemCount: 5,
-                              itemBuilder: (context, index) =>
-                                  const CartItemCard());
-                        }
-                        return ListView.builder(
-                          itemCount: state is CartLoading
-                              ? 10
-                              : (state.cart.cart?.length ?? 0),
-                          padding: EdgeInsets.only(
-                              top: (MediaQuery.of(context).padding.top + 20),
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 200),
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (state is CartLoading &&
-                                state.cart.cart!.isEmpty) {
-                              return const CartItemCard();
-                            } else {
-                              if ((state.cart.cart?.length ?? 0) < index) {
-                                return const CartItemCard();
-                              }
-                              log(index.toString());
-                              return CartItemCard(
-                                cartItem: state.cart.cart![index],
-                                isSelected: selectedCartItems.any((element) =>
-                                    element == state.cart.cart![index]),
-                                onLongClick: () {
-                                  setState(() {
-                                    if (selectedCartItems.any((element) =>
-                                        element == state.cart.cart![index])) {
-                                      selectedCartItems
-                                          .remove(state.cart.cart![index]);
-                                    } else {
-                                      selectedCartItems
-                                          .add(state.cart.cart![index]);
-                                    }
-                                  });
+                          return RefreshIndicator.adaptive(
+                            onRefresh: () {
+                              return Future(
+                                () {
+                                  BlocProvider.of<CartBloc>(context)
+                                      .add(const GetCart());
                                 },
                               );
-                            }
+                            },
+                            child: ListView.builder(
+                                itemCount: 5,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemBuilder: (context, index) =>
+                                    const CartItemCard()),
+                          );
+                        }
+                        return RefreshIndicator.adaptive(
+                          onRefresh: () {
+                            return Future(
+                              () {
+                                BlocProvider.of<CartBloc>(context)
+                                    .add(const GetCart());
+                              },
+                            );
                           },
+                          child: ListView.builder(
+                            itemCount: state is CartLoading
+                                ? 10
+                                : (state.cart.cart?.length ?? 0),
+                            padding: EdgeInsets.only(
+                                top: (MediaQuery.of(context).padding.top + 20),
+                                bottom: MediaQuery.of(context).padding.bottom +
+                                    200),
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              if (state is CartLoading &&
+                                  state.cart.cart!.isEmpty) {
+                                return const CartItemCard();
+                              } else {
+                                if ((state.cart.cart?.length ?? 0) < index) {
+                                  return const CartItemCard();
+                                }
+                                log(index.toString());
+                                return CartItemCard(
+                                  index: index,
+                                  cartItem: state.cart.cart![index],
+                                  isSelected: selectedCartItems.any((element) =>
+                                      element == state.cart.cart![index]),
+                                  onLongClick: () {
+                                    setState(() {
+                                      if (selectedCartItems.any((element) =>
+                                          element == state.cart.cart![index])) {
+                                        selectedCartItems
+                                            .remove(state.cart.cart![index]);
+                                      } else {
+                                        selectedCartItems
+                                            .add(state.cart.cart![index]);
+                                      }
+                                    });
+                                  },
+                                );
+                              }
+                            },
+                          ),
                         );
                       },
                     ),

@@ -30,6 +30,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<GetCart>(_onGetCart);
     on<AddProduct>(_onAddToCart);
     on<ClearCart>(_onClearCart);
+    on<UpdateCartItemQuantity>(_onUpdateCartItemQuantity);
   }
 
   void _onGetCart(GetCart event, Emitter<CartState> emit) async {
@@ -56,25 +57,29 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   void _onAddToCart(AddProduct event, Emitter<CartState> emit) async {
     try {
+      // Start with loading state
       emit(CartLoading(cart: state.cart));
 
-      CartModel cart = CartModel();
-      cart = state.cart;
-      // cart.add();
-      repository.addToCart(event.cartItem).then((va) {
-        va.fold((failure) {
-          log(failure.errorMessage.toUpperCase());
-          EasyLoading.showError('SomeThing Went Wrong');
+      // Call repository with await
+      final result = await repository.addToCart(event.cartItem);
 
+      // Handle the result using fold from dartz package
+      result.fold(
+        (failure) {
+          // Show error and emit CartError state
+          EasyLoading.showError('Something went wrong');
           emit(CartError(cart: state.cart, failure: failure));
-        }, (cart) async {
-          EasyLoading.showSuccess('Product added to cart successfully');
-
+        },
+        (cart) {
+          // Emit success state
           emit(CartLoaded(cart: state.cart));
-        });
-      });
+          EasyLoading.showSuccess('Product added to cart successfully');
+        },
+      );
     } catch (e) {
-      //   emit(CartError(cart: state.cart, failure: ExceptionFailure()));
+      // Catch any other exceptions and emit error state
+      EasyLoading.showError('Unexpected error occurred');
+      emit(CartError(cart: state.cart, failure: ExceptionFailure()));
     }
   }
 
@@ -82,7 +87,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       emit(CartLoading(cart: CartModel()));
       emit(CartLoaded(cart: CartModel()));
-      await _clearCartUseCase(NoParams());
     } catch (e) {
       emit(CartError(cart: CartModel(), failure: ExceptionFailure()));
     }
@@ -100,5 +104,22 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(CartLoaded(cart: state.cart));
       });
     });
+  }
+
+  // cart_bloc.dart
+  void _onUpdateCartItemQuantity(
+      UpdateCartItemQuantity event, Emitter<CartState> emit) {
+    final cart = state.cart;
+    if (cart.cart != null && event.itemIndex < cart.cart!.length) {
+      final currentItem = cart.cart![event.itemIndex];
+      final updatedQuantity = (currentItem.qty ?? 0) + event.quantity;
+
+      // Create a new CartModel with updated quantity
+      state.cart.cart?[event.itemIndex].qty = updatedQuantity;
+      emit(CartLoaded(cart: state.cart));
+      log('hjfffgh');
+
+      log(state.cart.cart?[event.itemIndex].qty.toString() ?? '');
+    }
   }
 }

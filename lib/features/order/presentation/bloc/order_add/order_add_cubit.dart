@@ -22,20 +22,22 @@ class OrderAddCubit extends Cubit<OrderAddState> {
     final result = await _addOrderUseCase(params);
     result.fold((failure) => emit(OrderAddFail()), (order) {
       emit(OrderAddSuccess());
-     //   EasyLoading.showSuccess("Order Placed Successfully");
-      getPaymentWebView(order.data['id']);
+      //   EasyLoading.showSuccess("Order Placed Successfully");
+      if (params.paymentMethod == 97) {
+        getPaymentWebView(order.data['id']);
+      } else {
+        EasyLoading.showSuccess("Order Placed Successfully");
+      }
     });
   }
 
   String webViewUrl = "";
   getPaymentWebView(int orderID) {
-   
     repository.getPaymentWebView(orderID: orderID.toString()).then(
       (value) {
         value.fold((failure) => log(failure.toString()), (order) {
           webViewUrl = order.data.toString();
-                    emit(OrderGetWebViewSuccess());
-
+          emit(OrderGetWebViewSuccess());
 
           //  EasyLoading.showSuccess("Order Placed Successfully");
         });

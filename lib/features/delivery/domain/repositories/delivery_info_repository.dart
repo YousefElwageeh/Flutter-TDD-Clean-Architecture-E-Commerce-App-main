@@ -5,6 +5,7 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 import 'package:eshop/features/delivery/data/models/cities_model.dart';
 import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
+import 'package:eshop/features/delivery/data/models/payment_model.dart';
 import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 
 import '../../../../core/error/failures.dart';
@@ -27,6 +28,7 @@ abstract class DeliveryInfoRepository {
       double lat, double long);
   Future<Either<Failure, Response>> deleteDeliveryAdderss(String deliveryID);
 
+  Future<Either<Failure, PaymentMethodModel>> getPaymrntsMethode();
   Future<Either<Failure, ShipmentPriceModel>> getDeliveryPriceDependsOnZone(
       String cityId);
 }

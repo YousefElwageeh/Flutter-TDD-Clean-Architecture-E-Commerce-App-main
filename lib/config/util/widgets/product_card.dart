@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
+import 'package:eshop/features/product/presentation/pages/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -36,8 +37,8 @@ class ProductCard extends StatelessWidget {
           log('sdaifjsioadfj');
 
           try {
-            Navigator.of(context)
-                .pushNamed(AppRouter.productDetails, arguments: product);
+            Navigator.of(context).pushNamed(AppRouter.productDetails,
+                arguments: ProductDetailsView(product: product ?? Product()));
           } catch (e) {
             log(e.toString());
           }

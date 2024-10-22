@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/product/presentation/pages/product_details_view.dart';
 
 import '../../../core/router/app_router.dart';
 import '../../../features/cart/presentation/bloc/cart_bloc.dart';
@@ -11,6 +14,8 @@ class CartItemCard extends StatelessWidget {
   final Cart? cartItem;
   final Function? onFavoriteToggle;
   final Function? onClick;
+  final int? index;
+
   final Function()? onLongClick;
   final bool isSelected;
   const CartItemCard({
@@ -18,6 +23,7 @@ class CartItemCard extends StatelessWidget {
     this.cartItem,
     this.onFavoriteToggle,
     this.onClick,
+    this.index,
     this.onLongClick,
     this.isSelected = false,
   });
@@ -40,8 +46,11 @@ class CartItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (cartItem != null) {
-          Navigator.of(context)
-              .pushNamed(AppRouter.productDetails, arguments: cartItem!.item);
+          Navigator.of(context).pushNamed(AppRouter.productDetails,
+              arguments: ProductDetailsView(
+                product: cartItem!.item ?? Product(),
+                itemIndex: index,
+              ));
         }
       },
       onLongPress: onLongClick,

@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:dio/src/response.dart';
+import 'package:eshop/core/network/network_info.dart';
 import 'package:eshop/core/usecases/usecase.dart';
 import 'package:eshop/features/auth/data/models/user_model.dart';
+import 'package:dio/dio.dart';
 
 import '../../../../../../core/error/failures.dart';
-import '../../../../core/network/network_info.dart';
+
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/user_local_data_source.dart';
@@ -66,8 +69,8 @@ class UserRepositoryImpl implements UserRepository {
         localDataSource.saveToken(remoteResponse.token ?? "");
         localDataSource.saveUser(remoteResponse);
         return Right(remoteResponse);
-      } on Failure catch (failure) {
-        return Left(failure);
+      } on DioException catch (e) {
+        return Left(Failure(errorMessage: e));
       }
     } else {
       return Left(NetworkFailure());
@@ -79,7 +82,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       return Right(await remoteDataSource.sendOTP(email));
     } catch (e) {
-      return Left(Failure(errorMessage: e.toString()));
+      return Left(Failure());
     }
   }
 }

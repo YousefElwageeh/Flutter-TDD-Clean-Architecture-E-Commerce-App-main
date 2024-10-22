@@ -26,3 +26,11 @@ class ClearCart extends CartEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateCartItemQuantity extends CartEvent {
+  final int itemIndex;
+  final int quantity;
+  @override
+  List<Object> get props => [];
+  const UpdateCartItemQuantity(this.itemIndex, this.quantity);
+}

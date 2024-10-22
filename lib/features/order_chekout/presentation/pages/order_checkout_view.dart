@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/config/helpers/spacing.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
@@ -47,6 +48,7 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
         value: 'Delivery',
         label: 'Delivery',
       ));
+      context.read<DeliveryInfoActionCubit>().selectedPaymentMethode = '';
 
       context.read<DeliveryInfoActionCubit>().deliveryPrice = '';
       context.read<DeliveryInfoActionCubit>().selectedBranch =
@@ -55,6 +57,8 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
           AddressResponseModel();
     }
     super.initState();
+    context.read<DeliveryInfoActionCubit>().getpaymentOption();
+
     context.read<DeliveryInfoActionCubit>().getVat();
   }
 
@@ -71,7 +75,13 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
             context.read<NavbarCubit>().update(0);
             context.read<NavbarCubit>().controller.jumpToPage(0);
             // context.read<CartBloc>().add(const ClearCart());
-            // Navigator.of(context).pop();
+            if (context
+                    .read<DeliveryInfoActionCubit>()
+                    .selectedPaymentMethode ==
+                '94') {
+              Navigator.of(context).pop();
+              context.read<CartBloc>().add(const ClearCart());
+            }
           } else if (state is OrderAddFail) {
             EasyLoading.showError("Error");
           } else if (state is OrderGetWebViewSuccess) {
@@ -105,6 +115,27 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                       }
                     },
                     dropdownMenuEntries: options),
+                const SizedBox(
+                  height: 10,
+                ),
+                BlocBuilder<DeliveryInfoActionCubit, DeliveryInfoActionState>(
+                  builder: (context, state) {
+                    return DropdownMenu(
+                        label: const Text('Choose Payment method'),
+                        width: double.infinity,
+                        onSelected: (value) {
+                          context
+                              .read<DeliveryInfoActionCubit>()
+                              .selectedPaymentMethode = value;
+                          log(context
+                              .read<DeliveryInfoActionCubit>()
+                              .selectedPaymentMethode);
+                        },
+                        dropdownMenuEntries: context
+                            .read<DeliveryInfoActionCubit>()
+                            .paymentOption);
+                  },
+                ),
                 const SizedBox(
                   height: 16,
                 ),
@@ -177,10 +208,45 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Total Number of Items"),
+                            const Text("Total Number of Products"),
                             Text("x${widget.items.length}")
                           ],
                         ),
+
+                        // Expanded(
+                        //   child: ListView.separated(
+                        //     separatorBuilder: (context, index) {
+                        //       return verticalSpace(10);
+                        //     },
+                        //     physics: const NeverScrollableScrollPhysics(),
+                        //     itemCount: widget.items.length,
+                        //     itemBuilder: (context, index) {
+                        //       return Column(
+                        //         children: [
+                        //           Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //               const Text("Total Number of Items"),
+                        //               Text(
+                        //                   "${widget.items[index].qty}\$x${widget.items[index].item?.price}\$")
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("Total Price"),
+                            Text(
+                                "\$${widget.items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue))}")
+                          ],
+                        ),
+
                         BlocBuilder<DeliveryInfoActionCubit,
                             DeliveryInfoActionState>(
                           builder: (context, state) {
@@ -207,14 +273,6 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                             }
                             return const SizedBox.shrink();
                           },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Total Price"),
-                            Text(
-                                "\$${widget.items.fold(0.0, (previousValue, element) => (element.price!.toDouble() + previousValue))}")
-                          ],
                         ),
                         BlocBuilder<DeliveryInfoActionCubit,
                             DeliveryInfoActionState>(
@@ -286,6 +344,11 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                                 .id ==
                             null) {
                       EasyLoading.showError("Please select delivery Method");
+                    } else if (context
+                        .read<DeliveryInfoActionCubit>()
+                        .selectedPaymentMethode
+                        .isEmpty) {
+                      EasyLoading.showError("Please select Payment Method");
                     } else {
                       context.read<OrderAddCubit>().addOrder(OrderRequestModel(
                           productsId: widget.items
@@ -313,7 +376,9 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                               .data
                               ?.shipmentPrice
                               ?.shipmentId,
-                          paymentMethod: 94,
+                          paymentMethod: int.parse(context
+                              .read<DeliveryInfoActionCubit>()
+                              .selectedPaymentMethode),
                           productsQu: widget.items
                               .map((item) => item.qty ?? 1)
                               .toList()));

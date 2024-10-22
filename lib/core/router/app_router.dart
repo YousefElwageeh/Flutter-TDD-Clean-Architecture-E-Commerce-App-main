@@ -81,9 +81,13 @@ class AppRouter {
       case signUp:
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case productDetails:
-        pm.Product product = routeSettings.arguments as pm.Product;
+        ProductDetailsView arguments =
+            routeSettings.arguments as ProductDetailsView;
         return MaterialPageRoute(
-            builder: (_) => ProductDetailsView(product: product));
+            builder: (_) => ProductDetailsView(
+                  product: arguments.product,
+                  itemIndex: arguments.itemIndex,
+                ));
       case userProfile:
         User user = routeSettings.arguments as User;
         return MaterialPageRoute(

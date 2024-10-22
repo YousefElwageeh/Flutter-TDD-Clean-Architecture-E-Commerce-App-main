@@ -48,3 +48,9 @@ class OrderGEtVatSuccess extends DeliveryInfoActionState {
 }
 
 class OrderGEtVatError extends DeliveryInfoActionState {}
+
+class GetPaymentOptionSuccess extends DeliveryInfoActionState {
+  GetPaymentOptionSuccess();
+}
+
+class GetPaymentOptionFail extends DeliveryInfoActionState {}

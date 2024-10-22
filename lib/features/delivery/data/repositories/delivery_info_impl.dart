@@ -6,6 +6,7 @@ import 'package:eshop/features/delivery/data/models/address_response_model.dart'
 import 'package:eshop/features/delivery/data/models/cities_model.dart';
 import 'package:eshop/features/delivery/data/models/countries_model.dart';
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
+import 'package:eshop/features/delivery/data/models/payment_model.dart';
 import 'package:eshop/features/delivery/data/models/shipmet_price_model.dart';
 
 import '../../../../../../core/error/failures.dart';
@@ -176,6 +177,16 @@ class DeliveryInfoRepositoryImpl implements DeliveryInfoRepository {
       String deliveryID) async {
     try {
       var result = await remoteDataSource.deleteDeliveryAdderss(deliveryID);
+      return Right(result);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaymentMethodModel>> getPaymrntsMethode() async {
+    try {
+      var result = await remoteDataSource.getPaymrntsMethode();
       return Right(result);
     } on Failure catch (failure) {
       return Left(failure);

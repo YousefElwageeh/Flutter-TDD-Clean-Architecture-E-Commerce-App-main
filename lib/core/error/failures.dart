@@ -1,9 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 class Failure extends Equatable {
-  String errorMessage = 'something went Wrong';
+  DioException? errorMessage;
   Failure({
-    this.errorMessage = 'something went Wrong',
+    this.errorMessage,
   });
   @override
   List<Object> get props => [];
