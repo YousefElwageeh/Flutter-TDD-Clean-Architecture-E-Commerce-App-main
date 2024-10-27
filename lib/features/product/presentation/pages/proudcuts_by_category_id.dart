@@ -1,5 +1,8 @@
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/util/widgets/delivery_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:eshop/core/services/services_locator.dart';
@@ -20,7 +23,7 @@ class ProductsByCatrgory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Products'),
+        title: Text(AppLocale.Products.getString(context)),
       ),
       body: BlocProvider<ProductBloc>(
         create: (context) => sl<ProductBloc>()

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
@@ -171,6 +172,7 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
                   LatLng(position.latitude, position.longitude), 14));
               log(markers.toString());
               emit(GetNearestBrancheSuccess());
+              updateVATWidget();
             }));
   }
 
@@ -208,6 +210,7 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
           deliveryPrice = data.data?.shipmentPrice?.value.toString() ?? "";
           log(shipmentPrice.data?.shipmentPrice?.shipmentId.toString() ?? '');
           emit(GetDliveryPriceSuccess());
+          updateVATWidget();
         }));
   }
 

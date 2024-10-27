@@ -1,7 +1,9 @@
 import 'package:eshop/config/helpers/validators.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../core/constant/images.dart';
 import '../../../../core/error/failures.dart';
@@ -34,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       listener: (context, state) {
         EasyLoading.dismiss();
         if (state is UserLoading) {
-          EasyLoading.show(status: 'Loading...');
+          EasyLoading.show(status: AppLocale.loading.getString(context));
         } else if (state is UserLogged) {
           context.read<CartBloc>().add(const GetCart());
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -42,165 +44,132 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ModalRoute.withName(''),
           );
         } else if (state is UserSignUpFail) {
-          EasyLoading.showError(state
-                  .failure.errorMessage?.response!.data['error']
-                  .toString()
-                  .replaceAll('{', '')
-                  .replaceAll('}', '') ??
-              '');
+          EasyLoading.showError(
+            state.failure.errorMessage?.response?.data['error']
+                    .toString()
+                    .replaceAll('{', '')
+                    .replaceAll('}', '') ??
+                '',
+          );
         }
       },
       child: Scaffold(
-          body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  SizedBox(
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 50),
+                    SizedBox(
                       height: 80,
-                      child: Image.asset(
-                        kAppLogo,
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    "Please use your e-mail address to crate a new account",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  InputTextFormField(
-                    controller: firstNameController,
-                    hint: 'First Name',
-                    textInputAction: TextInputAction.next,
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  InputTextFormField(
-                    controller: emailController,
-                    hint: 'Email',
-                    textInputAction: TextInputAction.next,
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  InputTextFormField(
-                    controller: phoneNameController,
-                    hint: 'Phone Number',
-                    textInputAction: TextInputAction.next,
-                    validation: (String? val) {
-                      if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  InputTextFormField(
-                    controller: passwordController,
-                    hint: 'Password',
-                    textInputAction: TextInputAction.next,
-                    isSecureField: true,
-                    validation: (String? val) {
-                      return Valdiator.validatePassword(
-                        passwordController.text,
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  InputTextFormField(
-                    controller: confirmPasswordController,
-                    hint: 'Confirm Password',
-                    isSecureField: true,
-                    textInputAction: TextInputAction.go,
-                    validation: (String? val) {
-                      return Valdiator.validateConfirmPassword(
-                          passwordController.text,
-                          confirmPasswordController.text);
-                    },
-                    onFieldSubmitted: (_) {
-                      if (_formKey.currentState!.validate()) {
-                        if (passwordController.text !=
-                            confirmPasswordController.text) {
-                        } else {
-                          context.read<UserBloc>().add(SignUpUser(SignUpParams(
-                                name: firstNameController.text,
-                                phone: phoneNameController.text,
-                                email: emailController.text,
-                                password: passwordController.text,
-                              )));
+                      child: Image.asset(kAppLogo),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      AppLocale.pleaseUseEmailToCreateAccount
+                          .getString(context),
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    InputTextFormField(
+                      controller: firstNameController,
+                      hint: AppLocale.firstName.getString(context),
+                      textInputAction: TextInputAction.next,
+                      validation: (val) => val == null || val.isEmpty
+                          ? 'This field can\'t be empty'
+                          : null,
+                    ),
+                    const SizedBox(height: 12),
+                    InputTextFormField(
+                      controller: emailController,
+                      hint: AppLocale.email.getString(context),
+                      textInputAction: TextInputAction.next,
+                      validation: (val) => val == null || val.isEmpty
+                          ? 'This field can\'t be empty'
+                          : null,
+                    ),
+                    const SizedBox(height: 12),
+                    InputTextFormField(
+                      controller: phoneNameController,
+                      hint: AppLocale.phoneNumber.getString(context),
+                      textInputAction: TextInputAction.next,
+                      validation: (val) => val == null || val.isEmpty
+                          ? 'This field can\'t be empty'
+                          : null,
+                    ),
+                    const SizedBox(height: 12),
+                    InputTextFormField(
+                      controller: passwordController,
+                      hint: AppLocale.password.getString(context),
+                      isSecureField: true,
+                      textInputAction: TextInputAction.next,
+                      validation: Valdiator.validatePassword,
+                    ),
+                    const SizedBox(height: 12),
+                    InputTextFormField(
+                      controller: confirmPasswordController,
+                      hint: AppLocale.confirmPassword.getString(context),
+                      isSecureField: true,
+                      textInputAction: TextInputAction.go,
+                      validation: (val) {
+                        return passwordController.text !=
+                                confirmPasswordController.text
+                            ? AppLocale.passwordsDoNotMatch.getString(context)
+                            : null;
+                      },
+                      onFieldSubmitted: (_) {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<UserBloc>().add(
+                                SignUpUser(
+                                  SignUpParams(
+                                    name: firstNameController.text,
+                                    phone: phoneNameController.text,
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  ),
+                                ),
+                              );
                         }
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  InputFormButton(
-                    color: Colors.black87,
-                    onClick: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (passwordController.text !=
-                            confirmPasswordController.text) {
-                        } else {
-                          context.read<UserBloc>().add(SignUpUser(SignUpParams(
-                                name: firstNameController.text,
-                                phone: phoneNameController.text,
-                                email: emailController.text,
-                                password: passwordController.text,
-                              )));
+                      },
+                    ),
+                    const SizedBox(height: 40),
+                    InputFormButton(
+                      color: Colors.black87,
+                      onClick: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<UserBloc>().add(
+                                SignUpUser(
+                                  SignUpParams(
+                                    name: firstNameController.text,
+                                    phone: phoneNameController.text,
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  ),
+                                ),
+                              );
                         }
-                      }
-                    },
-                    titleText: 'Sign Up',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InputFormButton(
-                    color: Colors.black87,
-                    onClick: () {
-                      Navigator.of(context).pop();
-                    },
-                    titleText: 'Back',
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                ],
+                      },
+                      titleText: AppLocale.signUp.getString(context),
+                    ),
+                    const SizedBox(height: 10),
+                    InputFormButton(
+                      color: Colors.black87,
+                      onClick: () => Navigator.of(context).pop(),
+                      titleText: AppLocale.back.getString(context),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

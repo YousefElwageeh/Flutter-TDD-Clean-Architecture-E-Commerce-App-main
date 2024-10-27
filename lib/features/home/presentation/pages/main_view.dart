@@ -1,5 +1,7 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 
 import '../bloc/navbar_cubit.dart';
@@ -29,7 +31,6 @@ class _MainViewState extends State<MainView> {
                   controller: context.read<NavbarCubit>().controller,
                   children: const <Widget>[
                     HomeView(),
-                    //  CategoryView(),
                     CartView(),
                     OtherView(),
                   ],
@@ -42,7 +43,7 @@ class _MainViewState extends State<MainView> {
             left: 18,
             right: 18,
             child: Padding(
-              padding: const EdgeInsets.only(left: 0, right: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: BlocBuilder<NavbarCubit, int>(
                 builder: (context, state) {
                   return SnakeNavigationBar.color(
@@ -68,71 +69,64 @@ class _MainViewState extends State<MainView> {
                     showUnselectedLabels: false,
                     showSelectedLabels: true,
                     currentIndex: state,
-                    onTap: (index) => setState(() {
-                      context.read<NavbarCubit>().controller.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.linear);
-                      context.read<NavbarCubit>().update(index);
-                    }),
-                    items: const [
+                    onTap: (index) {
+                      setState(() {
+                        context.read<NavbarCubit>().controller.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.linear);
+                        context.read<NavbarCubit>().update(index);
+                      });
+                    },
+                    items: [
                       BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/navbar_icons/home.png"),
-                            color: Colors.white,
-                            size: 26,
+                        icon: const ImageIcon(
+                          AssetImage("assets/navbar_icons/home.png"),
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        activeIcon: const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            maxRadius: 4,
                           ),
-                          activeIcon: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.green,
-                              maxRadius: 4,
-                            ),
-                          ),
-                          label: 'Home'),
-                      // BottomNavigationBarItem(
-                      //     icon: ImageIcon(
-                      //       AssetImage("assets/navbar_icons/categories.png"),
-                      //       color: Colors.white,
-                      //       size: 26,
-                      //     ),
-                      //     activeIcon: Padding(
-                      //       padding: EdgeInsets.all(5.0),
-                      //       child: CircleAvatar(
-                      //         backgroundColor: Colors.deepOrange,
-                      //         maxRadius: 4,
-                      //       ),
-                      //     ),
-                      //     label: 'Category'),
+                        ),
+                        label: AppLocale.home
+                            .getString(context), // Localized label
+                      ),
                       BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/navbar_icons/shopping-cart.png"),
-                            color: Colors.white,
-                            size: 26,
+                        icon: const ImageIcon(
+                          AssetImage("assets/navbar_icons/shopping-cart.png"),
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        activeIcon: const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            maxRadius: 4,
                           ),
-                          activeIcon: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.green,
-                              maxRadius: 4,
-                            ),
-                          ),
-                          label: 'Cart'),
+                        ),
+                        label: AppLocale.cart
+                            .getString(context), // Localized label
+                      ),
                       BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage("assets/navbar_icons/user.png"),
-                            color: Colors.white,
-                            size: 26,
+                        icon: const ImageIcon(
+                          AssetImage("assets/navbar_icons/user.png"),
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        activeIcon: const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            maxRadius: 4,
                           ),
-                          activeIcon: Padding(
-                            padding: EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.green,
-                              maxRadius: 4,
-                            ),
-                          ),
-                          label: 'Other'),
-                      // BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search')
+                        ),
+                        label: AppLocale.other
+                            .getString(context), // Localized label
+                      ),
                     ],
                   );
                 },

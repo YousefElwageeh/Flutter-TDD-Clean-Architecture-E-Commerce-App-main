@@ -1,5 +1,8 @@
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/util/widgets/delivery_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../bloc/category_bloc.dart';
 import '../../../../config/util/widgets/category_card.dart';
@@ -60,7 +63,7 @@ class _CategoryViewState extends State<CategoryView> {
                           )
                         : null,
                     border: const OutlineInputBorder(),
-                    hintText: "Search Category",
+                    hintText: AppLocale.searchCaregory.getString(context),
                     fillColor: Colors.grey.shade100,
                     filled: true,
                     focusedBorder: OutlineInputBorder(

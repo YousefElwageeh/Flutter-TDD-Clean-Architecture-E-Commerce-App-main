@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/Bloc_observer.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,8 +34,32 @@ Future<void> main() async {
   configLoading();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FlutterLocalization localization = FlutterLocalization.instance;
+
+  @override
+  void initState() {
+    localization.init(
+      mapLocales: [
+        const MapLocale('en', AppLocale.EN),
+        const MapLocale('ar', AppLocale.AR),
+      ],
+      initLanguageCode: 'ar',
+    );
+    localization.onTranslatedLanguage = _onTranslatedLanguage;
+    super.initState();
+  }
+
+  void _onTranslatedLanguage(Locale? locale) {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +98,8 @@ class MyApp extends StatelessWidget {
       ],
       child: OKToast(
         child: MaterialApp(
+          supportedLocales: localization.supportedLocales,
+          localizationsDelegates: localization.localizationsDelegates,
           debugShowCheckedModeBanner: false,
           initialRoute: AppRouter.home,
           onGenerateRoute: AppRouter.onGenerateRoute,

@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter_localization/flutter_localization.dart';
 
 class ProductResponseModel {
   String? status;
@@ -122,7 +125,13 @@ class Product {
     this.currencyAr,
     this.currencyEn,
     this.discount,
-  });
+  }) {
+    final FlutterLocalization localization = FlutterLocalization.instance;
+    if (localization.currentLocale.localeIdentifier == 'ar') {
+      details = detailsAr;
+      name = nameAr;
+    }
+  }
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
 

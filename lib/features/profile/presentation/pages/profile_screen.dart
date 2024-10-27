@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/constant/images.dart';
 import 'package:eshop/features/profile/data/models/update_profile_request.dart';
 import 'package:eshop/features/profile/presentation/bloc/profile_cubit.dart';
 import 'package:eshop/features/profile/presentation/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -41,101 +43,90 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Text('Profile'),
+        title: Text(AppLocale.profileTitle.getString(context)),
       ),
       body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-          child: ListView(
-            children: [
-              Center(
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    Hero(
-                      tag: "C001",
-                      child: CircleAvatar(
-                        radius: 75.0,
-                        backgroundColor: Colors.grey.shade200,
-                        backgroundImage: commonImage(
-                          imagePicked: pickedImage,
-                          imageUrl: widget.user.image,
-                        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+        child: ListView(
+          children: [
+            Center(
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Hero(
+                    tag: "C001",
+                    child: CircleAvatar(
+                      radius: 75.0,
+                      backgroundColor: Colors.grey.shade200,
+                      backgroundImage: commonImage(
+                        imagePicked: pickedImage,
+                        imageUrl: widget.user.image,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        selectSourceImageBottomSheet(context);
-                        //   GO.toNamed(AppPageRoute.updateProfile);
-                      },
-                      child: Container(
-                          width: 25,
-                          height: 25,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue,
-                          ),
-                          child: const Icon(Icons.edit,
-                              size: 17, color: Colors.black)),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      selectSourceImageBottomSheet(context);
+                    },
+                    child: Container(
+                      width: 25,
+                      height: 25,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                      ),
+                      child:
+                          const Icon(Icons.edit, size: 17, color: Colors.black),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 50,
-              ),
-              InputTextFormField(
-                controller: firstNameController,
-                hint: 'First Name',
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              InputTextFormField(
-                controller: email,
-                hint: 'Email Address',
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              InputTextFormField(
-                controller: phoneController,
-                hint: 'phone',
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-
-              // InputTextFormField(
-              //   controller: firstNameController,
-              //   hint: 'Contact Number',
-              // ),
-            ],
-          )),
-      bottomNavigationBar: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        child: BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            return InputFormButton(
-              onClick: () {
-                context
-                    .read<ProfileCubit>()
-                    .updateProfile(UpdateProfileRequest(
-                      name: firstNameController.text,
-                      email: email.text,
-                      phone: phoneController.text,
-                      photo: pickedImage?.path,
-                    ))
-                    .then((v) {
-                  context.read<UserBloc>().add(CheckUser());
-                });
-              },
-              titleText: "Update",
-              color: Colors.black87,
-            );
-          },
+            ),
+            const SizedBox(height: 50),
+            InputTextFormField(
+              controller: firstNameController,
+              hint: AppLocale.firstNameHint.getString(context),
+            ),
+            const SizedBox(height: 12),
+            InputTextFormField(
+              controller: email,
+              hint: AppLocale.emailHint.getString(context),
+            ),
+            const SizedBox(height: 12),
+            InputTextFormField(
+              controller: phoneController,
+              hint: AppLocale.phoneHint.getString(context),
+            ),
+            const SizedBox(height: 12),
+          ],
         ),
-      )),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              return InputFormButton(
+                onClick: () {
+                  context
+                      .read<ProfileCubit>()
+                      .updateProfile(UpdateProfileRequest(
+                        name: firstNameController.text,
+                        email: email.text,
+                        phone: phoneController.text,
+                        photo: pickedImage?.path,
+                      ))
+                      .then((v) {
+                    context.read<UserBloc>().add(CheckUser());
+                  });
+                },
+                titleText: AppLocale.updateButtonText.getString(context),
+                color: Colors.black87,
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 
@@ -155,54 +146,56 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   selectSourceImageBottomSheet(BuildContext context) {
     return showModalBottomSheet(
-        context: context,
-        builder: (context) => Container(
-              height: 100,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(20))),
-              child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  child: BlocProvider(
-                      create: (context) => ProfileCubit(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () async {
-                                    const permission = Permission.camera;
-                                    if (await permission.isDenied) {
-                                      await permission.request();
-                                    }
-
-                                    pickAnImage(source: ImageSource.camera);
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.camera)),
-                              const Text('Camera')
-                            ],
-                          ),
-                          const Spacer(),
-                          Column(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    pickAnImage(source: ImageSource.gallery);
-
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.image)),
-                              const Text('Gallery')
-                            ],
-                          ),
-                        ],
-                      ))),
-            ));
+      context: context,
+      builder: (context) => Container(
+        height: 100,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+          child: BlocProvider(
+            create: (context) => ProfileCubit(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        const permission = Permission.camera;
+                        if (await permission.isDenied) {
+                          await permission.request();
+                        }
+                        pickAnImage(source: ImageSource.camera);
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.camera),
+                    ),
+                    Text(AppLocale.cameraLabel.getString(context)),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        pickAnImage(source: ImageSource.gallery);
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.image),
+                    ),
+                    Text(AppLocale.galleryLabel.getString(context)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

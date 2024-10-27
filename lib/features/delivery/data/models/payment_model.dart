@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_localization/flutter_localization.dart';
+
 class PaymentMethodModel {
   String? status;
   List<Payment>? payments;
@@ -48,7 +50,14 @@ class Payment {
     this.details,
     this.detailsAr,
     this.status,
-  });
+  }) {
+    FlutterLocalization localization = FlutterLocalization.instance;
+
+    if (localization.currentLocale.localeIdentifier == 'ar') {
+      title = titleAr;
+      details = detailsAr;
+    }
+  }
 
   factory Payment.fromRawJson(String str) => Payment.fromJson(json.decode(str));
 

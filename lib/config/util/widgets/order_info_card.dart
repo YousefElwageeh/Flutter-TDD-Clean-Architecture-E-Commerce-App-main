@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'outline_label_card.dart';
@@ -22,19 +24,25 @@ class OrderInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Order ID : ${orderDetails!.orderNumber}",
+                  "${AppLocale.orderIdLabel.getString(context)} : ${orderDetails!.orderNumber}",
                   style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  "Order Items : ${orderDetails!.cart?.length}",
+                  "${AppLocale.orderItemsLabel.getString(context)} : ${orderDetails!.cart?.length}",
                   style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  "Order Price : ${orderDetails!.cart?.fold(0.0, (previousValue, element) => (previousValue + (element.price!)))}",
+                  "${AppLocale.orderPriceLabel.getString(context)} : ${orderDetails!.payAmount}",
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  "${AppLocale.paymentStatusLabel.getString(context)} : ${orderDetails!.paymentStatus}",
                   style: const TextStyle(
                     fontSize: 14,
                   ),

@@ -1,8 +1,10 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/extension/string_extension.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
@@ -78,9 +80,9 @@ class DeliveryInfoCard extends StatelessWidget {
                                 },
                               );
                             },
-                            child: const Text(
-                              "Edit",
-                              style: TextStyle(color: Colors.blueAccent),
+                            child: Text(
+                              AppLocale.edit.getString(context),
+                              style: const TextStyle(color: Colors.blueAccent),
                             ),
                           ),
                         )

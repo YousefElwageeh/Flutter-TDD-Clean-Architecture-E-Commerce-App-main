@@ -1,4 +1,6 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -7,7 +9,7 @@ class AboutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("About"),
+        title: Text(AppLocale.about.getString(context)),
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),

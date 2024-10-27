@@ -1,9 +1,11 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:eshop/features/delivery/data/models/add_address_request.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../config/util/widgets/delivery_info_card.dart';
 import '../../../../config/util/widgets/input_form_button.dart';
@@ -27,7 +29,6 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
   @override
   void initState() {
     context.read<DeliveryInfoActionCubit>().getCountries();
-
     super.initState();
   }
 
@@ -37,18 +38,18 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
       listener: (context, state) {
         EasyLoading.dismiss();
         if (state is DeliveryInfoActionLoading) {
-          EasyLoading.show(status: 'Loading...');
+          EasyLoading.show(status: AppLocale.loading.getString(context));
         } else if (state is DeliveryInfoSelectActionSuccess) {
           context
               .read<DeliveryInfoFetchCubit>()
               .selectDeliveryInfo(state.deliveryInfo);
         } else if (state is DeliveryInfoActionFail) {
-          EasyLoading.showError("Error");
+          EasyLoading.showError(AppLocale.error.getString(context));
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Delivery Details"),
+          title: Text(AppLocale.deliveryDetails.getString(context)),
         ),
         body: BlocBuilder<DeliveryInfoFetchCubit, DeliveryInfoFetchState>(
           builder: (context, state) {
@@ -58,7 +59,7 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(kEmptyDeliveryInfo),
-                  const Text("Delivery information are Empty!"),
+                  Text(AppLocale.deliveryInformationEmpty.getString(context)),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                   )
@@ -69,7 +70,6 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
               onRefresh: () {
                 context.read<DeliveryInfoFetchCubit>().fetchDeliveryInfo();
                 context.read<DeliveryInfoActionCubit>().getCountries();
-
                 return Future.value();
               },
               child: ListView.builder(
@@ -113,11 +113,11 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
                             context
                                 .read<DeliveryInfoActionCubit>()
                                 .updateVATWidget();
-
                             Navigator.pop(context);
                           } else {
-                            EasyLoading.showError(
-                                "Please select a Delivery Info");
+                            EasyLoading.showError(AppLocale
+                                .pleaseSelectDeliveryInfo
+                                .getString(context));
                           }
                         },
                         child: const Icon(Icons.done),
@@ -178,11 +178,8 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
     if (widget.deliveryInfo != null) {
       id = widget.deliveryInfo?.id.toString() ?? '';
       countryName = widget.deliveryInfo!.country ?? "";
-      // lastName.text = widget.deliveryInfo!.city ?? '';
       addressLineOne.text = widget.deliveryInfo!.address ?? '';
-      // addressLineTwo.text = widget.deliveryInfo!.addressLineTwo;
       city = widget.deliveryInfo!.city ?? '';
-      // zipCode.text = widget.deliveryInfo!.zipCode;
       contactNumber.text = widget.deliveryInfo!.phone ?? '';
     }
     super.initState();
@@ -194,21 +191,23 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
       listener: (context, state) {
         EasyLoading.dismiss();
         if (state is DeliveryInfoActionLoading) {
-          EasyLoading.show(status: 'Loading...');
+          EasyLoading.show(status: AppLocale.loading.getString(context));
         } else if (state is DeliveryInfoAddActionSuccess) {
           Navigator.of(context).pop();
           context
               .read<DeliveryInfoFetchCubit>()
               .addDeliveryInfo(state.deliveryInfo);
-          EasyLoading.showSuccess("Delivery info successfully added!");
+          EasyLoading.showSuccess(
+              AppLocale.deliveryInfoSuccessfullyAdded.getString(context));
         } else if (state is DeliveryInfoEditActionSuccess) {
           Navigator.of(context).pop();
           context
               .read<DeliveryInfoFetchCubit>()
               .editDeliveryInfo(state.deliveryInfo);
-          EasyLoading.showSuccess("Delivery info successfully edited!");
+          EasyLoading.showSuccess(
+              AppLocale.deliveryInfoSuccessfullyEdited.getString(context));
         } else if (state is DeliveryInfoActionFail) {
-          EasyLoading.showError("Error");
+          EasyLoading.showError(AppLocale.error.getString(context));
         }
       },
       child: SizedBox(
@@ -276,64 +275,36 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                       );
                     },
                   ),
-
                   const SizedBox(
                     height: 10,
                   ),
                   InputTextFormField(
                     controller: addressLineOne,
-                    hint: 'Address line one',
+                    hint: AppLocale.addressLineOneHint.getString(context),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
+                        return AppLocale.thisFieldCantBeEmpty
+                            .getString(context);
                       }
                       return null;
                     },
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // InputTextFormField(
-                  //   controller: addressLineTwo,
-                  //   hint: 'Address line two',
-                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  //   validation: (String? val) {
-                  //     if (val == null || val.isEmpty) {
-                  //       return 'This field can\'t be empty';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
                   const SizedBox(
                     height: 10,
                   ),
-
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // InputTextFormField(
-                  //   controller: zipCode,
-                  //   hint: 'Zip code',
-                  //   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  //   validation: (String? val) {
-                  //     if (val == null || val.isEmpty) {
-                  //       return 'This field can\'t be empty';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
                   const SizedBox(
                     height: 12,
                   ),
                   InputTextFormField(
                     controller: contactNumber,
-                    hint: 'Contact number',
+                    hint: AppLocale.contactNumberHint.getString(context),
                     keyboardType: TextInputType.phone,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     validation: (String? val) {
                       if (val == null || val.isEmpty) {
-                        return 'This field can\'t be empty';
+                        return AppLocale.thisFieldCantBeEmpty
+                            .getString(context);
                       }
                       return null;
                     },
@@ -343,47 +314,43 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                   ),
                   InputFormButton(
                     color: Colors.black87,
+                    titleText: widget.deliveryInfo == null
+                        ? AppLocale.save.getString(context)
+                        : AppLocale.update.getString(context),
                     onClick: () {
                       if (_formKey.currentState!.validate()) {
+                        AddressRequestModel addressRequest =
+                            AddressRequestModel(
+                          id: id,
+                          address: addressLineOne.text,
+                          city: city,
+                          country: countryName,
+                          phone: contactNumber.text,
+                        );
                         if (widget.deliveryInfo == null) {
                           context
                               .read<DeliveryInfoActionCubit>()
-                              .addDeliveryInfo(AddressRequestModel(
-                                id: '',
-                                // lastName: lastName.text,
-                                address: addressLineOne.text,
-                                // country: addressLineTwo.text,
-
-                                // zipCode: zipCode.text,
-                                phone: contactNumber.text,
-                              ));
+                              .addDeliveryInfo(addressRequest);
                         } else {
                           context
                               .read<DeliveryInfoActionCubit>()
-                              .editDeliveryInfo(AddressRequestModel(
-                                id: id!,
-
-                                // lastName: lastName.text,
-                                address: addressLineOne.text,
-                                //  country: addressLineTwo.text,
-
-                                // zipCode: zipCode.text,
-                                phone: contactNumber.text,
-                              ));
+                              .editDeliveryInfo(addressRequest);
                         }
                       }
                     },
-                    titleText: widget.deliveryInfo == null ? 'Save' : 'Update',
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   InputFormButton(
                     color: Colors.black87,
+                    titleText: AppLocale.cancel.getString(context),
                     onClick: () {
                       Navigator.of(context).pop();
                     },
-                    titleText: 'Cancel',
+                  ),
+                  const SizedBox(
+                    height: 8,
                   ),
                 ],
               ),

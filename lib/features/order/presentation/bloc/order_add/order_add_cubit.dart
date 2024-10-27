@@ -17,7 +17,7 @@ class OrderAddCubit extends Cubit<OrderAddState> {
 
   OrderAddCubit(this._addOrderUseCase) : super(OrderAddInitial());
 
-  void addOrder(OrderRequestModel params) async {
+  void addOrder(OrderRequestModel params, {Function? onSuccess}) async {
     emit(OrderAddLoading());
     final result = await _addOrderUseCase(params);
     result.fold((failure) => emit(OrderAddFail()), (order) {
@@ -27,6 +27,7 @@ class OrderAddCubit extends Cubit<OrderAddState> {
         getPaymentWebView(order.data['id']);
       } else {
         EasyLoading.showSuccess("Order Placed Successfully");
+        onSuccess != null ? onSuccess() : null;
       }
     });
   }

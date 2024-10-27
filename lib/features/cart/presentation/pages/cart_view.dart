@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../core/constant/images.dart';
 import '../../../../core/error/failures.dart';
@@ -146,7 +148,7 @@ class _CartViewState extends State<CartView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Total (${state.cart.cart?.length} items)',
+                              '${AppLocale.total.getString(context)} ${state.cart.cart?.length}  ${AppLocale.item.getString(context)}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             Text(
@@ -169,7 +171,8 @@ class _CartViewState extends State<CartView> {
                                 AppRouter.orderCheckout,
                                 arguments: state.cart.cart);
                           },
-                          titleText: 'Checkout',
+                          titleText: AppLocale.checkout
+                              .getString(context), // Localized checkout button
                         ),
                       ),
                     ],
@@ -189,7 +192,8 @@ class _CartViewState extends State<CartView> {
       children: [
         if (state.failure is NetworkFailure) Image.asset(kNoConnection),
         if (state.failure is ServerFailure) Image.asset(kInternalServerError),
-        const Text("Cart is Empty!"),
+        Text(AppLocale.cartEmpty
+            .getString(context)), // Localized cart empty message
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.1,
         )
@@ -209,7 +213,8 @@ class CardEmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(kEmptyCart),
-        const Text("Cart is Empty!"),
+        Text(AppLocale.cartEmpty
+            .getString(context)), // Localized cart empty message
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.1,
         )

@@ -1,8 +1,10 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/features/home/presentation/bloc/navbar_cubit.dart';
 import 'package:eshop/features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../core/constant/images.dart';
 import '../../../../core/error/failures.dart';
@@ -29,168 +31,159 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          EasyLoading.dismiss();
-          if (state is UserLoading) {
-            EasyLoading.show(status: 'Loading...');
-          } else if (state is UserLogged) {
-            context.read<CartBloc>().add(const GetCart());
-            context.read<DeliveryInfoFetchCubit>().fetchDeliveryInfo();
-            context.read<OrderFetchCubit>().getOrders();
-            context.read<NavbarCubit>().update(0);
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRouter.home,
-              ModalRoute.withName(''),
-            );
-          } else if (state is UserLoggedFail) {
-            if (state.failure.errorMessage?.response?.statusCode == 401) {
-              EasyLoading.showError(
-                  'Incorrect email or password. Please try again.');
-            }
+      listener: (context, state) {
+        EasyLoading.dismiss();
+        if (state is UserLoading) {
+          EasyLoading.show(
+              status: AppLocale.loading
+                  .getString(context)); // Add loading status here
+        } else if (state is UserLogged) {
+          context.read<CartBloc>().add(const GetCart());
+          context.read<DeliveryInfoFetchCubit>().fetchDeliveryInfo();
+          context.read<OrderFetchCubit>().getOrders();
+          context.read<NavbarCubit>().update(0);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRouter.home,
+            ModalRoute.withName(''),
+          );
+        } else if (state is UserLoggedFail) {
+          if (state.failure.errorMessage?.response?.statusCode == 401) {
+            EasyLoading.showError(AppLocale.errorIncorrectCredentials
+                .getString(context)); // Update error message
           }
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    SizedBox(
-                        height: 80,
-                        child: Image.asset(
-                          kAppLogo,
-                        )),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      "Please enter your e-mail address and password to sign-in",
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Spacer(
-                      flex: 2,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    InputTextFormField(
-                      controller: emailController,
-                      textInputAction: TextInputAction.next,
-                      hint: 'Email',
-                      validation: (String? val) {
-                        if (val == null || val.isEmpty) {
-                          return 'This field can\'t be empty';
-                        }
-                        return null;
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    height: 80,
+                    child: Image.asset(kAppLogo),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    AppLocale.titleSignIn
+                        .getString(context), // Replace with localization
+                    style: const TextStyle(fontSize: 16, color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(flex: 2),
+                  const SizedBox(height: 24),
+                  InputTextFormField(
+                    controller: emailController,
+                    textInputAction: TextInputAction.next,
+                    hint: AppLocale.hintEmail
+                        .getString(context), // Replace with localization
+                    validation: (String? val) {
+                      if (val == null || val.isEmpty) {
+                        return AppLocale.errorEmptyField
+                            .getString(context); // Update error message
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  InputTextFormField(
+                    controller: passwordController,
+                    textInputAction: TextInputAction.go,
+                    hint: AppLocale.hintPassword
+                        .getString(context), // Replace with localization
+                    isSecureField: true,
+                    validation: (String? val) {
+                      if (val == null || val.isEmpty) {
+                        return AppLocale.errorEmptyField
+                            .getString(context); // Update error message
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (_) {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<UserBloc>().add(SignInUser(SignInParams(
+                              username: emailController.text,
+                              password: passwordController.text,
+                            )));
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.forgetPassword);
                       },
+                      child: Text(
+                        AppLocale.textForgotPassword
+                            .getString(context), // Replace with localization
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    InputTextFormField(
-                      controller: passwordController,
-                      textInputAction: TextInputAction.go,
-                      hint: 'Password',
-                      isSecureField: true,
-                      validation: (String? val) {
-                        if (val == null || val.isEmpty) {
-                          return 'This field can\'t be empty';
-                        }
-                        return null;
-                      },
-                      onFieldSubmitted: (_) {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<UserBloc>().add(SignInUser(SignInParams(
-                                username: emailController.text,
-                                password: passwordController.text,
-                              )));
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, AppRouter.forgetPassword);
-                        },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            fontSize: 14,
+                  ),
+                  const SizedBox(height: 24),
+                  InputFormButton(
+                    color: Colors.black87,
+                    onClick: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<UserBloc>().add(SignInUser(SignInParams(
+                              username: emailController.text,
+                              password: passwordController.text,
+                            )));
+                      }
+                    },
+                    titleText: AppLocale.buttonSignIn
+                        .getString(context), // Replace with localization
+                  ),
+                  const SizedBox(height: 10),
+                  InputFormButton(
+                    color: Colors.black87,
+                    onClick: () {
+                      Navigator.of(context).pop();
+                    },
+                    titleText: AppLocale.buttonBack
+                        .getString(context), // Replace with localization
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocale.textNoAccount
+                              .getString(context), // Replace with localization
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRouter.signUp);
+                          },
+                          child: Text(
+                            AppLocale.textRegister.getString(
+                                context), // Replace with localization
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    InputFormButton(
-                      color: Colors.black87,
-                      onClick: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<UserBloc>().add(SignInUser(SignInParams(
-                                username: emailController.text,
-                                password: passwordController.text,
-                              )));
-                        }
-                      },
-                      titleText: 'Sign In',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    InputFormButton(
-                      color: Colors.black87,
-                      onClick: () {
-                        Navigator.of(context).pop();
-                      },
-                      titleText: 'Back',
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Don\'t have an account! ',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRouter.signUp);
-                            },
-                            child: const Text(
-                              'Register',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

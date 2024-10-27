@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -59,10 +61,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       appBar: AppBar(
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
-        ],
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
+        //   IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
+        // ],
       ),
       body: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
@@ -157,8 +159,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   Text(
                     widget.product.stock == null ||
                             (widget.product.stock ?? 0) <= 0
-                        ? "Out Of Stock"
-                        : 'Stock: ${widget.product.sizeQty == null || widget.product.sizeQty!.isEmpty ? widget.product.stock : widget.product.sizeQty?[_selectedsizeIndex]}',
+                        ? AppLocale.outOfStock.getString(context)
+                        : "${AppLocale.stockLabel.getString(context)}:${widget.product.sizeQty == null || widget.product.sizeQty!.isEmpty ? widget.product.stock : widget.product.sizeQty?[_selectedsizeIndex]}",
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w500),
                   ),
@@ -252,9 +254,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Total",
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
+                      Text(
+                        AppLocale.total.getString(context),
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 16),
                       ),
                       BlocBuilder<ProductBloc, ProductState>(
                         builder: (context, state) {
@@ -303,13 +306,16 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
                               Navigator.pop(context);
                             } else {
-                              EasyLoading.showError('Please Login First');
+                              EasyLoading.showError(AppLocale.pleaseLoginError
+                                  .getString(context));
+
                               Navigator.of(context).pushNamed(AppRouter.signIn);
                             }
 
                             // print("test");
                           },
-                          titleText: "Add to Cart",
+                          titleText:
+                              AppLocale.addToCartButton.getString(context),
                         ),
                       );
                     },
@@ -333,11 +339,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             )
                           ]);
                         } else {
-                          EasyLoading.showError('Please Login First');
+                          EasyLoading.showError(
+                              AppLocale.pleaseLoginError.getString(context));
                           Navigator.of(context).pushNamed(AppRouter.signIn);
                         }
                       },
-                      titleText: "Buy",
+                      titleText: AppLocale.buyButton.getString(context),
                     ),
                   ),
                 ],

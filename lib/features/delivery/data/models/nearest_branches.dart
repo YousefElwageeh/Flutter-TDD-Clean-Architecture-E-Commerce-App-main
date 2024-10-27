@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_localization/flutter_localization.dart';
+
 class NearestBrancheModel {
   int? id;
   String? name;
@@ -20,7 +22,12 @@ class NearestBrancheModel {
     this.updatedAt,
     this.distance,
     this.isSelceted = false,
-  });
+  }) {
+    final FlutterLocalization localization = FlutterLocalization.instance;
+    if (localization.currentLocale.localeIdentifier == 'ar') {
+      name = nameAr;
+    }
+  }
 
   factory NearestBrancheModel.fromRawJson(String str) =>
       NearestBrancheModel.fromJson(json.decode(str));

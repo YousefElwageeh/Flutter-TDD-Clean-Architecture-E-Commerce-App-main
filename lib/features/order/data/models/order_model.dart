@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 
@@ -41,7 +42,7 @@ class Order {
   String? shipping;
   dynamic pickupLocation;
   String? totalQty;
-  int? payAmount;
+  double? payAmount;
   dynamic txnid;
   dynamic chargeId;
   int? orderNumber;
@@ -194,7 +195,7 @@ class Order {
         shipping: json["shipping"],
         pickupLocation: json["pickup_location"],
         totalQty: json["totalQty"],
-        //  payAmount: json["pay_amount"],
+        payAmount: json["pay_amount"] + 0.0,
         txnid: json["txnid"],
         chargeId: json["charge_id"],
         orderNumber: json["order_number"],

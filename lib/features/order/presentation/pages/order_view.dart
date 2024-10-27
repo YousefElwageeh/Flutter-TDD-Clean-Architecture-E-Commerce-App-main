@@ -1,6 +1,8 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/features/order/data/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../core/constant/images.dart';
 import '../bloc/order_fetch/order_fetch_cubit.dart';
@@ -13,7 +15,7 @@ class OrderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Orders"),
+        title: Text(AppLocale.orders.getString(context)),
       ),
       body: BlocBuilder<OrderFetchCubit, OrderFetchState>(
         builder: (context, state) {
@@ -59,16 +61,22 @@ class OrderView extends StatelessWidget {
               ),
             );
           } else {
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 6,
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: (10 + MediaQuery.of(context).padding.bottom),
-                top: 10,
+            return RefreshIndicator.adaptive(
+              onRefresh: () {
+                context.read<OrderFetchCubit>().getOrders();
+                return Future<void>.value();
+              },
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: 6,
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: (10 + MediaQuery.of(context).padding.bottom),
+                  top: 10,
+                ),
+                itemBuilder: (context, index) => const OrderInfoCard(),
               ),
-              itemBuilder: (context, index) => const OrderInfoCard(),
             );
           }
         },

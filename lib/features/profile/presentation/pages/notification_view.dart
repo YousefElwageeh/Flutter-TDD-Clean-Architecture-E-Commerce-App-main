@@ -1,4 +1,6 @@
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class NotificationView extends StatelessWidget {
   const NotificationView({super.key});
@@ -7,7 +9,7 @@ class NotificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notifications"),
+        title: Text(AppLocale.notifications.getString(context)),
       ),
     );
   }

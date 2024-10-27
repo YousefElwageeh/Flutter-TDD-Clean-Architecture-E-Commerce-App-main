@@ -1,16 +1,16 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/constant/images.dart';
 import 'package:eshop/core/router/app_router.dart';
 import 'package:eshop/features/profile/presentation/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({
-    super.key,
-  });
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,6 @@ class HomeAppBar extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  //   Navigator.of(context).pushNamed(AppRouter.userProfile);
                   log(state.user.image.toString());
                 },
                 child: Text(
@@ -31,31 +30,14 @@ class HomeAppBar extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context)
                       .pushNamed(AppRouter.userProfile, arguments: state.user);
                 },
-                child: state.user.image != null &&
-                        state.user.image !=
-                            'https://nffpm-demo.ecom.mm4web.net/assets/images/users'
-                    ? CachedNetworkImage(
-                        imageUrl: state.user.image!,
-                        imageBuilder: (context, image) => CircleAvatar(
-                          radius: 24.0,
-                          backgroundImage: image,
-                          backgroundColor: Colors.transparent,
-                        ),
-                      )
-                    : const CircleAvatar(
-                        radius: 24.0,
-                        backgroundImage: AssetImage(kUserAvatar),
-                        backgroundColor: Colors.transparent,
-                      ),
-              )
+                child: _buildUserAvatar(state.user.image),
+              ),
             ],
           );
         } else {
@@ -63,20 +45,20 @@ class HomeAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 8,
+                  const SizedBox(height: 8),
+                  Text(
+                    AppLocale.welcome.getString(context), // Localized welcome
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 36),
                   ),
                   Text(
-                    "Welcome,",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
-                  ),
-                  Text(
-                    "E-Shop mobile store",
-                    style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 22),
+                    AppLocale.storeName
+                        .getString(context), // Localized store name
+                    style: const TextStyle(
+                        fontWeight: FontWeight.normal, fontSize: 22),
                   ),
                 ],
               ),
@@ -92,11 +74,31 @@ class HomeAppBar extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                   ),
                 ),
-              )
+              ),
             ],
           );
         }
       }),
     );
+  }
+
+  Widget _buildUserAvatar(String? imageUrl) {
+    if (imageUrl != null &&
+        imageUrl != 'https://nffpm-demo.ecom.mm4web.net/assets/images/users') {
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
+        imageBuilder: (context, image) => CircleAvatar(
+          radius: 24.0,
+          backgroundImage: image,
+          backgroundColor: Colors.transparent,
+        ),
+      );
+    } else {
+      return const CircleAvatar(
+        radius: 24.0,
+        backgroundImage: AssetImage(kUserAvatar),
+        backgroundColor: Colors.transparent,
+      );
+    }
   }
 }

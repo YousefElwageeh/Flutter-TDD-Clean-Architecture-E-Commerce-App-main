@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_localization/flutter_localization.dart';
+
 class CategoryModel {
   List<Category>? category;
 
@@ -69,7 +71,13 @@ class Category {
     this.detailsAr,
     this.deletedAt,
     this.erpId,
-  });
+  }) {
+    final FlutterLocalization localization = FlutterLocalization.instance;
+    if (localization.currentLocale.localeIdentifier == 'ar') {
+      details = detailsAr;
+      name = nameAr;
+    }
+  }
 
   factory Category.fromRawJson(String str) =>
       Category.fromJson(json.decode(str));
