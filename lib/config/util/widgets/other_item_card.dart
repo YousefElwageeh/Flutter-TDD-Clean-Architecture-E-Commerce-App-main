@@ -1,49 +1,57 @@
 import 'package:flutter/material.dart';
 
+import 'package:eshop/config/theme/styles.dart';
+
 class OtherItemCard extends StatelessWidget {
   final String title;
   final Function()? onClick;
+  final IconData? icon;
   const OtherItemCard({
     super.key,
     required this.title,
     this.onClick,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 4, top: 2),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onClick,
-        child: Ink(
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).shadowColor.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 8,
-                offset: const Offset(0, 1),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ListTile(
+            onTap: onClick,
+            leading: Icon(
+              icon,
+              size: 30,
+            ),
+            title: Text(
+              title,
+              style: Styles.font16WhiteMedium.copyWith(color: Colors.black),
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.grey.shade200,
+                    width: 1,
+                  ),
+                ),
               ),
-            ],
-            border: Border.all(
-              color: Theme.of(context).shadowColor.withOpacity(0.1),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-            child: Row(
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleSmall,
-                )
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }

@@ -6,6 +6,8 @@ class AddressRequestModel {
   String? address;
   String? phone;
   String? id;
+  int? cityid;
+  int? countryid;
 
   AddressRequestModel({
     this.country,
@@ -13,6 +15,8 @@ class AddressRequestModel {
     this.address,
     this.id,
     this.phone,
+    this.cityid,
+    this.countryid,
   });
 
   factory AddressRequestModel.fromRawJson(String str) =>

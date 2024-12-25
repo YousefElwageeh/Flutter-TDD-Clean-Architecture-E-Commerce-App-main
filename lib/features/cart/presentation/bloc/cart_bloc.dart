@@ -2,11 +2,18 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:eshop/config/helpers/app_states.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/util/widgets/delivery_info_card.dart';
+import 'package:eshop/core/extension/string_extension.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/cart/domain/repositories/cart_repository.dart';
+import 'package:eshop/features/product/data/models/product_response_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -55,7 +62,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _onAddToCart(AddProduct event, Emitter<CartState> emit) async {
+  void _onAddToCart(
+    AddProduct event,
+    Emitter<CartState> emit,
+  ) async {
     try {
       // Start with loading state
       emit(CartLoading(cart: state.cart));
@@ -67,18 +77,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       result.fold(
         (failure) {
           // Show error and emit CartError state
-          EasyLoading.showError('Something went wrong');
+          EasyLoading.showError(AppLocale.somethingWentWrong.getTranslation());
           emit(CartError(cart: state.cart, failure: failure));
         },
         (cart) {
           // Emit success state
           emit(CartLoaded(cart: state.cart));
-          EasyLoading.showSuccess('Product added to cart successfully');
+          EasyLoading.showSuccess(
+              AppLocale.productAddedSuccess.getTranslation());
         },
       );
     } catch (e) {
       // Catch any other exceptions and emit error state
-      EasyLoading.showError('Unexpected error occurred');
+
+      EasyLoading.showError(AppLocale.unexpectedErrorOccurred.getTranslation());
       emit(CartError(cart: state.cart, failure: ExceptionFailure()));
     }
   }
@@ -117,9 +129,22 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       // Create a new CartModel with updated quantity
       state.cart.cart?[event.itemIndex].qty = updatedQuantity;
       emit(CartLoaded(cart: state.cart));
-      log('hjfffgh');
 
       log(state.cart.cart?[event.itemIndex].qty.toString() ?? '');
     }
+  }
+
+  List<Product> serchResult = [];
+  searchProduct(String term) {
+    emit(CartLoading(cart: state.cart));
+    repository.searchProduct(term).then((value) {
+      value.fold((l) {
+        log(l.toString());
+        emit(CartError(cart: state.cart, failure: l));
+      }, (r) {
+        serchResult = r;
+        emit(CartLoaded(cart: state.cart));
+      });
+    });
   }
 }

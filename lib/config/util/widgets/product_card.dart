@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/pages/product_details_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/router/app_router.dart';
@@ -135,7 +137,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          r'$' + product!.mobilePrice.toString(),
+                          "${product?.currencyEn} ${product!.mobilePrice}",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -144,7 +146,14 @@ class ProductCard extends StatelessWidget {
                 )
               ],
             ),
-          )
+          ),
+          Text(
+            product?.stock == null || (product?.stock ?? 0) <= 0
+                ? AppLocale.outOfStock.getString(context)
+                : "",
+            style: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey),
+          ),
         ],
       ),
     );

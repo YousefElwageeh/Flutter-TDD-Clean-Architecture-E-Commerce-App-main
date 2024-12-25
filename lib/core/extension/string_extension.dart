@@ -1,3 +1,5 @@
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:html_unescape/html_unescape.dart';
 
 extension ExtString on String {
@@ -62,5 +64,13 @@ extension ExtString on String {
     cleanText = cleanText.replaceAll(r'\r\n', '\n');
 
     return cleanText;
+  }
+
+  String getTranslation() {
+    final FlutterLocalization localization = FlutterLocalization.instance;
+
+    return localization.currentLocale.localeIdentifier == 'ar'
+        ? AppLocale.AR[this]
+        : AppLocale.EN[this];
   }
 }

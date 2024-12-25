@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/util/app_strings.dart';
 import 'package:eshop/features/delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
 import 'package:eshop/features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constant/images.dart';
 import '../../../../core/router/app_router.dart';
@@ -94,8 +96,20 @@ class OtherView extends StatelessWidget {
             }),
           ),
           const SizedBox(height: 25),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 4, top: 2),
+            child: Text(
+              AppLocale.generalSettigs.getString(context),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             return OtherItemCard(
+              icon: Icons.person_outline,
               onClick: () {
                 if (state is UserLogged) {
                   Navigator.of(context).pushNamed(
@@ -109,11 +123,34 @@ class OtherView extends StatelessWidget {
               title: AppLocale.profile.getString(context),
             );
           }),
+          const SizedBox(height: 6),
+          BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+            if (state is UserLogged) {
+              return OtherItemCard(
+                icon: Icons.favorite_border_outlined,
+                onClick: () {
+                  Navigator.of(context).pushNamed(
+                    AppRouter.wishList,
+                  );
+                  // context.read<UserBloc>().add(SignOutUser());
+                  // context.read<CartBloc>().add(const ClearCart());
+                  // context
+                  //     .read<DeliveryInfoFetchCubit>()
+                  //     .clearLocalDeliveryInfo();
+                  // context.read<OrderFetchCubit>().clearLocalOrders();
+                },
+                title: AppLocale.wishlist.getString(context),
+              );
+            } else {
+              return const SizedBox();
+            }
+          }),
           BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             if (state is UserLogged) {
               return Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: OtherItemCard(
+                  icon: Icons.shopping_cart_outlined,
                   onClick: () {
                     Navigator.of(context).pushNamed(AppRouter.orders);
                   },
@@ -129,6 +166,7 @@ class OtherView extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: OtherItemCard(
+                  icon: Icons.delivery_dining_outlined,
                   onClick: () {
                     Navigator.of(context).pushNamed(AppRouter.deliveryDetails);
                   },
@@ -141,6 +179,7 @@ class OtherView extends StatelessWidget {
           }),
           const SizedBox(height: 6),
           OtherItemCard(
+            icon: Icons.language_outlined,
             onClick: () {
               showModalBottomSheet(
                 context: context,
@@ -179,22 +218,19 @@ class OtherView extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           OtherItemCard(
-            onClick: () {
-              Navigator.of(context).pushNamed(AppRouter.settings);
-            },
-            title: AppLocale.settings.getString(context),
-          ),
-          const SizedBox(height: 6),
-          OtherItemCard(
-            onClick: () {
-              Navigator.of(context).pushNamed(AppRouter.notifications);
-            },
-            title: AppLocale.notifications.getString(context),
-          ),
-          const SizedBox(height: 6),
-          OtherItemCard(
-            onClick: () {
-              Navigator.of(context).pushNamed(AppRouter.about);
+            icon: Icons.info_outline_rounded,
+            onClick: () async {
+              final FlutterLocalization localization =
+                  FlutterLocalization.instance;
+
+              String url = localization.currentLocale.localeIdentifier == 'ar'
+                  ? AppStrings.ABOUT_URL_AR
+                  : AppStrings.ABOUT_URL_EN;
+              if (!await launchUrl(Uri.parse(url))) {
+                throw Exception('Could not launch $url');
+              }
+
+              //    Navigator.of(context).pushNamed(AppRouter.about);
             },
             title: AppLocale.about.getString(context),
           ),
@@ -202,6 +238,7 @@ class OtherView extends StatelessWidget {
           BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             if (state is UserLogged) {
               return OtherItemCard(
+                icon: Icons.exit_to_app_outlined,
                 onClick: () {
                   context.read<UserBloc>().add(SignOutUser());
                   context.read<CartBloc>().add(const ClearCart());

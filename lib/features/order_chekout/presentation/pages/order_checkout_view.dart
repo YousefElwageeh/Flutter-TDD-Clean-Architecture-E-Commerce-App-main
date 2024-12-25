@@ -1,28 +1,38 @@
 import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/config/helpers/spacing.dart';
-import 'package:eshop/config/locale/tranlslations.dart';
-import 'package:eshop/features/delivery/data/models/address_response_model.dart';
-import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
-import 'package:eshop/features/cart/data/models/cart_item_model.dart';
-import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
-import 'package:eshop/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:eshop/features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
-import 'package:eshop/features/home/presentation/bloc/navbar_cubit.dart';
+import 'package:eshop/features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import '../../../../core/services/services_locator.dart' as di;
-import '../../../../core/router/app_router.dart';
-import '../../../delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
-import '../../../order/presentation/bloc/order_add/order_add_cubit.dart';
+
+import 'package:eshop/config/helpers/spacing.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:eshop/features/delivery/data/models/address_response_model.dart';
+import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
+import 'package:eshop/features/delivery/presentation/bloc/delivery_info_action/delivery_info_action_cubit.dart';
+import 'package:eshop/features/home/presentation/bloc/navbar_cubit.dart';
+import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
+
 import '../../../../config/util/widgets/input_form_button.dart';
 import '../../../../config/util/widgets/outline_label_card.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../../core/services/services_locator.dart' as di;
+import '../../../delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
+import '../../../order/presentation/bloc/order_add/order_add_cubit.dart';
 
 class OrderCheckoutView extends StatefulWidget {
   final List<Cart> items;
-  const OrderCheckoutView({super.key, required this.items});
+  final String currency;
+
+  const OrderCheckoutView({
+    super.key,
+    required this.items,
+    required this.currency,
+  });
 
   @override
   State<OrderCheckoutView> createState() => _OrderCheckoutViewState();
@@ -74,6 +84,17 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
           if (state is OrderAddSuccess) {
             context.read<NavbarCubit>().update(0);
             context.read<NavbarCubit>().controller.jumpToPage(0);
+            log(context
+                .read<DeliveryInfoActionCubit>()
+                .selectedPaymentMethode
+                .toString());
+            if (context
+                    .read<DeliveryInfoActionCubit>()
+                    .selectedPaymentMethode ==
+                "94") {
+              context.read<OrderFetchCubit>().getOrders();
+              Navigator.of(context).pushReplacementNamed(AppRouter.orders);
+            }
           } else if (state is OrderAddFail) {
             EasyLoading.showError(AppLocale.error.getString(context));
           } else if (state is OrderGetWebViewSuccess) {
@@ -111,6 +132,22 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                   dropdownMenuEntries: options,
                 ),
                 const SizedBox(height: 10),
+                // Row(
+                //   children: [
+                //     Text(context
+                //             .read<DeliveryInfoActionCubit>()
+                //             .selectedBranch
+                //             .name ??
+                //         ''),
+                //     const Spacer(),
+                //     Text(context
+                //             .read<DeliveryInfoActionCubit>()
+                //             .selectedBranch
+                //             .distance
+                //             .toString() ??
+                //         '')
+                //   ],
+                // ),
                 BlocBuilder<DeliveryInfoActionCubit, DeliveryInfoActionState>(
                   builder: (context, state) {
                     return DropdownMenu(
@@ -168,7 +205,7 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                                           .labelLarge,
                                     ),
                                     const SizedBox(height: 4),
-                                    Text('\$${product.price}')
+                                    Text('${widget.currency} ${product.price}')
                                   ],
                                 ),
                               )
@@ -190,10 +227,19 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
           bottomNavigationBar: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: InputFormButton(
-                color: Colors.black87,
-                onClick: () => _onConfirm(context),
-                titleText: AppLocale.confirm.getString(context),
+              child: BlocBuilder<OrderAddCubit, OrderAddState>(
+                builder: (context, state) {
+                  if (state is OrderAddLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return InputFormButton(
+                      onClick: () => _onConfirm(context),
+                      titleText: AppLocale.confirm.getString(context),
+                    );
+                  }
+                },
               ),
             ),
           ),
@@ -230,7 +276,7 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
                   children: [
                     Text(
                         "${AppLocale.vatPercentage.getString(context)} ${state.vatValue}%"),
-                    Text("\$${vatValue.toStringAsFixed(2)}")
+                    Text("${widget.currency} ${vatValue.toStringAsFixed(2)}")
                   ],
                 );
               }
@@ -241,7 +287,7 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
             builder: (context, state) {
               return _buildSummaryRow(
                 AppLocale.totalPrice.getString(context),
-                "\$${totalPrice!.toStringAsFixed(1)}",
+                "${widget.currency} ${totalPrice!.toStringAsFixed(1)}",
               );
             },
           ),
@@ -271,30 +317,28 @@ class _OrderCheckoutViewState extends State<OrderCheckoutView> {
     } else {
       context.read<OrderAddCubit>().addOrder(
           OrderRequestModel(
-              productsId: widget.items.map((item) => item.item!.id!).toList(),
-              addressId: context
-                  .read<DeliveryInfoFetchCubit>()
-                  .state
-                  .selectedDeliveryInformation
-                  ?.id!,
-              isPickup:
-                  context.read<DeliveryInfoActionCubit>().selectedBranch.id ==
-                          null
-                      ? 0
-                      : 1,
-              branchId:
-                  context.read<DeliveryInfoActionCubit>().selectedBranch.id,
-              shipmentId: context
-                  .read<DeliveryInfoActionCubit>()
-                  .shipmentPrice
-                  .data
-                  ?.shipmentPrice
-                  ?.shipmentId,
-              paymentMethod: int.parse(context
-                  .read<DeliveryInfoActionCubit>()
-                  .selectedPaymentMethode),
-              productsQu: widget.items.map((item) => item.qty ?? 1).toList()),
-          onSuccess: () {
+            productsId: widget.items.map((item) => item.item!.id!).toList(),
+            addressId: context
+                .read<DeliveryInfoFetchCubit>()
+                .state
+                .selectedDeliveryInformation
+                ?.id!,
+            isPickup:
+                context.read<DeliveryInfoActionCubit>().selectedBranch.id ==
+                        null
+                    ? 0
+                    : 1,
+            branchId: context.read<DeliveryInfoActionCubit>().selectedBranch.id,
+            shipmentId: context
+                .read<DeliveryInfoActionCubit>()
+                .shipmentPrice
+                .data
+                ?.shipmentPrice
+                ?.shipmentId,
+            paymentMethod: int.parse(
+                context.read<DeliveryInfoActionCubit>().selectedPaymentMethode),
+            productsQu: widget.items.map((item) => item.qty ?? 1).toList(),
+          ), onSuccess: () {
         if (context.read<DeliveryInfoActionCubit>().selectedPaymentMethode ==
             '94') {
           Navigator.of(context).pop();

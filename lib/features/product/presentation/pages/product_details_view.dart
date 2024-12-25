@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
+import 'package:eshop/core/services/services_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,13 +12,16 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:eshop/config/helpers/spacing.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
 import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/features/cart/data/models/add_to_card_request.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
 import 'package:eshop/features/order/presentation/bloc/order_add/order_add_cubit.dart';
+import 'package:eshop/features/order_chekout/presentation/pages/order_checkout_view.dart';
 import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/bloc/product_bloc.dart';
 import 'package:eshop/features/profile/presentation/bloc/user/user_bloc.dart';
+import 'package:eshop/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 
 import '../../../../config/util/widgets/input_form_button.dart';
 import '../../../../core/router/app_router.dart';
@@ -61,6 +65,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       appBar: AppBar(
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         // actions: [
         //   IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
         //   IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
@@ -217,9 +222,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           .toList(),
                     ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: countityWidget(),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: countityWidget(
+                isWishlist: widget.product.isWishlist == "true" ?? false,
+                stock: widget.product.stock ?? 0,
+                id: widget.product.id ?? 0,
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -227,9 +236,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   right: 10,
                   top: 16,
                   bottom: MediaQuery.of(context).padding.bottom),
-              child: HtmlWidget(
-                widget.product.details ?? '',
-                //style: const TextStyle(fontSize: 14),
+              child: Container(
+                child: HtmlWidget(
+                  widget.product.details ?? '',
+                  buildAsync: true,
+                  //style: const TextStyle(fontSize: 14),
+                ),
               ),
             ),
           ],
@@ -262,7 +274,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       BlocBuilder<ProductBloc, ProductState>(
                         builder: (context, state) {
                           return Text(
-                            '\$${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
+                            '${widget.product.currencyEn ?? ""} ${(double.parse(_selectedPriceTag).toInt() * context.read<ProductBloc>().countity).toString()}',
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -328,16 +340,17 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     child: InputFormButton(
                       onClick: () {
                         if (Constants.token != null) {
-                          Navigator.of(context)
-                              .pushNamed(AppRouter.orderCheckout, arguments: [
-                            Cart(
-                              item: widget.product,
-                              qty: context.read<ProductBloc>().countity,
-                              price: (double.parse(_selectedPriceTag) *
-                                      context.read<ProductBloc>().countity)
-                                  .toInt(),
-                            )
-                          ]);
+                          Navigator.of(context).pushNamed(
+                              AppRouter.orderCheckout,
+                              arguments: OrderCheckoutView(items: [
+                                Cart(
+                                  item: widget.product,
+                                  qty: context.read<ProductBloc>().countity,
+                                  price: (double.parse(_selectedPriceTag) *
+                                          context.read<ProductBloc>().countity)
+                                      .toInt(),
+                                )
+                              ], currency: widget.product.currencyEn ?? ''));
                         } else {
                           EasyLoading.showError(
                               AppLocale.pleaseLoginError.getString(context));
@@ -355,8 +368,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 }
 
 class countityWidget extends StatefulWidget {
-  const countityWidget({
+  int stock;
+  int id;
+  bool isWishlist;
+
+  countityWidget({
     super.key,
+    required this.stock,
+    required this.id,
+    required this.isWishlist,
   });
 
   @override
@@ -364,6 +384,12 @@ class countityWidget extends StatefulWidget {
 }
 
 class _countityWidgetState extends State<countityWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
@@ -377,9 +403,17 @@ class _countityWidgetState extends State<countityWidget> {
                 ),
                 child: TextButton(
                     onPressed: () {
-                      context.read<ProductBloc>().icreaseCountity();
+                      if (context.read<ProductBloc>().countity < widget.stock) {
+                        context.read<ProductBloc>().icreaseCountity();
+                      } else {
+                        EasyLoading.showError(
+                            AppLocale.outOfStock.getString(context));
+                      }
                     },
-                    child: const Text('+'))),
+                    child: const Text(
+                      '+',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ))),
             horizontalSpace(12),
             Text(context.read<ProductBloc>().countity.toString()),
             horizontalSpace(12),
@@ -392,7 +426,38 @@ class _countityWidgetState extends State<countityWidget> {
                     onPressed: () {
                       context.read<ProductBloc>().decreaseCountity();
                     },
-                    child: const Text('-'))),
+                    child: const Text('-',
+                        style: TextStyle(color: Colors.white, fontSize: 20)))),
+            const Spacer(),
+            BlocProvider(
+              create: (context) => WishlistCubit(sl()),
+              child: BlocBuilder<WishlistCubit, WishlistState>(
+                builder: (context, state) {
+                  return IconButton(
+                      onPressed: () {
+                        if (widget.isWishlist) {
+                          context
+                              .read<WishlistCubit>()
+                              .removeFromWishlist(widget.id.toString());
+                        } else {
+                          context
+                              .read<WishlistCubit>()
+                              .addToWishlist(widget.id.toString());
+                        }
+                        widget.isWishlist = !widget.isWishlist;
+                        setState(() {});
+                      },
+                      icon: Icon(
+                        widget.isWishlist
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: widget.isWishlist
+                            ? ColorsManger.primaryColor
+                            : null,
+                      ));
+                },
+              ),
+            )
           ],
         );
       },

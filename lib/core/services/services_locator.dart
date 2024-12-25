@@ -8,6 +8,8 @@ import 'package:eshop/features/delivery/domain/usecases/edit_delivery_info_useca
 import 'package:eshop/features/delivery/domain/usecases/get_selected_delivery_info_usecase.dart';
 import 'package:eshop/features/delivery/domain/usecases/select_delivery_info_usecase.dart';
 import 'package:eshop/features/order_chekout/domain/usecases/clear_local_order_usecase.dart';
+import 'package:eshop/features/wishlist/data/datasources/wishlist_data_source.dart';
+import 'package:eshop/features/wishlist/data/repositories/wishlist_repo.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -82,6 +84,12 @@ Future<void> init() async {
       localDataSource: sl(),
       networkInfo: sl(),
     ),
+  );
+  sl.registerLazySingleton<WishlistDataSource>(
+    () => WishlistDataSource(),
+  );
+  sl.registerLazySingleton<WishlistRepo>(
+    () => WishlistRepo(wishlistDataSource: sl()),
   );
 
   // Data sources

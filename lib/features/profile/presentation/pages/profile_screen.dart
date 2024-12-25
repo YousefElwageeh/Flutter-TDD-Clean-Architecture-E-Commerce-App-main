@@ -110,18 +110,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 onClick: () {
                   context
                       .read<ProfileCubit>()
-                      .updateProfile(UpdateProfileRequest(
-                        name: firstNameController.text,
-                        email: email.text,
-                        phone: phoneController.text,
-                        photo: pickedImage?.path,
-                      ))
+                      .updateProfile(
+                          UpdateProfileRequest(
+                            name: firstNameController.text,
+                            email: email.text,
+                            phone: phoneController.text,
+                            photo: pickedImage?.path,
+                          ),
+                          context)
                       .then((v) {
                     context.read<UserBloc>().add(CheckUser());
                   });
                 },
                 titleText: AppLocale.updateButtonText.getString(context),
-                color: Colors.black87,
               );
             },
           ),

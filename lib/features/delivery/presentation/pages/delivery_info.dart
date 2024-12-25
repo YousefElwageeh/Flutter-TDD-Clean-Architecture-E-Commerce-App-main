@@ -1,4 +1,5 @@
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -127,6 +128,7 @@ class _DeliveryInfoViewState extends State<DeliveryInfoView> {
                   width: 20,
                 ),
                 FloatingActionButton(
+                  backgroundColor: ColorsManger.primaryColor,
                   onPressed: () {
                     showModalBottomSheet<void>(
                       context: context,
@@ -245,6 +247,8 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                       context
                           .read<DeliveryInfoActionCubit>()
                           .getCiteies(value ?? '');
+
+                      widget.deliveryInfo?.countryId = int.parse(value ?? '0');
                     },
                   ),
                   const SizedBox(
@@ -271,6 +275,7 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                           context
                               .read<DeliveryInfoActionCubit>()
                               .selectCity(value ?? '');
+                          widget.deliveryInfo?.cityId = int.parse(value ?? '0');
                         },
                       );
                     },
@@ -313,7 +318,6 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                     height: 18,
                   ),
                   InputFormButton(
-                    color: Colors.black87,
                     titleText: widget.deliveryInfo == null
                         ? AppLocale.save.getString(context)
                         : AppLocale.update.getString(context),
@@ -331,10 +335,21 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                           context
                               .read<DeliveryInfoActionCubit>()
                               .addDeliveryInfo(addressRequest);
+                          context
+                              .read<DeliveryInfoFetchCubit>()
+                              .fetchDeliveryInfo();
                         } else {
+                          addressRequest.cityid = widget.deliveryInfo!.cityId;
+                          addressRequest.countryid =
+                              widget.deliveryInfo!.countryId;
+
                           context
                               .read<DeliveryInfoActionCubit>()
                               .editDeliveryInfo(addressRequest);
+
+                          context
+                              .read<DeliveryInfoFetchCubit>()
+                              .fetchDeliveryInfo();
                         }
                       }
                     },
@@ -343,7 +358,6 @@ class _DeliveryInfoFormState extends State<DeliveryInfoForm> {
                     height: 8,
                   ),
                   InputFormButton(
-                    color: Colors.black87,
                     titleText: AppLocale.cancel.getString(context),
                     onClick: () {
                       Navigator.of(context).pop();

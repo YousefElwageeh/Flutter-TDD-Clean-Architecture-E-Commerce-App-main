@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/config/theme/styles.dart';
 import 'package:eshop/core/router/app_router.dart';
 import 'package:eshop/features/category/data/models/category_model.dart';
 import 'package:eshop/features/home/presentation/bloc/filter_cubit.dart';
@@ -30,40 +31,58 @@ class CategoryCard extends StatelessWidget {
         }
       },
       child: category != null
-          ? Column(
-              children: [
-                Card(
-                  color: Colors.grey.shade100,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  elevation: 4,
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: SizedBox(
+          ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
                     height: 200,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey.shade300),
+                        color: Colors.grey.shade100),
                     width: double.maxFinite,
-                    child: Hero(
-                      tag: category!.id ?? '',
-                      child: CachedNetworkImage(
-                        imageUrl: category?.photo ?? '',
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: Colors.grey.shade100,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Center(child: Icon(Icons.error)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Hero(
+                            tag: category!.id ?? '',
+                            child: CachedNetworkImage(
+                              imageUrl: category?.photo ?? '',
+                              height: 150,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey.shade100,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Center(child: Icon(Icons.error)),
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            category?.name ?? '',
+                            style: Styles.font14DarkBlueMedium.copyWith(
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ),
-                Text(
-                  category?.name ?? '',
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                )
-              ],
+                  // Text(
+                  //   category?.name ?? '',
+                  //   style: const TextStyle(
+                  //     fontSize: 18,
+                  //   ),
+                  // )
+                ],
+              ),
             )
           : Shimmer.fromColors(
               baseColor: Colors.grey.shade100,

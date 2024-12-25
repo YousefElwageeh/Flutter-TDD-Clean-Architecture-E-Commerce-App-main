@@ -19,14 +19,16 @@ class _CategoryViewState extends State<CategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            SizedBox(
-              height: (MediaQuery.of(context).padding.top + 8),
-            ),
+            // SizedBox(
+            //   height: (MediaQuery.of(context).padding.top + 8),
+            // ),
             Padding(
               padding: const EdgeInsets.only(
                 top: 12,

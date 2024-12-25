@@ -1,3 +1,4 @@
+import 'package:eshop/config/theme/colors.dart';
 import 'package:eshop/core/constant/images.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +29,8 @@ class InputFormButton extends StatelessWidget {
             WidgetStateProperty.all<Size>(const Size(double.maxFinite, 50)),
         minimumSize:
             WidgetStateProperty.all<Size>(const Size(double.maxFinite, 50)),
-        backgroundColor: WidgetStateProperty.all<Color>(
-            color ?? Theme.of(context).primaryColor),
+        backgroundColor:
+            WidgetStateProperty.all<Color>(color ?? ColorsManger.primaryColor),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(cornerRadius ?? 12.0)),

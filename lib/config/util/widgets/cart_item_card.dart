@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/features/product/data/models/product_response_model.dart';
+import 'package:eshop/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:eshop/features/cart/data/models/cart_item_model.dart';
+import 'package:eshop/features/product/data/models/product_response_model.dart';
 import 'package:eshop/features/product/presentation/pages/product_details_view.dart';
 
 import '../../../core/router/app_router.dart';
@@ -15,6 +17,8 @@ class CartItemCard extends StatelessWidget {
   final Function? onFavoriteToggle;
   final Function? onClick;
   final int? index;
+  final String? currency;
+  final bool iswishlist;
 
   final Function()? onLongClick;
   final bool isSelected;
@@ -23,7 +27,9 @@ class CartItemCard extends StatelessWidget {
     this.cartItem,
     this.onFavoriteToggle,
     this.onClick,
+    this.iswishlist = false,
     this.index,
+    this.currency,
     this.onLongClick,
     this.isSelected = false,
   });
@@ -57,10 +63,11 @@ class CartItemCard extends StatelessWidget {
       child: Card(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 100,
-              height: 100,
+              width: 120,
+              height: 120,
               child: cartItem == null
                   ? Padding(
                       padding: const EdgeInsets.all(24.0),
@@ -122,7 +129,7 @@ class CartItemCard extends StatelessWidget {
                                   ),
                                 )
                               : Text(
-                                  r'$' + cartItem!.price.toString(),
+                                  '$currency ${cartItem!.price}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -147,7 +154,13 @@ class CartItemCard extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  context.read<CartBloc>().delteItem(cartItem!.item!.id!);
+                  if (iswishlist) {
+                    context
+                        .read<WishlistCubit>()
+                        .removeFromWishlist(cartItem!.item!.id!.toString());
+                  } else {
+                    context.read<CartBloc>().delteItem(cartItem!.item!.id!);
+                  }
                 },
                 icon: const Icon(Icons.delete)),
           ],

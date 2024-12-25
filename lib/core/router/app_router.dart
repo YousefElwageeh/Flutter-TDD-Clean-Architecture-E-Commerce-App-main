@@ -10,6 +10,8 @@ import 'package:eshop/features/category/presentation/pages/category_view.dart';
 import 'package:eshop/features/home/presentation/pages/filter/filter_view.dart';
 import 'package:eshop/features/order_chekout/presentation/pages/pickup_screen.dart';
 import 'package:eshop/features/product/presentation/pages/proudcuts_by_category_id.dart';
+import 'package:eshop/features/wishlist/presentation/cubit/wishlist_cubit.dart';
+import 'package:eshop/features/wishlist/presentation/pages/wish_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,6 +39,8 @@ class AppRouter {
   static const String productDetails = '/product-details';
   //other
   static const String userProfile = '/user-profile';
+  static const String wishList = '/wishList';
+
   static const String orderCheckout = '/order-checkout';
   static const String deliveryDetails = '/delivery-details';
   static const String orders = '/orders';
@@ -98,14 +102,25 @@ class AppRouter {
                   ),
                 ));
       case orderCheckout:
-        List<Cart> items = routeSettings.arguments as List<Cart>;
+        OrderCheckoutView arguments =
+            routeSettings.arguments as OrderCheckoutView;
+
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
                   create: (context) => OrderAddCubit(sl()),
                   child: OrderCheckoutView(
-                    items: items,
+                    currency: arguments.currency,
+                    items: arguments.items,
                   ),
                 ));
+
+      case wishList:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => WishlistCubit(sl())..getWishlist(),
+                  child: const WishListScreen(),
+                ));
+
       case deliveryDetails:
         return MaterialPageRoute(builder: (_) {
           bool isFromCheckout = routeSettings.arguments as bool? ?? false;

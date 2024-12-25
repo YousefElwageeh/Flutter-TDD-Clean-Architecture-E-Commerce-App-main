@@ -10,6 +10,7 @@ mixin AppLocale {
   static const String buttonSignIn = 'Sign In';
   static const String buttonBack = 'Back';
   static const String language = 'language';
+  static const String userUpdatedSuccessfully = 'User Updated Successfully.';
 
   static const String textNoAccount = 'Don\'t have an account! ';
   static const String textRegister = 'Register';
@@ -37,6 +38,8 @@ mixin AppLocale {
   static const String total = 'total';
   static const String item = 'item';
   static const String profileTitle = 'Profile';
+  static const String maway = 'M away';
+
   static const String firstNameHint = 'First Name';
   static const String emailHint = 'Email Address';
   static const String phoneHint = 'phone';
@@ -53,6 +56,7 @@ mixin AppLocale {
   static const String orderPriceLabel = 'orderPriceLabel';
   static const String paymentStatusLabel = 'paymentStatusLabel';
   static const String edit = 'Edit';
+  static const String generalSettigs = 'General Settings';
 
   static const String other = 'other';
   static const String loginPrompt = 'loginPrompt';
@@ -62,6 +66,8 @@ mixin AppLocale {
   static const String settings = 'settings';
   static const String notifications = 'notifications';
   static const String about = 'about';
+  static const String wishlist = 'Wishlist';
+
   static const String signOut = 'signOut';
   static const String loginInYourAccount = 'Login in your account';
   static const String fieldCannotBeEmpty = 'This field can\'t be empty';
@@ -74,6 +80,8 @@ mixin AppLocale {
       'Please select a Delivery Info';
   static const String deliveryInfoSuccessfullyAdded =
       'Delivery info successfully added!';
+  static const String orderPlacedSuccess = 'orderPlacedSuccess';
+
   static const String deliveryInfoSuccessfullyEdited =
       'Delivery info successfully edited!';
   static const String addressLineOneHint = 'Address line one';
@@ -100,6 +108,9 @@ mixin AppLocale {
   static const String choosePaymentMethod = "choosePaymentMethod";
   static const String selectedProducts = "selectedProducts";
   static const String orderSummary = "orderSummary";
+  static const String productAddedSuccess = 'productAddedSuccess';
+  static const String somethingWentWrong = 'somethingWentWrong';
+  static const String unexpectedErrorOccurred = 'unexpectedErrorOccurred';
   static const String totalNumberOfProducts = "totalNumberOfProducts";
   static const String totalPrice = "totalPrice";
   static const String vatPercentage = "vatPercentage";
@@ -119,20 +130,22 @@ mixin AppLocale {
     loginInYourAccount: 'Login in your account',
     hintPassword: 'Password',
     error: 'Error',
+    generalSettigs: generalSettigs,
     deliveryDetails: 'Delivery Details',
     totalProducts: 'Total Products',
     deliveryInformationEmpty: 'Delivery information are Empty!',
     pleaseSelectDeliveryInfo: 'Please select a Delivery Info',
     deliveryInfoSuccessfullyAdded: 'Delivery info successfully added!',
     deliveryInfoSuccessfullyEdited: 'Delivery info successfully edited!',
-    AppLocale.orderIdLabel: 'Order ID',
-    AppLocale.orderItemsLabel: 'Order Items',
-    AppLocale.orderPriceLabel: 'Order Price',
-    AppLocale.paymentStatusLabel: 'Payment Status',
+    orderIdLabel: 'Order ID',
+    orderItemsLabel: 'Order Items',
+    orderPriceLabel: 'Order Price',
+    paymentStatusLabel: 'Payment Status',
     addressLineOneHint: 'Address line one',
     thisFieldCantBeEmpty: 'This field can\'t be empty',
     contactNumberHint: 'Contact number',
     save: 'Save',
+    wishlist: 'Wishlist',
     Products: "Products",
     searchCaregory: 'Search Category',
     update: 'Update',
@@ -144,6 +157,7 @@ mixin AppLocale {
     profileTitle: 'Profile',
     firstNameHint: 'First Name',
     emailHint: 'Email Address',
+    userUpdatedSuccessfully: "User Updated Successfully.",
     phoneHint: 'phone',
     cameraLabel: 'Camera',
     galleryLabel: 'Gallery',
@@ -170,7 +184,7 @@ mixin AppLocale {
     email: 'Email',
     phoneNumber: 'Phone Number',
     welcome: 'Welcome,',
-    storeName: 'E-Shop mobile store',
+    storeName: 'National Feed',
     password: 'Password',
     cartEmpty: 'Cart is Empty!',
     total: 'Total',
@@ -185,14 +199,19 @@ mixin AppLocale {
     register: 'Register',
     resetPassword: 'Reset Password',
     messageIconTooltip: 'Message',
+    maway: "M away",
     shareIconTooltip: 'Share',
     outOfStock: 'Out Of Stock',
     stockLabel: 'Stock',
+    orderPlacedSuccess: 'Order Placed Successfully',
     totalLabel: 'Total',
     addToCartButton: 'Add to Cart',
     buyButton: 'Buy',
     pleaseLoginError: 'Please Login First',
     orderCheckoutRoute: 'Order Checkout',
+    productAddedSuccess: 'Product added to cart successfully',
+    somethingWentWrong: 'Something went wrong',
+    unexpectedErrorOccurred: 'Unexpected error occurred',
     orderCheckoutTitle: "Order Checkout",
     chooseDeliveryMethod: "Choose delivery method",
     pickUp: "Pick up",
@@ -238,6 +257,7 @@ mixin AppLocale {
     textForgotPassword: 'هل نسيت كلمة المرور؟',
     buttonSignIn: 'تسجيل الدخول',
     buttonBack: 'عودة',
+    generalSettigs: "الإعدادات العامة",
     searchCaregory: "ابحث عن الفئة",
     textNoAccount: 'ليس لديك حساب! ',
     pleaseEnterEmail: 'يرجى إدخال بريدك الإلكتروني وكلمة المرور لتسجيل الدخول',
@@ -263,7 +283,7 @@ mixin AppLocale {
     cameraLabel: 'كاميرا',
     galleryLabel: 'معرض',
     welcome: 'مرحبًا',
-    storeName: 'متجر إي شوب',
+    storeName: 'الوطنية للأعلاف',
     email: 'البريد الإلكتروني',
     phoneNumber: 'رقم الهاتف',
     password: 'كلمة المرور',
@@ -275,6 +295,7 @@ mixin AppLocale {
     dontHaveAccount: 'ليس لديك حساب! ',
     register: 'تسجيل',
     textRegister: 'سجل',
+    userUpdatedSuccessfully: "تم تحديث المستخدم بنجاح",
     resetPassword: 'إعادة تعيين كلمة المرور',
     errorIncorrectCredentials:
         'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.',
@@ -282,6 +303,10 @@ mixin AppLocale {
     shareIconTooltip: 'مشاركة',
     outOfStock: 'نفذ المخزون',
     stockLabel: 'المخزون',
+    maway: "متر ",
+    productAddedSuccess: 'تمت إضافة المنتج إلى السلة بنجاح',
+    somethingWentWrong: 'حدث خطأ ما',
+    unexpectedErrorOccurred: 'حدث خطأ غير متوقع',
     totalLabel: 'المجموع',
     addToCartButton: 'أضف إلى السلة',
     buyButton: 'شراء',
@@ -289,12 +314,13 @@ mixin AppLocale {
     orderCheckoutRoute: 'إتمام الطلب',
     orderCheckoutTitle: 'إتمام الطلب',
     chooseDeliveryMethod: 'اختر طريقة التوصيل',
-    AppLocale.orderIdLabel: 'رقم الطلب',
-    AppLocale.orderItemsLabel: 'عناصر الطلب',
-    AppLocale.orderPriceLabel: 'سعر الطلب',
-    AppLocale.paymentStatusLabel: 'حالة الدفع',
+    orderIdLabel: 'رقم الطلب',
+    orderItemsLabel: 'عناصر الطلب',
+    orderPriceLabel: 'سعر الطلب',
+    paymentStatusLabel: 'حالة الدفع',
     pickUp: 'استلام',
     delivery: 'توصيل',
+    wishlist: "قائمة الأمنيات",
     totalProducts: "إجمالي المنتجات",
     choosePaymentMethod: 'اختر طريقة الدفع',
     selectedProducts: 'المنتجات المختارة',
@@ -305,6 +331,7 @@ mixin AppLocale {
     deliveryCharge: 'رسوم التوصيل',
     Products: "المنتجات",
     confirm: 'تأكيد',
+    orderPlacedSuccess: 'تم تقديم الطلب بنجاح',
     pleaseSelectDeliveryMethod: 'يرجى اختيار طريقة التوصيل',
     pleaseSelectPaymentMethod: 'يرجى اختيار طريقة الدفع',
   };

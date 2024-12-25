@@ -98,6 +98,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: OKToast(
         child: MaterialApp(
+          locale: localization.currentLocale,
           supportedLocales: localization.supportedLocales,
           localizationsDelegates: localization.localizationsDelegates,
           debugShowCheckedModeBanner: false,

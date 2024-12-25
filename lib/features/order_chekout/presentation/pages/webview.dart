@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:eshop/core/router/app_router.dart';
+import 'package:eshop/features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -50,7 +53,8 @@ class _PaymentWebViewState extends State<PaymentWebView> {
           controller.getTitle().then((value) {
             log("getTitle");
             if (value == 'Success') {
-              Navigator.pop(context);
+              context.read<OrderFetchCubit>().getOrders();
+              Navigator.of(context).pushReplacementNamed(AppRouter.orders);
               EasyLoading.showSuccess("Order Placed Successfully");
             } else if (value == 'Failure') {
               Navigator.pop(context);

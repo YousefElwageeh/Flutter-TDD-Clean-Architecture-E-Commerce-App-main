@@ -2,16 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:eshop/features/product/data/models/product_response_model.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class CartModel {
   bool? status;
   List<Cart>? cart;
   int? totalItems;
   int? totalPrice;
+  Currency? currency;
 
   CartModel({
     this.status,
     this.cart,
+    this.currency,
     this.totalItems,
     this.totalPrice,
   });
@@ -23,6 +26,7 @@ class CartModel {
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         status: json["status"],
+        currency: Currency.fromJson(json["currency"]),
         cart: json["cart"] == null
             ? []
             : List<Cart>.from(json["cart"]!.map((x) => Cart.fromJson(x))),
@@ -32,6 +36,7 @@ class CartModel {
 
   Map<String, dynamic> toJson() => {
         "status": status,
+        "currency": currency?.toJson(),
         "cart": cart == null
             ? []
             : List<dynamic>.from(cart!.map((x) => x.toJson())),
@@ -117,5 +122,56 @@ class Cart {
         "keys": keys,
         "values": values,
         "image": image,
+      };
+}
+
+class Currency {
+  int? id;
+  String? name;
+  String? nameAr;
+  String? sign;
+  int? value;
+  String? image;
+  int? isDefault;
+
+  Currency({
+    this.id,
+    this.name,
+    this.nameAr,
+    this.sign,
+    this.value,
+    this.image,
+    this.isDefault,
+  }) {
+    final FlutterLocalization localization = FlutterLocalization.instance;
+
+    if (localization.currentLocale.localeIdentifier == 'ar') {
+      name = nameAr;
+    }
+  }
+
+  factory Currency.fromRawJson(String str) =>
+      Currency.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Currency.fromJson(Map<String, dynamic> json) => Currency(
+        id: json["id"],
+        name: json["name"],
+        nameAr: json["name_ar"],
+        sign: json["sign"],
+        value: json["value"],
+        image: json["image"],
+        isDefault: json["is_default"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "name_ar": nameAr,
+        "sign": sign,
+        "value": value,
+        "image": image,
+        "is_default": isDefault,
       };
 }

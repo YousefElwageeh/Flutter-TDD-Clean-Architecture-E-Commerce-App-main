@@ -1,4 +1,5 @@
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
 import 'package:eshop/features/home/presentation/bloc/navbar_cubit.dart';
 import 'package:eshop/features/order/presentation/bloc/order_fetch/order_fetch_cubit.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _SignInViewState extends State<SignInView> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
@@ -75,7 +77,6 @@ class _SignInViewState extends State<SignInView> {
                     style: const TextStyle(fontSize: 16, color: Colors.black54),
                     textAlign: TextAlign.center,
                   ),
-                  const Spacer(flex: 2),
                   const SizedBox(height: 24),
                   InputTextFormField(
                     controller: emailController,
@@ -129,7 +130,7 @@ class _SignInViewState extends State<SignInView> {
                   ),
                   const SizedBox(height: 24),
                   InputFormButton(
-                    color: Colors.black87,
+                    color: ColorsManger.primaryColor,
                     onClick: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<UserBloc>().add(SignInUser(SignInParams(
@@ -139,15 +140,6 @@ class _SignInViewState extends State<SignInView> {
                       }
                     },
                     titleText: AppLocale.buttonSignIn
-                        .getString(context), // Replace with localization
-                  ),
-                  const SizedBox(height: 10),
-                  InputFormButton(
-                    color: Colors.black87,
-                    onClick: () {
-                      Navigator.of(context).pop();
-                    },
-                    titleText: AppLocale.buttonBack
                         .getString(context), // Replace with localization
                   ),
                   const Spacer(),
@@ -168,9 +160,9 @@ class _SignInViewState extends State<SignInView> {
                           child: Text(
                             AppLocale.textRegister.getString(
                                 context), // Replace with localization
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              color: Colors.black,
+                              color: ColorsManger.primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

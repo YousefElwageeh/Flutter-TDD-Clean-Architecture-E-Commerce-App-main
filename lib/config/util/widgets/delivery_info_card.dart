@@ -1,4 +1,5 @@
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
 import 'package:eshop/core/extension/string_extension.dart';
 import 'package:eshop/features/delivery/data/models/address_response_model.dart';
 import 'package:eshop/features/delivery/presentation/bloc/delivery_info_fetch/delivery_info_fetch_cubit.dart';
@@ -82,7 +83,8 @@ class DeliveryInfoCard extends StatelessWidget {
                             },
                             child: Text(
                               AppLocale.edit.getString(context),
-                              style: const TextStyle(color: Colors.blueAccent),
+                              style:
+                                  TextStyle(color: ColorsManger.primaryColor),
                             ),
                           ),
                         )

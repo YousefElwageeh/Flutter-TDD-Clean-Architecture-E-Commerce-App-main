@@ -64,11 +64,11 @@ class DeliveryInfoActionCubit extends Cubit<DeliveryInfoActionState> {
   void editDeliveryInfo(AddressRequestModel params) async {
     try {
       params.city = cities.city
-          ?.where((element) => element.id.toString() == selectedCityid)
+          ?.where((element) => element.id == params.cityid)
           .first
           .name;
       params.country = countries.country
-          ?.where((element) => element.id.toString() == selectedCountryid)
+          ?.where((element) => element.id == params.countryid)
           .first
           .countryName;
       emit(DeliveryInfoActionLoading());

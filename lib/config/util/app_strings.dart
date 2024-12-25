@@ -46,4 +46,8 @@ class AppStrings {
   static const String EnterYourPhone = 'Enter Your Phone';
   static const String EnterYourPhoneproceed = 'Enter Your Phone to proceed';
   static const String Proceed = 'Proceed';
+  static const String ABOUT_URL_AR =
+      'https://nffpm.ae/%d9%85%d9%86-%d9%86%d8%ad%d9%86/?lang=ar';
+  static const String ABOUT_URL_EN =
+      'https://nffpm.ae/%d9%85%d9%86-%d9%86%d8%ad%d9%86/?lang=en';
 }

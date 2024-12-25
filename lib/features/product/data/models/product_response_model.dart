@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:eshop/core/api/constant&endPoints.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
 class ProductResponseModel {
@@ -47,6 +48,8 @@ class Product {
   String? slugAr;
   String? photo;
   String? thumbnail;
+  String? isWishlist;
+
   List<String>? size;
   List<String>? sizeQty;
   List<String>? sizePrice;
@@ -90,6 +93,7 @@ class Product {
     this.name,
     this.nameAr,
     this.slug,
+    this.isWishlist,
     this.slugAr,
     this.photo,
     this.thumbnail,
@@ -130,7 +134,10 @@ class Product {
     if (localization.currentLocale.localeIdentifier == 'ar') {
       details = detailsAr;
       name = nameAr;
+      currencyEn = currencyAr;
+      Constants.currency = currencyAr;
     }
+    Constants.currency = currencyEn;
   }
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
@@ -143,6 +150,8 @@ class Product {
         productType: json["product_type"],
         userId: json["user_id"],
         categoryId: json["category_id"],
+        isWishlist: json["is_wishlist"] ?? "false",
+
         brandId: json["brand_id"],
         name: json["name"],
         nameAr: json["name_ar"],

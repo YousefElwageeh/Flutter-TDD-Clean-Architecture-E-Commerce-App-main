@@ -47,7 +47,7 @@ class OrderView extends StatelessWidget {
                 return Future<void>.value();
               },
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: state.orders.orders?.length ?? 0,
                 padding: EdgeInsets.only(
                   left: 20,

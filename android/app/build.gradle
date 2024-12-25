@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 }
 android {
     namespace "com.example.eshop.eshop"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -71,7 +71,9 @@ android {
     }
    buildTypes {
        release {
+      
            signingConfig signingConfigs.release
+           
        }
    }
 }

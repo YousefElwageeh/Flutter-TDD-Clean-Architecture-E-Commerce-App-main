@@ -23,6 +23,7 @@ class ProductsByCatrgory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
         title: Text(AppLocale.Products.getString(context)),
       ),
       body: BlocProvider<ProductBloc>(
@@ -33,9 +34,8 @@ class ProductsByCatrgory extends StatelessWidget {
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                context
-                    .read<ProductBloc>()
-                    .add(const GetProducts(FilterProductParams()));
+                context.read<ProductBloc>().add(GetProducts(FilterProductParams(
+                    categories: [Category(id: categoryID)])));
               },
               child: SafeArea(
                 child: Padding(

@@ -1,5 +1,6 @@
 import 'package:eshop/config/helpers/validators.dart';
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -54,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: SafeArea(
@@ -140,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 40),
                     InputFormButton(
-                      color: Colors.black87,
+                      color: ColorsManger.primaryColor,
                       onClick: () {
                         if (_formKey.currentState!.validate()) {
                           context.read<UserBloc>().add(
@@ -157,12 +159,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       titleText: AppLocale.signUp.getString(context),
                     ),
-                    const SizedBox(height: 10),
-                    InputFormButton(
-                      color: Colors.black87,
-                      onClick: () => Navigator.of(context).pop(),
-                      titleText: AppLocale.back.getString(context),
-                    ),
+                    // const SizedBox(height: 10),
+                    // InputFormButton(
+                    //   color: Colors.black87,
+                    //   onClick: () => Navigator.of(context).pop(),
+                    //   titleText: AppLocale.back.getString(context),
+                    // ),
                   ],
                 ),
               ),

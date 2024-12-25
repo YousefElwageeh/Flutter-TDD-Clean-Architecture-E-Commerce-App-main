@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/config/helpers/spacing.dart';
 import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/styles.dart';
+import 'package:eshop/config/util/assetsManger.dart';
 import 'package:eshop/features/home/model/slider_model.dart';
 import 'package:eshop/features/category/presentation/bloc/category_bloc.dart';
 import 'package:eshop/config/util/widgets/category_card.dart';
@@ -47,12 +49,31 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        toolbarHeight: 50,
+        centerTitle: true,
+        title: Image.asset(
+          AssetsManger.logowithwords,
+          width: 230,
+          fit: BoxFit.fill,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              //  Navigator.of(context).pushNamed(AppRouter.cart);
+            },
+            icon: const Icon(Icons.search_outlined),
+          ),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: MediaQuery.of(context).padding.top + 10),
-          const HomeAppBar(),
+          //  SizedBox(height: MediaQuery.of(context).padding.top + 10),
+          //   const HomeAppBar(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -121,7 +142,11 @@ class _HomeViewState extends State<HomeView> {
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
                               children: [
-                                Text(AppLocale.categories.getString(context)),
+                                Text(
+                                  AppLocale.categories.getString(context),
+                                  style: Styles.font24BlackBold
+                                      .copyWith(fontSize: 18),
+                                ),
                                 const Spacer(),
                                 TextButton(
                                   onPressed: () {
@@ -129,7 +154,10 @@ class _HomeViewState extends State<HomeView> {
                                         .pushNamed(AppRouter.category);
                                   },
                                   child: Text(
-                                      AppLocale.viewAll.getString(context)),
+                                    AppLocale.viewAll.getString(context),
+                                    style: Styles.font24BlackBold
+                                        .copyWith(fontSize: 18),
+                                  ),
                                 ),
                               ],
                             ),
@@ -147,8 +175,8 @@ class _HomeViewState extends State<HomeView> {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 0.6,
-                                crossAxisSpacing: 12,
+                                childAspectRatio: 0.7,
+                                crossAxisSpacing: 15,
                                 mainAxisSpacing: 0,
                               ),
                               physics: const BouncingScrollPhysics(),
@@ -182,21 +210,28 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class CarouselDemo extends StatelessWidget {
+class CarouselDemo extends StatefulWidget {
   final List<Sliders> sliders;
+
+  const CarouselDemo({super.key, required this.sliders});
+
+  @override
+  State<CarouselDemo> createState() => _CarouselDemoState();
+}
+
+class _CarouselDemoState extends State<CarouselDemo> {
   final CarouselSliderController buttonCarouselController =
       CarouselSliderController();
-
-  CarouselDemo({super.key, required this.sliders});
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (sliders.isEmpty) return const SizedBox.shrink();
+    if (widget.sliders.isEmpty) return const SizedBox.shrink();
 
     return Column(
       children: [
         CarouselSlider.builder(
-          itemCount: sliders.length,
+          itemCount: widget.sliders.length,
           itemBuilder: (context, index, realIndex) {
             return Container(
               width: MediaQuery.of(context).size.width,
@@ -204,7 +239,7 @@ class CarouselDemo extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: NetworkImage(sliders[index].photo ?? ''),
+                  image: NetworkImage(widget.sliders[index].photo ?? ''),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -212,13 +247,36 @@ class CarouselDemo extends StatelessWidget {
           },
           carouselController: buttonCarouselController,
           options: CarouselOptions(
-            autoPlay: false,
-            enlargeCenterPage: true,
-            viewportFraction: 0.9,
-            aspectRatio: 2.0,
-            initialPage: 2,
-          ),
+              autoPlay: true,
+              height: 150,
+              enlargeCenterPage: true,
+              viewportFraction: 0.9,
+              aspectRatio: 3.0,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
         ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.sliders.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => buttonCarouselController.animateToPage(entry.key),
+                child: Container(
+                  width: 12.0,
+                  height: 12.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey
+                              : Colors.black)
+                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                ),
+              );
+            }).toList()),
       ],
     );
   }

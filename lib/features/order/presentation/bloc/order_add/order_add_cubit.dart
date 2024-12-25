@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/core/extension/string_extension.dart';
 import 'package:eshop/core/services/services_locator.dart';
 import 'package:eshop/features/order_chekout/domain/entities/order_request_model.dart';
 import 'package:eshop/features/order_chekout/domain/repositories/order_repository.dart';
@@ -26,7 +28,7 @@ class OrderAddCubit extends Cubit<OrderAddState> {
       if (params.paymentMethod == 97) {
         getPaymentWebView(order.data['id']);
       } else {
-        EasyLoading.showSuccess("Order Placed Successfully");
+        EasyLoading.showSuccess(AppLocale.orderPlacedSuccess.getTranslation());
         onSuccess != null ? onSuccess() : null;
       }
     });

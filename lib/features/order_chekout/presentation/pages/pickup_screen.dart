@@ -1,6 +1,10 @@
+import 'package:eshop/config/locale/tranlslations.dart';
+import 'package:eshop/config/theme/colors.dart';
+import 'package:eshop/config/util/widgets/delivery_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:eshop/features/delivery/data/models/nearest_branches.dart';
@@ -26,6 +30,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: ColorsManger.primaryColor,
         onPressed: () {
           if (context.read<DeliveryInfoActionCubit>().selectedBranch.id !=
               null) {
@@ -158,7 +163,8 @@ class _BranchWidgetState extends State<BranchWidget> {
             ),
             Text(widget.branchName),
             const Spacer(),
-            Text('${widget.distance.toInt()} M away'),
+            Text(
+                '${widget.distance.toInt()}ِ${AppLocale.maway.getString(context)} '),
           ],
         ),
       ),
